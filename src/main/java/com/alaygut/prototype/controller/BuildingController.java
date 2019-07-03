@@ -21,21 +21,21 @@ public class BuildingController {
         this.buildingService = buildingService;
     }
 
-    @GetMapping("/addBuilding")
+    @GetMapping("/add/building")
     public ModelAndView addBuildingPage(){
         return new ModelAndView("addBuilding", "addBuildingForm", new AddBuildingForm());
     }
 
-    @PostMapping("/addBuilding")
+    @PostMapping("/add/building")
     public String handleAddBuilding(@Valid @ModelAttribute("addBuildingForm") AddBuildingForm addBuildingForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors())
             return null;
         buildingService.addBuilding(addBuildingForm);
         redirectAttributes.addFlashAttribute("successMessage", "Yeni bina başarıyla oluşturuldu.");
-        return "redirect:/addBuilding";
+        return "redirect:/add/building";
     }
 
-    @GetMapping("/listBuildings")
+    @GetMapping("/list/building")
     public ModelAndView listBuildingsPage(){
         return new ModelAndView("listBuildings", "listBuildings", buildingService.getAllBuildings());
     }

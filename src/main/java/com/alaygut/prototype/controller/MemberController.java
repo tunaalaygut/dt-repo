@@ -22,7 +22,7 @@ public class MemberController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/addMember")
+    @GetMapping("/add/member")
     public ModelAndView addMemberPage(){
         AddMemberForm addMemberForm = new AddMemberForm();
         addMemberForm.setAllRoles(roleService.getAllRoles());
@@ -33,18 +33,18 @@ public class MemberController {
         );
     }
 
-    @PostMapping("/addMember")
+    @PostMapping("/add/member")
     public String handleAddMember(@Valid @ModelAttribute("addMemberForm") AddMemberForm addMemberForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()) {
             addMemberForm.setAllRoles(roleService.getAllRoles());
-            return "/addMember";
+            return "/add/member";
         }
         memberService.addMember(addMemberForm);
         redirectAttributes.addFlashAttribute("successMessage", "Yeni kullanıcı başarıyla oluşturuldu.");
-        return "redirect:/addMember";
+        return "redirect:/add/member";
     }
 
-    @GetMapping("/listMembers")
+    @GetMapping("/list/member")
     public ModelAndView listMembersPage(){
         return new ModelAndView("listMembers", "listMembers", memberService.getAllMembers());
     }
