@@ -24,9 +24,11 @@
         <tr th:each="building : ${listBuildings}">
             <td th:text="${building.buildingName}"></td>
             <td th:text="${building.buildingAddr}"></td>
-
             <td>
-                 <div th:replace="fragments/fragments :: listOpsButtons"></div>
+                <form th:action="@{/list/building}" th:object="${idTransfer}" th:method="post" class="deactivateForm">
+                    <div th:replace="fragments/fragments :: listOpsButtons"></div>
+                    <input th:attr="name=recordId" type="hidden" th:value="${building.buildingId}" >
+                </form>
               </td>
             </tr>
           </tbody>
