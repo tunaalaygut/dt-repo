@@ -10,7 +10,7 @@
         <div class="content">
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Şirket Binası Ekleme Formu</h2>
-            <form th:action="@{/addBuilding}" th:object="${addBuildingForm}" th:method="post" autocomplete="off">
+            <form th:action="@{/add/building}" th:object="${addBuildingForm}" th:method="post" autocomplete="off">
                 <div class="form-group">
                     <label for="firstNameInput">Bina Adı:</label>
                     <input th:field="*{buildingName}" type="text" class="form-control" id="firstNameInput" placeholder="Bina Adı">
