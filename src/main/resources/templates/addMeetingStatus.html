@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<div th:replace="fragments/fragments :: head(content = 'Toplantı Durumu Ekleme Formu')"></div>
+
+<body>
+
+
+<div class="wrapper">
+        <div th:replace="fragments/fragments :: sidebar"></div>
+        <div class="content">
+            <div th:replace="fragments/fragments :: navbar"></div>
+            <h2 class="mb-4">Toplantı Durumu Ekleme Formu</h2>
+            <form th:action="@{/addMeetingStatus}" th:object="${addMeetingStatusForm}" th:method="post" autocomplete="off">
+                <div class="form-group">
+                    <label for="firstNameInput">Toplantı Durumu:</label>
+                    <input th:field="*{meetingStatusName}" type="text" class="form-control" id="firstNameInput" placeholder="Toplantı Durumu">
+                </div>
+                       <div class="mb-4">
+                          <div class="form-group">
+                            <label for="roleSelectMenu">Sebep:</label>
+                            <select class="custom-select" id="reasonSelectMenu" th:field="*{reasonId}">
+                                <option th:each="r : *{allReasons}" th:text="${r?.reasonName}" th:value = "${r?.reasonId}"></option>
+                            </select>
+                        </div>
+                    </div>
+                 <div th:replace="fragments/fragments :: successMessage"></div>
+                <div th:if="${#fields.hasErrors('meetingStatusName')}" th:errors="*{meetingStatusName}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                </div>
+                <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Toplantı Durumu Ekle</button>
+            </form>
+        </div>
+    </div>
+    <div th:replace="fragments/fragments :: scripts"></div>
+</body>
+</html>
+

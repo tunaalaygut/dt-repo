@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<div th:replace="fragments/fragments :: head(content = 'Kullanıcı Ekle')"></div>
+
+<body>
+    <div class="wrapper">
+        <div th:replace="fragments/fragments :: sidebar"></div>
+        <div class="content">
+            <div th:replace="fragments/fragments :: navbar"></div>
+            <h2 class="mb-4">Kullanıcı Ekleme Formu</h2>
+            <form th:action="@{/addMember}" th:object="${addMemberForm}" th:method="post" autocomplete="off">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="firstNameInput">İsim:</label>
+                            <input th:field="*{firstName}" type="text" class="form-control" id="firstNameInput" placeholder="İsim">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="lastNameInput">Soyisim:</label>
+                            <input th:field="*{lastName}" type="text" class="form-control" id="lastNameInput" placeholder="Soyisim">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="emailInput">E-mail:</label>
+                    <input th:field="*{email}" type="text" class="form-control" id="emailInput" placeholder="isim@ornek.com">
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="phoneInput">Telefon:</label>
+                            <input th:field="*{phone}" type="text" class="form-control" id="phoneInput" placeholder="Telefon #">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="roleSelectMenu">Rol:</label>
+                            <select class="custom-select" id="roleSelectMenu" th:field="*{roleId}">
+                                <option th:each="r : *{allRoles}" th:text="${r?.roleName}" th:value = "${r?.roleId}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="usernameInput">Kullanıcı Adı:</label>
+                    <input th:field="*{username}" type="text" class="form-control" id="usernameInput" placeholder="Kullanıcı Adı">
+                </div>
+                <div class="form-group">
+                    <label for="passwordInput">Şifre:</label>
+                    <input th:field="*{password}" type="password" class="form-control" id="passwordInput" placeholder="******">
+                </div>
+                <div th:replace="fragments/fragments :: successMessage"></div>
+                <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                </div>
+                <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                </div>
+                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                </div>
+                <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                </div>
+                <div th:if="${#fields.hasErrors('roleId')}" th:errors="*{roleId}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                </div>
+                <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Kullanıcı Ekle</button>
+            </form>
+        </div>
+    </div>
+    <div th:replace="fragments/fragments :: scripts"></div>
+</body>
+</html>

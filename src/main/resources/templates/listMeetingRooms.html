@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<div th:replace="fragments/fragments :: head(content = 'Toplantı Odaları')"></div>
+
+<body>
+
+	<div class="wrapper">
+        <div th:replace="fragments/fragments :: sidebar"></div>
+        <div class="content">
+            <div th:replace="fragments/fragments :: navbar"></div>
+            <h2>Toplantı Odaları</h2>
+            <div class="table-responsive">
+                <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Toplantı Odası</th>
+            <th scope="col">Bina</th>
+            <th scope="col">Kapasite</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="meetingRoom : ${listMeetingRooms}">
+            <td th:text="${meetingRoom.meetingRoomName}"></td>
+            <td th:text="${meetingRoom.building?.buildingName}"></td>
+            <td th:text="${meetingRoom.capacity}"></td>
+            <td>
+                 <form>
+                    <button class="btn btn-outline-danger">
+                       <span class="fas fa-trash-alt"/>
+                    </button>
+                 </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+       </div>
+     </div>
+    </div>
+   <div th:replace="fragments/fragments :: scripts"></div>
+</body>
+</html>

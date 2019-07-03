@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<div th:replace="fragments/fragments :: head(content = 'Yetkiler')"></div>
+
+<body>
+    <div class="wrapper">
+        <div th:replace="fragments/fragments :: sidebar"></div>
+        <div class="content">
+            <div th:replace="fragments/fragments :: navbar"></div>
+            <h2 class="mb-4">Yetkiler</h2>
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Yetki Adı</th>
+                        <th scope="col">Açıklama</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="right : ${listRights}">
+                        <td th:text="${right.rightName}"></td>
+                        <td th:text="${right.description}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments/fragments :: scripts"></div>
+</body>
+</html>

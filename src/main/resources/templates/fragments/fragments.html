@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:fragment="head">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title th:text="${content} + ' - Dijital Toplantı'"></title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/style.css" th:href="@{style.css}">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="navbar">
+    <div class="container-fluid">
+        <button type="button" id="sidebarCollapse" class="btn btn-outline-info">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
+
+<div th:fragment = "successMessage" th:if="${successMessage}" th:text="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+</div>
+
+<nav id="sidebar" th:fragment="sidebar">
+    <div class="sidebar-header">
+        <a th:href="@{/}" class="h3">Dijital Toplantı</a>
+    </div>
+    <div id="accordion">
+        <ul class="list-unstyled components">
+            <p>İşlemler</p>
+            <li>
+                <a href="#homeSubmenu" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" class="dropdown-toggle">Kullanıcı İşlemleri</a>
+                <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <li>
+                        <a th:href="@{/addMember}">Kullanıcı Ekle</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/listMembers}">Kullanıcıları Listele</a>
+                    </li>
+                </ul>
+            </li>
+
+
+            <li>
+                <a href="#roleRightSubmenu" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" class="dropdown-toggle">Rol/Yetki İşlemleri</a>
+                <ul class="collapse list-unstyled" id="roleRightSubmenu">
+                    <li>
+                        <a th:href="@{/addRole}">Rol Ekle</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/listRoles}">Roller</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/addRight}">Yetki Ekle</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/listRights}">Yetkiler</a>
+                    </li>
+                </ul>
+            </li>
+
+
+            <li>
+                <a href="#meetingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Toplantı İşlemleri</a>
+                <ul class="collapse list-unstyled" id="meetingSubmenu">
+                    <li>
+                        <a href="#">Toplantı Talebi Oluştur</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/addMeetingType}">Toplantı Türü Ekle</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/listMeetingTypes}">Toplantı Türleri</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/addMeetingStatus}">Toplantı Durumu Ekle</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/listMeetingStatus}">Toplantı Durumları</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/addReason}">Sebep Ekle</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/listReasons}">Sebepler</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#officeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Ofis İşlemleri</a>
+                <ul class="collapse list-unstyled" id="officeSubmenu">
+                    <li>
+                        <a th:href="@{/addBuilding}">Şirket Binası Ekle</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/listBuildings}">Şirket Binaları</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/addMeetingRoom}">Toplantı Odası Ekle</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/listMeetingRooms}">Toplantı Odaları</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div th:fragment="scripts">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="@{/main.js}" src="../static//main.js"></script>
+</div>
+
+</html>

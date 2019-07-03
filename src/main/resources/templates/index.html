@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<div th:replace="fragments/fragments :: head(content = 'Anasayfa')"></div>
+
+<body>
+    <div class="wrapper">
+        <div th:replace="fragments/fragments :: sidebar"></div>
+        <div class="content">
+            <div th:replace="fragments/fragments :: navbar"></div>
+            <h2>Dijital Toplantı'ya Hoşgeldiniz</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed diam nibh. Morbi ac nisi nec est facilisis luctus. Phasellus ultricies turpis ex, nec faucibus urna fringilla eu. Aenean dignissim interdum elit. Aliquam vel neque eget ligula gravida eleifend. Quisque faucibus nulla eu tellus sodales, vel rhoncus risus rhoncus. Morbi arcu augue, vulputate ut luctus vitae, bibendum sit amet lectus. Aliquam varius leo enim, a congue lacus consequat at. Nulla dignissim, urna vel ultrices venenatis, mauris magna porta sem, porta hendrerit quam orci tincidunt nulla. Quisque vitae tellus sit amet ex condimentum dapibus ut vel justo. Nunc quam mi, placerat vitae ante eget, interdum pretium tellus. Nulla mollis aliquet erat, nec mollis purus varius eu. Praesent hendrerit dolor ligula, in bibendum sem tincidunt at. Mauris efficitur eleifend lobortis. Proin scelerisque nibh eu mollis mattis.</p>
+            <button class="btn btn-info text-white btn-block">Toplantı Talebi Oluştur</button>
+        </div>
+    </div>
+    <div th:replace="fragments/fragments :: scripts"></div>
+</body>
+</html>

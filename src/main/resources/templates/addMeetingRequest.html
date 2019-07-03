@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Toplantı İsteği Yollama Formu</title>
+</head>
+<body>
+
+<div th:replace="fragments/fragments :: header"></div>
+
+<div class="container mt-5">
+    <form th:action="@{/addMeetingRequest}" th:object="${addMeetingRequestForm}" th:method="post" autocomplete="off">
+
+        <div class="form-group">
+            <label for="dateInput">Toplantı Tarihi:</label>
+            <input th:field="*{startTime}" type="time-local" class="form-control" id="dateInput" placeholder="Tarih">
+        </div>
+
+        <input size="16" type="text" value="2012-06-15 14:45" readonly class="form_datetime">
+
+        <script type="text/javascript">
+            $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
+        </script>
+
+        <div class="form-group">
+            <label for="meetingTypeSelectMenu">Toplantı Türü:</label>
+            <select class="custom-select" id="meetingTypeSelectMenu" th:field="*{meetingTypeId}">
+                <option th:each="r : ${allMeetingTypes}" th:text="${r?.description}" th:value = "${r?.meetingTypeId}"></option>
+            </select>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="meetingRoomSelectMenu">Toplantı Odası:</label>
+                    <select class="custom-select" id="meetingRoomSelectMenu" th:field="*{meetingRoomId}">
+                        <option th:each="r : ${allMeetingRooms}" th:text="${r?.meetingRoomId}" th:value = "${r?.meetingRoomId}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="memberSelectMenu">Odayı Ayırtmak İsteyen Üye:</label>
+                    <select class="custom-select" id="memberSelectMenu" th:field="*{memberId}">
+                        <option th:each="r : ${allMembers}" th:text="${r?.firstName}" th:value = "${r?.memberId}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="startTimeInput">Başlangıç Saati:</label>
+                    <input th:field="*{startTime}" type="time-local" class="form-control" id="startTimeInput" placeholder="Başlangıç Saati">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="endTimeInput">Bitiş Saati:</label>
+                    <input th:field="*{endTime}" type="time-local" class="form-control" id="endTimeInput" placeholder="Bitiş Saati">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="descriptionInput">Açıklama:</label>
+            <textarea th:field="*{description}" type="text" class="form-control" id="descriptionInput" placeholder="Açıklama" rows="3" style="resize: none;"></textarea>
+        </div>
+
+       
+        <div th:if="${#fields.hasErrors('endTime')}" th:errors="*{endTime}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        </div>
+        
+        <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        </div>
+     
+        <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Toplantı İsteği Oluştur</button>
+    </form>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
