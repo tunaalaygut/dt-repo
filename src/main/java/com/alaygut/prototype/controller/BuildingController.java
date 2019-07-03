@@ -1,6 +1,7 @@
 package com.alaygut.prototype.controller;
 
-import com.alaygut.prototype.dto.AddBuildingForm; 
+import com.alaygut.prototype.dto.AddBuildingForm;
+import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.BuildingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -37,7 +38,17 @@ public class BuildingController {
 
     @GetMapping("/list/building")
     public ModelAndView listBuildingsPage(){
-        return new ModelAndView("listBuildings", "listBuildings", buildingService.getAllBuildings());
+        ModelAndView model = new ModelAndView("listBuildings", "listBuildings", buildingService.getAllActiveBuildings());
+        model.addObject("idTransfer", new IDTransfer());
+        return model;
+    }
+
+    @PostMapping("/list/building")
+    public String handleDeactivateBuilding(@Valid @ModelAttribute("idTransfer") IDTransfer idTransfer, BindingResult bindingResult){
+        if (bindingResult.hasErrors())
+            return null;
+        buildingService.deactivate(idTransfer);
+        return "redirect:/list/building";
     }
 
 }
