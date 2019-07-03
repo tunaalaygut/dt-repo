@@ -12,7 +12,7 @@
         <div class="content">
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Toplantı Sebebi Ekleme Formu</h2>
-            <form th:action="@{/addReason}" th:object="${addReasonForm}" th:method="post" autocomplete="off">
+            <form th:action="@{/add/reason}" th:object="${addReasonForm}" th:method="post" autocomplete="off">
                 <div class="form-group">
                     <label for="firstNameInput">Sebep:</label>
                     <input th:field="*{reasonName}" type="text" class="form-control" id="firstNameInput" placeholder="Sebep">

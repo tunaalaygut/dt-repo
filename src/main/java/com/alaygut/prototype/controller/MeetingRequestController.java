@@ -33,26 +33,32 @@ public class MeetingRequestController {
 		this.meetingStatusService = meetingStatusService;
 	}
 		
-	@GetMapping("/addMeetingRequest")
+	@GetMapping("/add/meetingRequest")
 	public ModelAndView addMeetingRequestPage() {
-		ModelAndView modelAndView = new ModelAndView("addMeetingRequest", "addMeetingRequestForm", new AddMeetingRequestForm());
-		modelAndView.addObject("allMeetingRooms", meetingRoomService.getAllRooms());
-		modelAndView.addObject("allMembers", memberService.getAllMembers());
-		modelAndView.addObject("allMeetingTypes", meetingTypeService.getAllTypes());
-		modelAndView.addObject("allMeetingStatus", meetingStatusService.getAllStatus());
+		AddMeetingRequestForm addMeetingRequestForm = new AddMeetingRequestForm();
+		addMeetingRequestForm.setAllMeetingRoom(meetingRoomService.getAllRooms());
+		addMeetingRequestForm.setAllMember(memberService.getAllMembers());
+		addMeetingRequestForm.setAllMeetingType(meetingTypeService.getAllTypes());
+		addMeetingRequestForm.setAllMeetingStatus(meetingStatusService.getAllStatus());
 		
-		return modelAndView;	
+		return new ModelAndView("addMeetingRequest", "addMeetingRequestForm", new AddMeetingRequestForm());	
 	}
 	
-	@PostMapping("/addMeetingRequest")
+	@PostMapping("/add/meetingRequest")
 	public String handleAddMeetingRequest(@Valid @ModelAttribute("addMeetingRequestForm") AddMeetingRequestForm addMeetingRequestForm, BindingResult bindingResult) {
-		if(bindingResult.hasErrors())
-			return null;
+		if(bindingResult.hasErrors()) {
+			addMeetingRequestForm.setAllMeetingRoom(meetingRoomService.getAllRooms());
+			addMeetingRequestForm.setAllMember(memberService.getAllMembers());
+			addMeetingRequestForm.setAllMeetingType(meetingTypeService.getAllTypes());
+			addMeetingRequestForm.setAllMeetingStatus(meetingStatusService.getAllStatus());
+			return "/add/meetingRequest";
+		}		
 		meetingRequestService.addRequest(addMeetingRequestForm);
-		return "redirect:/addMeetingRequest";
+		//redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı talebi başarıyla oluşturuldu.");
+		return "redirect:/add/meetingRequest";
 	}
 	
-	@GetMapping("/listMeetingRequests")
+	@GetMapping("/list/meetingRequest")
 	public ModelAndView listMeetingRequestsPage() {
 		return new ModelAndView("listMeetingRequests", "listMeetingRequests", meetingRequestService.getAllRequests());
 	}

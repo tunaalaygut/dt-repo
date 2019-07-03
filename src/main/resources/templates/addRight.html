@@ -12,7 +12,7 @@
         <div class="content">
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Yetki Ekleme Formu</h2>
-            <form th:action="@{/addRight}" th:object="${addRightForm}" th:method="post" autocomplete="off">
+            <form th:action="@{/add/right}" th:object="${addRightForm}" th:method="post" autocomplete="off">
                 <div class="form-group">
                     <label for="firstNameInput">Yetki Adı:</label>
                     <input th:field="*{rightName}" type="text" class="form-control" id="firstNameInput" placeholder="Yetki Adı">

@@ -1,6 +1,6 @@
 package com.alaygut.prototype.controller;
 
-import com.alaygut.prototype.dto.AddRoleForm;
+import com.alaygut.prototype.dto.AddRoleForm; 
 import com.alaygut.prototype.service.RightService;
 import com.alaygut.prototype.service.RoleService;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ public class RoleController {
         this.rightService = rightService;
     }
 
-    @GetMapping("/addRole")
+    @GetMapping("/add/role")
     public ModelAndView addRolePage(){
         AddRoleForm addRoleForm = new AddRoleForm();
         addRoleForm.setAllRights(rightService.getAllRights());
@@ -34,18 +34,18 @@ public class RoleController {
                 addRoleForm);
     }
 
-    @PostMapping("/addRole")
+    @PostMapping("/add/role")
     public String handleAddRole(@Valid @ModelAttribute("addRoleForm") AddRoleForm addRoleForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()){
             addRoleForm.setAllRights(rightService.getAllRights());
-            return "/addRole";
+            return "/add/role";
         }
         roleService.addRole(addRoleForm);
         redirectAttributes.addFlashAttribute("successMessage", "Yeni rol başarıyla oluşturuldu.");
-        return "redirect:/addRole";
+        return "redirect:/add/role";
     }
 
-    @GetMapping("listRoles")
+    @GetMapping("/list/role")
     public ModelAndView listRolesPage(){
         ModelAndView model = new ModelAndView("listRoles", "listRoles", roleService.getAllRoles());
         model.addObject("roleService", roleService);

@@ -18,6 +18,7 @@
             <th scope="col">Toplantı Odası</th>
             <th scope="col">Bina</th>
             <th scope="col">Kapasite</th>
+            <th scope="col">İşlemler</th>
         </tr>
         </thead>
         <tbody>
@@ -26,11 +27,7 @@
             <td th:text="${meetingRoom.building?.buildingName}"></td>
             <td th:text="${meetingRoom.capacity}"></td>
             <td>
-                 <form>
-                    <button class="btn btn-outline-danger">
-                       <span class="fas fa-trash-alt"/>
-                    </button>
-                 </form>
+                 <div th:replace="fragments/fragments :: listOpsButtons"></div>
               </td>
             </tr>
           </tbody>

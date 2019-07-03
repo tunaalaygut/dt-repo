@@ -25,7 +25,7 @@ public class MeetingRoomController {
 		this.buildingService = buildingService;
 	}
 	
-	@GetMapping("/addMeetingRoom")
+	@GetMapping("/add/meetingRoom")
 	public ModelAndView addMeetingRoomPage() {
 		AddMeetingRoomForm addMeetingRoomForm = new AddMeetingRoomForm();
 		addMeetingRoomForm.setAllBuildings(buildingService.getAllBuildings());
@@ -36,18 +36,18 @@ public class MeetingRoomController {
 		);
 	}
 	
-	@PostMapping("/addMeetingRoom")
+	@PostMapping("/add/meetingRoom")
 	public String handleAddMeetingRoom(@Valid @ModelAttribute("addMeetingRoomForm") AddMeetingRoomForm addMeetingRoomForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
 			addMeetingRoomForm.setAllBuildings(buildingService.getAllBuildings());
-			return "/addMeetingRoom";
+			return "/add/meetingRoom";
 		}
 		meetingRoomService.addRoom(addMeetingRoomForm);
 		redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı odası başarıyla oluşturuldu.");
-		return "redirect:/addMeetingRoom";
+		return "redirect:/add/meetingRoom";
 	}	
 	
-	@GetMapping("/listMeetingRooms")
+	@GetMapping("/list/meetingRoom")
 	public ModelAndView listMeetingRoomsPage() {
 		return new ModelAndView("listMeetingRooms", "listMeetingRooms", meetingRoomService.getAllRooms());
 	}

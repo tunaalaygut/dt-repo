@@ -22,21 +22,21 @@ public class MeetingTypeController {
 		this.meetingTypeService = meetingTypeService;
 	}
 	
-	@GetMapping("/addMeetingType")
+	@GetMapping("/add/meetingType")
 	public ModelAndView addMeetingTypePage() {
 		return new ModelAndView("addMeetingType", "addMeetingTypeForm", new AddMeetingTypeForm());
 	}
 	
-	@PostMapping("/addMeetingType")
+	@PostMapping("/add/meetingType")
 	public String handleAddMeetingType(@Valid @ModelAttribute("addMeetingTypeForm") AddMeetingTypeForm addMeetingTypeForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors())
 			return null;
 		meetingTypeService.addType(addMeetingTypeForm);
 		redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı türü başarıyla oluşturuldu.");
-		return "redirect:/addMeetingType";
+		return "redirect:/add/meetingType";
 	}
 	
-	@GetMapping("/listMeetingTypes")
+	@GetMapping("/list/meetingType")
 	public ModelAndView listMeetingTypesPage() {
 		return new ModelAndView("listMeetingTypes", "listMeetingTypes", meetingTypeService.getAllTypes());
 	}

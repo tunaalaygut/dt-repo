@@ -15,7 +15,7 @@ public class MeetingRoom extends BaseClass{
 	@Column(name = "meetingRoomName")
 	private String meetingRoomName;
 
-	@ManyToOne(optional = true, fetch = FetchType.LAZY)
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "buildingId")
 	private Building building;
 	

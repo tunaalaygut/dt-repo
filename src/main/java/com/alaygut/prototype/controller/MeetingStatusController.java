@@ -26,7 +26,7 @@ public class MeetingStatusController {
 		this.reasonService = reasonService;
 	}
 	
-	@GetMapping("/addMeetingStatus")
+	@GetMapping("/add/meetingStatus")
 	public ModelAndView addMeetingStatusPage() {
 		AddMeetingStatusForm addMeetingStatusForm = new AddMeetingStatusForm();
 		addMeetingStatusForm.setAllReasons(reasonService.getAllReasons());
@@ -38,18 +38,18 @@ public class MeetingStatusController {
 		return modelAndView;
 	}
 	
-	@PostMapping("/addMeetingStatus")
+	@PostMapping("/add/meetingStatus")
 	public String handleAddMeetingStatus(@Valid @ModelAttribute("addMeetingStatusForm") AddMeetingStatusForm addMeetingStatusForm, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
 			addMeetingStatusForm.setAllReasons(reasonService.getAllReasons());
-			return "/addMeetingStatus";
+			return "/add/meetingStatus";
 		}
 		meetingStatusService.addStatus(addMeetingStatusForm);
 		redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı durumu başarıyla oluşturuldu.");
-		return "redirect:/addMeetingStatus";
+		return "redirect:/add/meetingStatus";
 	}
 	
-	@GetMapping("/listMeetingStatus")
+	@GetMapping("/list/meetingStatus")
 	public ModelAndView listMeetingStatusPage() {
 		return new ModelAndView("listMeetingStatus", "listMeetingStatus", meetingStatusService.getAllStatus());
 	}

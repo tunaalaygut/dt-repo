@@ -31,12 +31,8 @@
                         <td th:text="${member.phone}"></td>
                         <td th:text="${member.role?.roleName}"></td>
                         <td>
-                            <form>
-                                <button class="btn btn-outline-danger">
-                                    <span class="fas fa-trash-alt"/>
-                                </button>
-                            </form>
-                        </td>
+                 <div th:replace="fragments/fragments :: listOpsButtons"></div>
+              </td>
                     </tr>
                     </tbody>
                 </table>

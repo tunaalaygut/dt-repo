@@ -11,7 +11,7 @@
         <div class="content">
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Toplantı Türü Ekleme Formu</h2>
-            <form th:action="@{/addMeetingType}" th:object="${addMeetingTypeForm}" th:method="post" autocomplete="off">
+            <form th:action="@{/add/meetingType}" th:object="${addMeetingTypeForm}" th:method="post" autocomplete="off">
                 <div class="form-group">
                     <label for="firstNameInput">Toplantı Türü:</label>
                     <input th:field="*{meetingTypeName}" type="text" class="form-control" id="firstNameInput" placeholder="Toplantı Türü">

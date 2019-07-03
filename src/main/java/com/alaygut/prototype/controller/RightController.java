@@ -21,21 +21,21 @@ public class RightController {
         this.rightService = rightService;
     }
 
-    @GetMapping("/addRight")
+    @GetMapping("/add/right")
     public ModelAndView addRightPage(){
         return new ModelAndView("addRight", "addRightForm", new AddRightForm());
     }
 
-    @PostMapping("/addRight")
+    @PostMapping("/add/right")
     public String handleAddRight(@Valid @ModelAttribute("addRightForm") AddRightForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors())
             return null;
         rightService.addRight(form);
         redirectAttributes.addFlashAttribute("successMessage", "Yeni yetki başarıyla oluşturuldu.");
-        return "redirect:/addRight";
+        return "redirect:/add/right";
     }
 
-    @GetMapping("listRights")
+    @GetMapping("/list/right")
     public ModelAndView listRightsPage(){
         return new ModelAndView("listRights", "listRights", rightService.getAllRights());
     }

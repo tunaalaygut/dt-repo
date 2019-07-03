@@ -22,21 +22,21 @@ public class ReasonController {
 		this.reasonService = reasonService;
 	}
 
-	@GetMapping("/addReason")
+	@GetMapping("/add/reason")
 	public ModelAndView addReasonPage() {
 		return new ModelAndView("addReason","addReasonForm", new AddReasonForm());
 	}
 	
-	@PostMapping("/addReason")
+	@PostMapping("/add/reason")
 	public String handleAddReason(@Valid @ModelAttribute("addReasonForm") AddReasonForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors())
 			return null;
 		reasonService.addReason(form);
 		redirectAttributes.addFlashAttribute("successMessage", "Yeni sebep başarıyla oluşturuldu.");
-		return "redirect:/addReason";
+		return "redirect:/add/reason";
 	}
 	
-	@GetMapping("/listReasons")
+	@GetMapping("/list/reason")
 	public ModelAndView listReasonsPage() {
 		return new ModelAndView("listReasons", "listReasons", reasonService.getAllReasons());
 	}

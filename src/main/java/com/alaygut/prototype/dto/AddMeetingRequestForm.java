@@ -8,6 +8,11 @@ import javax.validation.constraints.FutureOrPresent;
 
 import javax.validation.constraints.Size;
 
+import com.alaygut.prototype.domain.MeetingRoom;
+import com.alaygut.prototype.domain.MeetingStatus;
+import com.alaygut.prototype.domain.MeetingType;
+import com.alaygut.prototype.domain.Member;
+
 public class AddMeetingRequestForm {
 	
 	private Long meetingRoomId;
@@ -26,6 +31,14 @@ public class AddMeetingRequestForm {
 	private String description;
 	
 	private Long meetingStatusId;
+	
+	private Iterable<MeetingRoom> allMeetingRoom;
+	
+	private Iterable<Member> allMember;
+	
+	private Iterable<MeetingType> allMeetingType;
+	
+	private Iterable<MeetingStatus> allMeetingStatus;
 
 	public Long getMeetingRoomId() {
 		return meetingRoomId;
@@ -81,6 +94,38 @@ public class AddMeetingRequestForm {
 
 	public void setEndTime(LocalTime endTime) {
 		this.endTime = endTime;
+	}
+
+	public Iterable<MeetingRoom> getAllMeetingRoom() {
+		return allMeetingRoom;
+	}
+
+	public void setAllMeetingRoom(Iterable<MeetingRoom> allMeetingRoom) {
+		this.allMeetingRoom = allMeetingRoom;
+	}
+
+	public Iterable<Member> getAllMember() {
+		return allMember;
+	}
+
+	public void setAllMember(Iterable<Member> allMember) {
+		this.allMember = allMember;
+	}
+
+	public Iterable<MeetingType> getAllMeetingType() {
+		return allMeetingType;
+	}
+
+	public void setAllMeetingType(Iterable<MeetingType> allMeetingType) {
+		this.allMeetingType = allMeetingType;
+	}
+
+	public Iterable<MeetingStatus> getAllMeetingStatus() {
+		return allMeetingStatus;
+	}
+
+	public void setAllMeetingStatus(Iterable<MeetingStatus> allMeetingStatus) {
+		this.allMeetingStatus = allMeetingStatus;
 	}
 	
 	

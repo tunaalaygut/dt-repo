@@ -54,16 +54,16 @@
                 <a href="#roleRightSubmenu" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" class="dropdown-toggle">Rol/Yetki İşlemleri</a>
                 <ul class="collapse list-unstyled" id="roleRightSubmenu">
                     <li>
-                        <a th:href="@{/addRole}">Rol Ekle</a>
+                        <a th:href="@{/add/role}">Rol Ekle</a>
                     </li>
                     <li>
-                        <a th:href="@{/listRoles}">Roller</a>
+                        <a th:href="@{/list/role}">Roller</a>
                     </li>
                     <li>
-                        <a th:href="@{/addRight}">Yetki Ekle</a>
+                        <a th:href="@{/add/right}">Yetki Ekle</a>
                     </li>
                     <li>
-                        <a th:href="@{/listRights}">Yetkiler</a>
+                        <a th:href="@{/list/right}">Yetkiler</a>
                     </li>
                 </ul>
             </li>
@@ -73,25 +73,28 @@
                 <a href="#meetingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Toplantı İşlemleri</a>
                 <ul class="collapse list-unstyled" id="meetingSubmenu">
                     <li>
-                        <a href="#">Toplantı Talebi Oluştur</a>
+                        <a th:href="@{/add/meetingRequest}">Toplantı Talebi Oluştur</a>
                     </li>
                     <li>
-                        <a th:href="@{/addMeetingType}">Toplantı Türü Ekle</a>
+                        <a th:href="@{/list/meetingRequest}">Toplantı Talepleri</a>
                     </li>
                     <li>
-                        <a th:href="@{/listMeetingTypes}">Toplantı Türleri</a>
+                        <a th:href="@{/add/meetingType}">Toplantı Türü Ekle</a>
                     </li>
                     <li>
-                        <a th:href="@{/addMeetingStatus}">Toplantı Durumu Ekle</a>
+                        <a th:href="@{/list/meetingType}">Toplantı Türleri</a>
                     </li>
                     <li>
-                        <a th:href="@{/listMeetingStatus}">Toplantı Durumları</a>
+                        <a th:href="@{/add/meetingStatus}">Toplantı Durumu Ekle</a>
                     </li>
                     <li>
-                        <a th:href="@{/addReason}">Sebep Ekle</a>
+                        <a th:href="@{/list/meetingStatus}">Toplantı Durumları</a>
                     </li>
                     <li>
-                        <a th:href="@{/listReasons}">Sebepler</a>
+                        <a th:href="@{/add/reason}">Sebep Ekle</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/list/reason}">Sebepler</a>
                     </li>
                 </ul>
             </li>
@@ -106,10 +109,10 @@
                         <a th:href="@{/list/building}">Şirket Binaları</a>
                     </li>
                     <li>
-                        <a th:href="@{/addMeetingRoom}">Toplantı Odası Ekle</a>
+                        <a th:href="@{/add/meetingRoom}">Toplantı Odası Ekle</a>
                     </li>
                     <li>
-                        <a th:href="@{/listMeetingRooms}">Toplantı Odaları</a>
+                        <a th:href="@{/list/meetingRoom}">Toplantı Odaları</a>
                     </li>
                 </ul>
             </li>
@@ -118,7 +121,7 @@
 </nav>
 
 <form th:fragment="listOpsButtons" th:method="post">
-    <input type="hidden" th:field = "">
+    <input type="hidden">
     <button class="btn btn-sm btn-outline-info">
         <span class="fas fa-edit"/>
     </button>

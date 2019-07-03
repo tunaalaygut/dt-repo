@@ -12,14 +12,14 @@
         <div class="content">
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Toplantı Odası Ekleme Formu</h2>
-            <form th:action="@{/addMeetingRoom}" th:object="${addMeetingRoomForm}" th:method="post" autocomplete="off">
+            <form th:action="@{/add/meetingRoom}" th:object="${addMeetingRoomForm}" th:method="post" autocomplete="off">
                 <div class="form-group">
                     <label for="meetingRoomNameInput">Toplantı Odası Adı:</label>
                     <input th:field="*{meetingRoomName}" type="text" class="form-control" id="meetingRoomNameInput" placeholder="Toplantı Odası Adı">
                 </div>
 
                   <div class="form-group">
-                    <label for="buildingSelectMenu">Bina ID:</label>
+                    <label for="buildingSelectMenu">Bina Adı:</label>
                     <select class="custom-select" id="buildingSelectMenu" th:field="*{buildingId}">
                         <option th:each="building : *{allBuildings}" th:text="${building?.buildingName}" th:value = "${building?.buildingId}"></option>
                     </select>
