@@ -38,6 +38,6 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	
 	@Override
 	public Iterable<MeetingRoom> getAllActiveRooms() {
-		return meetingRoomRepository.findAllbyStateEquals(RecordState.ACTIVE);
+		return meetingRoomRepository.findAllByStateEquals(RecordState.ACTIVE);
 	}
 }

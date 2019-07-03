@@ -1,9 +1,11 @@
 package com.alaygut.prototype.service;
 
+import com.alaygut.prototype.domain.Building;
 import com.alaygut.prototype.domain.RecordState; 
 import com.alaygut.prototype.domain.Right;
 import com.alaygut.prototype.domain.Role;
 import com.alaygut.prototype.dto.AddRoleForm;
+import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.RightRepository;
 import com.alaygut.prototype.repository.RoleRepository;
 import org.springframework.stereotype.Service;
@@ -47,5 +49,12 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public Iterable<Role> getAllActiveRoles() {
     	return roleRepository.findAllByStateEquals(RecordState.ACTIVE);
+    }
+    
+    @Override
+    public void deactivate(IDTransfer IDTransfer) {
+        Role role = roleRepository.findById(IDTransfer.getRecordId()).orElse(null);
+        role.setState(RecordState.NONACTIVE);
+        roleRepository.save(role);
     }
 }

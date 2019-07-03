@@ -58,9 +58,5 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		return meetingRequestRepository.findAll();
 	}
 	
-	@Override
-	public Iterable<MeetingRequest> getAllActiveRequests() {
-		return meetingRequestRepository.findAllByStateEquals(RecordState.ACTIVE);
-	}
 
 }

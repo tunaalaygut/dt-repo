@@ -6,5 +6,5 @@ import com.alaygut.prototype.domain.MeetingRoom;
 import com.alaygut.prototype.domain.RecordState;
 
 public interface MeetingRoomRepository extends CrudRepository<MeetingRoom, Long> {
-	Iterable<MeetingRoom> findAllbyStateEquals(RecordState state);
+	Iterable<MeetingRoom> findAllByStateEquals(RecordState state);
 }
