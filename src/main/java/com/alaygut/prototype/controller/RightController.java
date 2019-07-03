@@ -37,7 +37,7 @@ public class RightController {
 
     @GetMapping("/list/right")
     public ModelAndView listRightsPage(){
-        return new ModelAndView("listRights", "listRights", rightService.getAllRights());
+        return new ModelAndView("listRights", "listRights", rightService.getAllActiveRights());
     }
 
 

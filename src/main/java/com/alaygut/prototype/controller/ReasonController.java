@@ -38,7 +38,7 @@ public class ReasonController {
 	
 	@GetMapping("/list/reason")
 	public ModelAndView listReasonsPage() {
-		return new ModelAndView("listReasons", "listReasons", reasonService.getAllReasons());
+		return new ModelAndView("listReasons", "listReasons", reasonService.getAllActiveReasons());
 	}
 	
 }

@@ -60,6 +60,6 @@ public class MeetingRequestController {
 	
 	@GetMapping("/list/meetingRequest")
 	public ModelAndView listMeetingRequestsPage() {
-		return new ModelAndView("listMeetingRequests", "listMeetingRequests", meetingRequestService.getAllRequests());
+		return new ModelAndView("listMeetingRequests", "listMeetingRequests", meetingRequestService.getAllActiveRequests());
 	}
 }

@@ -49,7 +49,7 @@ public class MeetingRoomController {
 	
 	@GetMapping("/list/meetingRoom")
 	public ModelAndView listMeetingRoomsPage() {
-		return new ModelAndView("listMeetingRooms", "listMeetingRooms", meetingRoomService.getAllRooms());
+		return new ModelAndView("listMeetingRooms", "listMeetingRooms", meetingRoomService.getAllActiveRooms());
 	}
 	
 }

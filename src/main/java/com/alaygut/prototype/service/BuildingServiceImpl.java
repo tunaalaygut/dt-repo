@@ -1,6 +1,6 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.Building;
+import com.alaygut.prototype.domain.Building; 
 import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.dto.AddBuildingForm;
 import com.alaygut.prototype.dto.IDTransfer;

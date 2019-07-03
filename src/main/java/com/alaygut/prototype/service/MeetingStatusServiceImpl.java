@@ -4,6 +4,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.MeetingStatus;
 import com.alaygut.prototype.domain.Reason;
+import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.dto.AddMeetingStatusForm;
 import com.alaygut.prototype.repository.MeetingStatusRepository;
 import com.alaygut.prototype.repository.ReasonRepository;
@@ -32,5 +33,10 @@ public class MeetingStatusServiceImpl implements MeetingStatusService {
 	@Override
 	public Iterable<MeetingStatus> getAllStatus() {
 		return meetingStatusRepository.findAll();
+	}
+	
+	@Override
+	public Iterable<MeetingStatus> getAllActiveStatus() {
+		return meetingStatusRepository.findAllByStateEquals(RecordState.ACTIVE);
 	}
 }

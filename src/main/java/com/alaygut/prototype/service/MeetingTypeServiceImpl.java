@@ -2,6 +2,7 @@ package com.alaygut.prototype.service;
 
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.MeetingType;
+import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.dto.AddMeetingTypeForm;
 import com.alaygut.prototype.repository.MeetingTypeRepository;
 
@@ -26,6 +27,11 @@ public class MeetingTypeServiceImpl implements MeetingTypeService {
 	@Override
 	public Iterable<MeetingType> getAllTypes() {
 		return meetingTypeRepository.findAll();
+	}
+	
+	@Override
+	public Iterable<MeetingType> getAllActiveTypes() {
+		return meetingTypeRepository.findAllByStateEquals(RecordState.ACTIVE);
 	}
 
 }

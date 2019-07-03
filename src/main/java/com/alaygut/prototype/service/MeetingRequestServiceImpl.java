@@ -7,6 +7,7 @@ import com.alaygut.prototype.domain.MeetingRoom;
 import com.alaygut.prototype.domain.MeetingStatus;
 import com.alaygut.prototype.domain.MeetingType;
 import com.alaygut.prototype.domain.Member;
+import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.dto.AddMeetingRequestForm;
 import com.alaygut.prototype.repository.MeetingRequestRepository;
 import com.alaygut.prototype.repository.MeetingRoomRepository;
@@ -55,6 +56,11 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	@Override
 	public Iterable<MeetingRequest> getAllRequests() {
 		return meetingRequestRepository.findAll();
+	}
+	
+	@Override
+	public Iterable<MeetingRequest> getAllActiveRequests() {
+		return meetingRequestRepository.findAllByStateEquals(RecordState.ACTIVE);
 	}
 
 }

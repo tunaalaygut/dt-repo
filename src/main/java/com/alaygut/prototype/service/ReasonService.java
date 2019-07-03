@@ -6,4 +6,5 @@ import com.alaygut.prototype.dto.AddReasonForm;
 public interface ReasonService {
 	void addReason(AddReasonForm addReasonForm);
 	Iterable<Reason> getAllReasons();
+	Iterable<Reason> getAllActiveReasons();
 }

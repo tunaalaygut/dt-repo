@@ -6,4 +6,5 @@ import com.alaygut.prototype.dto.AddRightForm;
 public interface RightService {
     void addRight(AddRightForm form);
     Iterable<Right> getAllRights();
+    Iterable<Right> getAllActiveRights();
 }

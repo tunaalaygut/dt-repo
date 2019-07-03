@@ -1,5 +1,6 @@
 package com.alaygut.prototype.service;
 
+import com.alaygut.prototype.domain.RecordState; 
 import com.alaygut.prototype.domain.Right;
 import com.alaygut.prototype.domain.Role;
 import com.alaygut.prototype.dto.AddRoleForm;
@@ -41,5 +42,10 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public Iterable<Role> getAllRoles() {
         return roleRepository.findAll();
+    }
+    
+    @Override
+    public Iterable<Role> getAllActiveRoles() {
+    	return roleRepository.findAllByStateEquals(RecordState.ACTIVE);
     }
 }

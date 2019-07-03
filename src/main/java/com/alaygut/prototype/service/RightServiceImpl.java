@@ -1,5 +1,6 @@
 package com.alaygut.prototype.service;
 
+import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.domain.Right;
 import com.alaygut.prototype.dto.AddRightForm;
 import com.alaygut.prototype.repository.RightRepository;
@@ -25,5 +26,10 @@ public class RightServiceImpl implements RightService{
     @Override
     public Iterable<Right> getAllRights() {
         return rightRepository.findAll();
+    }
+    
+    @Override
+    public Iterable<Right> getAllActiveRights() {
+        return rightRepository.findAllByStateEquals(RecordState.ACTIVE);
     }
 }

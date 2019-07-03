@@ -6,4 +6,5 @@ import com.alaygut.prototype.dto.AddMeetingTypeForm;
 public interface MeetingTypeService {
 	void addType(AddMeetingTypeForm addMeetingTypeForm);
 	Iterable<MeetingType> getAllTypes();
+	Iterable<MeetingType> getAllActiveTypes();
 }

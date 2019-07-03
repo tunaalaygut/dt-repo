@@ -47,7 +47,7 @@ public class RoleController {
 
     @GetMapping("/list/role")
     public ModelAndView listRolesPage(){
-        ModelAndView model = new ModelAndView("listRoles", "listRoles", roleService.getAllRoles());
+        ModelAndView model = new ModelAndView("listRoles", "listRoles", roleService.getAllActiveRoles());
         model.addObject("roleService", roleService);
         return model;
     }

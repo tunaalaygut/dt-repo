@@ -38,6 +38,6 @@ public class MeetingTypeController {
 	
 	@GetMapping("/list/meetingType")
 	public ModelAndView listMeetingTypesPage() {
-		return new ModelAndView("listMeetingTypes", "listMeetingTypes", meetingTypeService.getAllTypes());
+		return new ModelAndView("listMeetingTypes", "listMeetingTypes", meetingTypeService.getAllActiveTypes());
 	}
 }

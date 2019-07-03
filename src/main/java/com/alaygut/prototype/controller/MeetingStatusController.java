@@ -51,6 +51,6 @@ public class MeetingStatusController {
 	
 	@GetMapping("/list/meetingStatus")
 	public ModelAndView listMeetingStatusPage() {
-		return new ModelAndView("listMeetingStatus", "listMeetingStatus", meetingStatusService.getAllStatus());
+		return new ModelAndView("listMeetingStatus", "listMeetingStatus", meetingStatusService.getAllActiveStatus());
 	}
 }

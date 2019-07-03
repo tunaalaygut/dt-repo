@@ -4,6 +4,7 @@ import com.alaygut.prototype.domain.Building;
 import com.alaygut.prototype.repository.BuildingRepository;
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.MeetingRoom;
+import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.dto.AddMeetingRoomForm;
 import com.alaygut.prototype.repository.MeetingRoomRepository;
 import java.util.Optional;
@@ -33,5 +34,10 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	@Override
 	public Iterable<MeetingRoom> getAllRooms() {
 		return meetingRoomRepository.findAll();
+	}
+	
+	@Override
+	public Iterable<MeetingRoom> getAllActiveRooms() {
+		return meetingRoomRepository.findAllbyStateEquals(RecordState.ACTIVE);
 	}
 }
