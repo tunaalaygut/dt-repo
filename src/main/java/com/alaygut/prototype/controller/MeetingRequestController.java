@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.alaygut.prototype.dto.AddMeetingRequestForm;
 import com.alaygut.prototype.dto.IDTransfer;
@@ -46,16 +47,16 @@ public class MeetingRequestController {
 	}
 	
 	@PostMapping("/add/meetingRequest")
-	public String handleAddMeetingRequest(@Valid @ModelAttribute("addMeetingRequestForm") AddMeetingRequestForm addMeetingRequestForm, BindingResult bindingResult) {
+	public String handleAddMeetingRequest(@Valid @ModelAttribute("addMeetingRequestForm") AddMeetingRequestForm addMeetingRequestForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
 			addMeetingRequestForm.setAllMeetingRoom(meetingRoomService.getAllRooms());
 			addMeetingRequestForm.setAllMember(memberService.getAllMembers());
 			addMeetingRequestForm.setAllMeetingType(meetingTypeService.getAllTypes());
 			addMeetingRequestForm.setAllMeetingStatus(meetingStatusService.getAllStatus());
-			return "/add/meetingRequest";
+			return "/addMeetingRequest";
 		}		
 		meetingRequestService.addRequest(addMeetingRequestForm);
-		//redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı talebi başarıyla oluşturuldu.");
+		redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı talebi başarıyla oluşturuldu.");
 		return "redirect:/add/meetingRequest";
 	}
 	

@@ -30,7 +30,7 @@ public class RightController {
     @PostMapping("/add/right")
     public String handleAddRight(@Valid @ModelAttribute("addRightForm") AddRightForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors())
-            return null;
+            return "/addRight";
         rightService.addRight(form);
         redirectAttributes.addFlashAttribute("successMessage", "Yeni yetki başarıyla oluşturuldu.");
         return "redirect:/add/right";

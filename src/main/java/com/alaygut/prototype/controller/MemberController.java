@@ -38,7 +38,7 @@ public class MemberController {
     public String handleAddMember(@Valid @ModelAttribute("addMemberForm") AddMemberForm addMemberForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()) {
             addMemberForm.setAllRoles(roleService.getAllRoles());
-            return "/add/member";
+            return "/addMember";
         }
         memberService.addMember(addMemberForm);
         redirectAttributes.addFlashAttribute("successMessage", "Yeni kullanıcı başarıyla oluşturuldu.");

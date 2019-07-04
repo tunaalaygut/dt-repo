@@ -30,7 +30,7 @@ public class BuildingController {
     @PostMapping("/add/building")
     public String handleAddBuilding(@Valid @ModelAttribute("addBuildingForm") AddBuildingForm addBuildingForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors())
-            return null;
+            return "/addBuilding";
         buildingService.addBuilding(addBuildingForm);
         redirectAttributes.addFlashAttribute("successMessage", "Yeni bina başarıyla oluşturuldu.");
         return "redirect:/add/building";
