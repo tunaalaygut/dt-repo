@@ -35,8 +35,8 @@ public class RightServiceImpl implements RightService{
     }
     
     @Override
-    public void deactivate(IDTransfer IDTransfer) {
-    	Right right = rightRepository.findById(IDTransfer.getRecordId()).orElse(null);
+    public void deactivate(IDTransfer idTransfer) {
+    	Right right = rightRepository.findById(idTransfer.getRecordId()).orElse(null);
     	right.setState(RecordState.NONACTIVE);
     	rightRepository.save(right);
     }

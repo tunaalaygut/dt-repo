@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alaygut.prototype.dto.AddMeetingRoomForm;
+import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MeetingRoomService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -50,6 +51,14 @@ public class MeetingRoomController {
 	@GetMapping("/list/meetingRoom")
 	public ModelAndView listMeetingRoomsPage() {
 		return new ModelAndView("listMeetingRooms", "listMeetingRooms", meetingRoomService.getAllActiveRooms());
+	}
+	
+	@PostMapping("/list/meetingRoom")
+	public String handleMeetingRoomDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
+		if(bindingResult.hasErrors())
+			return null;
+		meetingRoomService.deactivate(idTransfer);
+		return "redirect:/list/meetingRoom";
 	}
 	
 }

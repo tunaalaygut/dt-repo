@@ -8,5 +8,5 @@ public interface RoleService {
     void addRole(AddRoleForm form);
     Iterable<Role> getAllRoles();
     Iterable<Role> getAllActiveRoles();
-    void deactivate(IDTransfer IDTransfer);
+    void deactivate(IDTransfer idTransfer);
 }

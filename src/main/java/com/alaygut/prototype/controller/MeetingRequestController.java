@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alaygut.prototype.dto.AddMeetingRequestForm;
+import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MeetingRequestService;
 import com.alaygut.prototype.service.MeetingRoomService;
 import com.alaygut.prototype.service.MeetingStatusService;
@@ -61,5 +62,13 @@ public class MeetingRequestController {
 	@GetMapping("/list/meetingRequest")
 	public ModelAndView listMeetingRequestsPage() {
 		return new ModelAndView("listMeetingRequests", "listMeetingRequests", meetingRequestService.getAllActiveRequests());
+	}
+	
+	@PostMapping("/list/meetingRequest")
+	public String handleMeetingRequestDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
+		if(bindingResult.hasErrors())
+			return null;
+		meetingRequestService.deactivate(idTransfer);
+		return "redirect:/list/meetingRequest";
 	}
 }

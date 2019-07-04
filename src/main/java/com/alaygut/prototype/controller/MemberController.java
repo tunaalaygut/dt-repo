@@ -1,6 +1,7 @@
 package com.alaygut.prototype.controller;
 
-import com.alaygut.prototype.dto.AddMemberForm; 
+import com.alaygut.prototype.dto.AddMemberForm;
+import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MemberService;
 import com.alaygut.prototype.service.RoleService;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,15 @@ public class MemberController {
 
     @GetMapping("/list/member")
     public ModelAndView listMembersPage(){
-        return new ModelAndView("listMembers", "listMembers", memberService.getAllMembers());
+        return new ModelAndView("listMembers", "listMembers", memberService.getAllActiveMembers());
+    }
+    
+    @PostMapping("/list/member")
+    public String handleMemberDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
+    	if(bindingResult.hasErrors())
+    		return null;
+    	memberService.deactivate(idTransfer);
+    	return "redirect:/list/member";
     }
 
 }

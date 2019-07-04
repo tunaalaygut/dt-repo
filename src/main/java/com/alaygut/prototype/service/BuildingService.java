@@ -8,5 +8,5 @@ public interface BuildingService {
     void addBuilding(AddBuildingForm addBuildingForm);
     Iterable<Building> getAllBuildings();
     Iterable<Building> getAllActiveBuildings();
-    void deactivate(IDTransfer IDTransfer);
+    void deactivate(IDTransfer idTransfer);
 }
