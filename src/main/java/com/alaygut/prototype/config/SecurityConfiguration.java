@@ -33,12 +33,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
         http
                 .authorizeRequests()
                 .antMatchers("/").authenticated()
+                .antMatchers("/profile").authenticated()
                 .antMatchers("/add/**").hasRole("ADMIN")
                 .antMatchers("/list/**").hasRole("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .failureUrl("/login-error");
+                .failureUrl("/login-error")
+                .defaultSuccessUrl("/")
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
     }
 
     @Bean
