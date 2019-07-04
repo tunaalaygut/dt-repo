@@ -43,7 +43,7 @@ public class MeetingStatusController {
 	public String handleAddMeetingStatus(@Valid @ModelAttribute("addMeetingStatusForm") AddMeetingStatusForm addMeetingStatusForm, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
 			addMeetingStatusForm.setAllReasons(reasonService.getAllReasons());
-			return "/add/meetingStatus";
+			return "/addMeetingStatus";
 		}
 		meetingStatusService.addStatus(addMeetingStatusForm);
 		redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı durumu başarıyla oluşturuldu.");

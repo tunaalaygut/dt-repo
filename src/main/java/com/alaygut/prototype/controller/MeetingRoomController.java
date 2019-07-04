@@ -41,7 +41,7 @@ public class MeetingRoomController {
 	public String handleAddMeetingRoom(@Valid @ModelAttribute("addMeetingRoomForm") AddMeetingRoomForm addMeetingRoomForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
 			addMeetingRoomForm.setAllBuildings(buildingService.getAllBuildings());
-			return "/add/meetingRoom";
+			return "/addMeetingRoom";
 		}
 		meetingRoomService.addRoom(addMeetingRoomForm);
 		redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı odası başarıyla oluşturuldu.");
