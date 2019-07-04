@@ -26,7 +26,7 @@
             <td th:text="${meetingType.description}"></td>
               <td>
                  <form th:action="@{/list/meetingType}" th:object="${idTransfer}" th:method="post" class="deactivateForm">
-                 		<div th:replace="fragments/fragments :: listOpsButtons"></div>
+                 		<div th:replace="fragments/fragments :: listDeleteButton"></div>
                  		<input th:attr="name=recordId" type="hidden" th:value="${meetingType.meetingTypeId}">
                  </form>
               </td>
