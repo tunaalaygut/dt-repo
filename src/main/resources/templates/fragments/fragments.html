@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head th:fragment="head">
     <!-- Required meta tags -->
@@ -26,6 +26,7 @@
             <i class="fas fa-bars"></i>
         </button>
 
+        <small class="ml-auto mr-2 text-muted text-right"><span sec:authentication="principal.firstName"/> <span sec:authentication="principal.lastName"/></small>
         <div class="dropdown dropleft">
             <button type="button" class="btn btn-outline-info float-right" id="profileMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="fas fa-user"></span>
