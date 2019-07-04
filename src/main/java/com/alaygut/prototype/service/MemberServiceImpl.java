@@ -3,7 +3,9 @@ package com.alaygut.prototype.service;
 import com.alaygut.prototype.domain.Login;
 import com.alaygut.prototype.domain.Role;
 import com.alaygut.prototype.dto.AddMemberForm;
+import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.domain.Member;
+import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.repository.RightRepository;
 import com.alaygut.prototype.repository.RoleRepository;
@@ -64,15 +66,26 @@ public class MemberServiceImpl implements MemberService {
     public Iterable<Member> getAllMembers() {
         return memberRepository.findAll();
     }
+    
+    @Override
+    public Iterable<Member> getAllActiveMembers() {
+    	return memberRepository.findByStateEquals(RecordState.ACTIVE);
+    }
+    
+    @Override
+    public void deactivate(IDTransfer idTransfer) {
+    	Member member = memberRepository.findById(idTransfer.getRecordId()).orElse(null);
+    	member.setState(RecordState.NONACTIVE);
+    	memberRepository.save(member);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = this.memberRepository.findByLoginUsername(username);
 
-        if (member != null)
-            return new MemberPrincipal(member);
-        else {
-            throw new UsernameNotFoundException("User not found.");
-        }
+        if (member == null)
+            throw new UsernameNotFoundException("User " + username + " not found.");
+
+        return member;
     }
 }

@@ -39,7 +39,7 @@ public class RoleController {
     public String handleAddRole(@Valid @ModelAttribute("addRoleForm") AddRoleForm addRoleForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()){
             addRoleForm.setAllRights(rightService.getAllRights());
-            return "/add/role";
+            return "/addRole";
         }
         roleService.addRole(addRoleForm);
         redirectAttributes.addFlashAttribute("successMessage", "Yeni rol başarıyla oluşturuldu.");

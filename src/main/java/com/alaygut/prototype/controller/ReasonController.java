@@ -31,7 +31,7 @@ public class ReasonController {
 	@PostMapping("/add/reason")
 	public String handleAddReason(@Valid @ModelAttribute("addReasonForm") AddReasonForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors())
-			return null;
+			return "/addReason";
 		reasonService.addReason(form);
 		redirectAttributes.addFlashAttribute("successMessage", "Yeni sebep başarıyla oluşturuldu.");
 		return "redirect:/add/reason";

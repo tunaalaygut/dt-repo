@@ -36,8 +36,8 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public void deactivate(IDTransfer IDTransfer) {
-        Building building = buildingRepository.findById(IDTransfer.getRecordId()).orElse(null);
+    public void deactivate(IDTransfer idTransfer) {
+        Building building = buildingRepository.findById(idTransfer.getRecordId()).orElse(null);
         building.setState(RecordState.NONACTIVE);
         buildingRepository.save(building);
     }

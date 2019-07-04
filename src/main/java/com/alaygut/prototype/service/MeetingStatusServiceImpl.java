@@ -6,6 +6,7 @@ import com.alaygut.prototype.domain.MeetingStatus;
 import com.alaygut.prototype.domain.Reason;
 import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.dto.AddMeetingStatusForm;
+import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.MeetingStatusRepository;
 import com.alaygut.prototype.repository.ReasonRepository;
 
@@ -38,5 +39,12 @@ public class MeetingStatusServiceImpl implements MeetingStatusService {
 	@Override
 	public Iterable<MeetingStatus> getAllActiveStatus() {
 		return meetingStatusRepository.findAllByStateEquals(RecordState.ACTIVE);
+	}
+	
+	@Override
+	public void deactivate(IDTransfer idTransfer) {
+		MeetingStatus meetingStatus = meetingStatusRepository.findById(idTransfer.getRecordId()).orElse(null);
+		meetingStatus.setState(RecordState.NONACTIVE);
+		meetingStatusRepository.save(meetingStatus);
 	}
 }

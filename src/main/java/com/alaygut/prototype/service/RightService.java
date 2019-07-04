@@ -8,5 +8,5 @@ public interface RightService {
     void addRight(AddRightForm form);
     Iterable<Right> getAllRights();
     Iterable<Right> getAllActiveRights();
-    void deactivate(IDTransfer IDTransfer);
+    void deactivate(IDTransfer idTransfer);
 }

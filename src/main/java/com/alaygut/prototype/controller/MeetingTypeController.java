@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alaygut.prototype.dto.AddMeetingTypeForm;
+import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MeetingTypeService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,7 +31,7 @@ public class MeetingTypeController {
 	@PostMapping("/add/meetingType")
 	public String handleAddMeetingType(@Valid @ModelAttribute("addMeetingTypeForm") AddMeetingTypeForm addMeetingTypeForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors())
-			return null;
+			return "/addMeetingType";
 		meetingTypeService.addType(addMeetingTypeForm);
 		redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı türü başarıyla oluşturuldu.");
 		return "redirect:/add/meetingType";
@@ -39,5 +40,14 @@ public class MeetingTypeController {
 	@GetMapping("/list/meetingType")
 	public ModelAndView listMeetingTypesPage() {
 		return new ModelAndView("listMeetingTypes", "listMeetingTypes", meetingTypeService.getAllActiveTypes());
+	}
+	
+	@PostMapping("/list/meetingType")
+	public String handleMeetingTypeDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
+		if(bindingResult.hasErrors())
+			return null;
+		meetingTypeService.deactivate(idTransfer);
+		return "redirect:/list/meetingType";
+		
 	}
 }

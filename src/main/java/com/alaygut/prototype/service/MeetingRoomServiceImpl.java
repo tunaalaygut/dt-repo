@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.MeetingRoom;
 import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.dto.AddMeetingRoomForm;
+import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.MeetingRoomRepository;
 import java.util.Optional;
 
@@ -39,5 +40,13 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	@Override
 	public Iterable<MeetingRoom> getAllActiveRooms() {
 		return meetingRoomRepository.findAllByStateEquals(RecordState.ACTIVE);
+	}
+	
+	@Override
+	public void deactivate(IDTransfer idTransfer) {
+		MeetingRoom meetingRoom = meetingRoomRepository.findById(idTransfer.getRecordId()).orElse(null);
+		meetingRoom.setState(RecordState.NONACTIVE);
+		meetingRoomRepository.save(meetingRoom);
+		
 	}
 }

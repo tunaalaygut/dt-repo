@@ -36,8 +36,8 @@ public class ReasonServiceImpl implements ReasonService {
 	}
 	
 	@Override
-	public void deactivate(IDTransfer IDTransfer) {
-		Reason reason = reasonRepository.findById(IDTransfer.getRecordId()).orElse(null);
+	public void deactivate(IDTransfer idTransfer) {
+		Reason reason = reasonRepository.findById(idTransfer.getRecordId()).orElse(null);
 		reason.setState(RecordState.NONACTIVE);
 		reasonRepository.save(reason);
 	}

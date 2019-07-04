@@ -28,6 +28,7 @@
             	 <form th:action="@{/list/reason}" th:object="${idTransfer}" th:method="post" class="deactivateForm">
                  <div th:replace="fragments/fragments :: listOpsButtons"></div>
                  <input th:attr="name=recordId" type="hidden" th:value="${reason.reasonId}">
+                 </form>
               </td>
             </tr>
           </tbody>

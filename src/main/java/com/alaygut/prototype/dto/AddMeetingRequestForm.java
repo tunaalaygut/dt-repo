@@ -5,7 +5,7 @@ import java.time.LocalTime;
 
 
 import javax.validation.constraints.FutureOrPresent;
-
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.alaygut.prototype.domain.MeetingRoom;
@@ -15,21 +15,25 @@ import com.alaygut.prototype.domain.Member;
 
 public class AddMeetingRequestForm {
 	
+	@NotNull(message = "Toplantı isteği için bir oda seçilmelidir.")
 	private Long meetingRoomId;
 	
+	@NotNull(message = "Toplantı isteği bir üye tarafından ayarlanmalıdır.")
 	private Long memberId;
 	
+	@NotNull(message = "Toplantı isteği bir türe sahip olmalıdır.")
 	private Long meetingTypeId;
 	
-	@FutureOrPresent(message = "Verilen zaman aralığı")
+	@FutureOrPresent(message = "Toplantı isteğinin bir başlangıç zamanı olmalıdır")
 	private LocalTime startTime;
 	
-	@FutureOrPresent(message = "Verilen zaman aralığı")
+	@FutureOrPresent(message = "Toplantı isteğinin bir bitiş zamanı olmalıdır")
 	private LocalTime endTime;
 	
 	@Size(min = 0, max = 250)
 	private String description;
 	
+	@NotNull(message = "Toplantı isteğinin bir durumu olmalıdır.")
 	private Long meetingStatusId;
 	
 	private Iterable<MeetingRoom> allMeetingRoom;

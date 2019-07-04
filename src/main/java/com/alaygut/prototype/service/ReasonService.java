@@ -8,5 +8,5 @@ public interface ReasonService {
 	void addReason(AddReasonForm addReasonForm);
 	Iterable<Reason> getAllReasons();
 	Iterable<Reason> getAllActiveReasons();
-	void deactivate(IDTransfer IDTransfer);
+	void deactivate(IDTransfer idTransfer);
 }

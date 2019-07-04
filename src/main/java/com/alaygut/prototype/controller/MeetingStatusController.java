@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alaygut.prototype.dto.AddMeetingStatusForm;
+import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MeetingStatusService;
 import com.alaygut.prototype.service.ReasonService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -42,7 +43,7 @@ public class MeetingStatusController {
 	public String handleAddMeetingStatus(@Valid @ModelAttribute("addMeetingStatusForm") AddMeetingStatusForm addMeetingStatusForm, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
 			addMeetingStatusForm.setAllReasons(reasonService.getAllReasons());
-			return "/add/meetingStatus";
+			return "/addMeetingStatus";
 		}
 		meetingStatusService.addStatus(addMeetingStatusForm);
 		redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı durumu başarıyla oluşturuldu.");
@@ -52,5 +53,13 @@ public class MeetingStatusController {
 	@GetMapping("/list/meetingStatus")
 	public ModelAndView listMeetingStatusPage() {
 		return new ModelAndView("listMeetingStatus", "listMeetingStatus", meetingStatusService.getAllActiveStatus());
+	}
+	
+	@PostMapping("/list/meetingStatus")
+	public String handleMeetingStatusDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
+		if(bindingResult.hasErrors())
+			return null;
+		meetingStatusService.deactivate(idTransfer);
+		return "redirect:/list/meetingStatus";
 	}
 }

@@ -24,8 +24,11 @@
         <tr th:each="meetingStatus : ${listMeetingStatus}">
             <td th:text="${meetingStatus.meetingStatusName}"></td>
             <td th:text="${meetingStatus.reason?.reasonName}"></td>
-            <td>
-                 <div th:replace="fragments/fragments :: listOpsButtons"></div>
+           	  <td>
+                 <form th:action="@{/list/meetingStatus}" th:object="${idTransfer}" th:method="post" class="deactivateForm">
+                 		<div th:replace="fragments/fragments :: listOpsButtons"></div>
+                 		<input th:attr="name=recordId" type="hidden" th:value="${meetingStatus.meetingStatusId}">
+                 </form>
               </td>
             </tr>
           </tbody>

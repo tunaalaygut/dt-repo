@@ -52,8 +52,8 @@ public class RoleServiceImpl implements RoleService{
     }
     
     @Override
-    public void deactivate(IDTransfer IDTransfer) {
-        Role role = roleRepository.findById(IDTransfer.getRecordId()).orElse(null);
+    public void deactivate(IDTransfer idTransfer) {
+        Role role = roleRepository.findById(idTransfer.getRecordId()).orElse(null);
         role.setState(RecordState.NONACTIVE);
         roleRepository.save(role);
     }

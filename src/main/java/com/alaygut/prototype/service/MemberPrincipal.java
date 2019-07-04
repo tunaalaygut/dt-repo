@@ -20,16 +20,7 @@ public class MemberPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        this.member.getRole().getRights().forEach(right -> {
-            GrantedAuthority authority = new SimpleGrantedAuthority(right.getRightName());
-            authorities.add(authority);
-        });
-
-        GrantedAuthority role = new SimpleGrantedAuthority("ROLE_" + this.member.getRole().getRoleName());
-        authorities.add(role);
-
-        return authorities;
+        return null;
     }
 
     @Override
@@ -60,5 +51,13 @@ public class MemberPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
     }
 }
