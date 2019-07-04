@@ -1,6 +1,7 @@
 package com.alaygut.prototype.controller;
 
-import com.alaygut.prototype.dto.AddRoleForm; 
+import com.alaygut.prototype.dto.AddRoleForm;
+import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.RightService;
 import com.alaygut.prototype.service.RoleService;
 import org.springframework.stereotype.Controller;
@@ -48,9 +49,16 @@ public class RoleController {
     @GetMapping("/list/role")
     public ModelAndView listRolesPage(){
         ModelAndView model = new ModelAndView("listRoles", "listRoles", roleService.getAllActiveRoles());
-        model.addObject("roleService", roleService);
+        model.addObject("idTransfer", new IDTransfer());
         return model;
     }
     
+    @PostMapping("/list/role")
+    public String handleDeactivateRole(@Valid @ModelAttribute("idTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
+    	if (bindingResult.hasErrors())
+            return null;
+        roleService.deactivate(idTransfer);
+        return "redirect:/list/role";
+    }
 
 }

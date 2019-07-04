@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alaygut.prototype.dto.AddReasonForm;
+import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.ReasonService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -41,4 +42,11 @@ public class ReasonController {
 		return new ModelAndView("listReasons", "listReasons", reasonService.getAllActiveReasons());
 	}
 	
+	@PostMapping("/list/reason")
+	public String handleReasonDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
+		if(bindingResult.hasErrors())
+			return null;
+		reasonService.deactivate(idTransfer);
+		return "redirect:/list/reason";
+	}	
 }

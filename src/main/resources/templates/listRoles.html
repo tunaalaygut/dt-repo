@@ -27,7 +27,10 @@
                         <td th:text="${role.getAllRightNamesString()}"></td>
                         <td th:text="${role.description}"></td>
                         <td>
-                 			<div th:replace="fragments/fragments :: listOpsButtons"></div>
+                        	<form th:action="@{/list/role}" th:object="${idTransfer}" th:method="post" class="deactivateForm">
+	                 			<div th:replace="fragments/fragments :: listOpsButtons"></div>
+	                 			<input th:attr="name=recordId" type="hidden" th:value="${role.roleId}" >
+                 			</form>
               			</td>
                     </tr>
                     </tbody>

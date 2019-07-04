@@ -1,6 +1,7 @@
 package com.alaygut.prototype.controller;
 
-import com.alaygut.prototype.dto.AddRightForm; 
+import com.alaygut.prototype.dto.AddRightForm;
+import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.RightService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -40,6 +41,12 @@ public class RightController {
         return new ModelAndView("listRights", "listRights", rightService.getAllActiveRights());
     }
 
-
+    @PostMapping("/list/right")
+    public String handleRightDeactivate(@Valid @ModelAttribute("idTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
+    	if(bindingResult.hasErrors())
+    		return null;
+    	rightService.deactivate(idTransfer);
+    	return "redirect:/list/right";
+    }
 
 }
