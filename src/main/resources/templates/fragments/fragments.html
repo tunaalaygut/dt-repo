@@ -49,7 +49,7 @@
     <div class="sidebar-header">
         <a th:href="@{/}" class="h3">Dijital Toplantı</a>
     </div>
-    <div id="accordion">
+    <div id="accordion" sec:authorize="hasRole('ROLE_ADMIN')">
         <ul class="list-unstyled components">
             <p>İşlemler</p>
             <li>
@@ -63,7 +63,6 @@
                     </li>
                 </ul>
             </li>
-
 
             <li>
                 <a href="#roleRightSubmenu" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" class="dropdown-toggle">Rol/Yetki İşlemleri</a>
@@ -133,8 +132,24 @@
             </li>
         </ul>
     </div>
+    <div id="accordion" sec:authorize="hasRole('ROLE_STANDARD')">
+        <ul class="list-unstyled components">
+            <p>İşlemler</p>
+            <li>
+                <a th:href="@{/add/meetingRequest}" >Toplantı Talep Et</a>
+            </li>
+        </ul>
+    </div>
+    <div id="accordion" sec:authorize="hasRole('ROLE_SUPERVISOR')">
+        <ul class="list-unstyled components">
+            <p>İşlemler</p>
+            <li>
+                <a th:href="@{/list/meetingRequest}">Toplantı Talepleri <span class="badge badge-danger">10</span></a>
+                <a th:href="@{/add/meetingRequest}">Toplantı Talep Et</a>
+            </li>
+        </ul>
+    </div>
 </nav>
-
 
 <div th:fragment="listOpsButtons">
     <button class="btn btn-sm btn-outline-info" >
