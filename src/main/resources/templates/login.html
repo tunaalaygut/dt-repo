@@ -14,7 +14,7 @@
         </div>
         <div class="col-md-6 p-md-5 my-lg-auto">
 
-            <form th:action="@{/login}" th:method="post">
+            <form th:action="@{/login}" th:method="post" autocomplete="off">
                 <div th:if="${error}">
                     <div class="alert alert-danger">
                         Kullanıcı adı veya şifre hatalı!

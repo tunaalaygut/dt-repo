@@ -69,10 +69,9 @@ public class MemberServiceImpl implements MemberService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = this.memberRepository.findByLoginUsername(username);
 
-        if (member != null)
-            return new MemberPrincipal(member);
-        else {
-            throw new UsernameNotFoundException("User not found.");
-        }
+        if (member == null)
+            throw new UsernameNotFoundException("User " + username + " not found.");
+
+        return member;
     }
 }
