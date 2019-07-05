@@ -2,11 +2,15 @@ package com.alaygut.prototype.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
-public class MeetingRoom extends BaseClass{
-	
+public class MeetingRoom extends BaseClass {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "meetingRoomId", nullable = false, updatable = false)
@@ -18,16 +22,40 @@ public class MeetingRoom extends BaseClass{
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "buildingId")
 	private Building building;
-	
+
+	@ManyToMany(targetEntity = RoomFeature.class)
+	private Set roomFeatureSet;
+
 	@Column(name = "capacity")
 	private Integer capacity;
-	
-	public MeetingRoom () {} //default constructor
-	
-	public MeetingRoom(String meetingRoomName, Building building, int capacity) {
+
+	public MeetingRoom() {
+	} //default constructor
+
+	public MeetingRoom(String meetingRoomName, Building building, int capacity, Set roomFeatureSet) {
 		this.meetingRoomName = meetingRoomName;
 		this.building = building;
 		this.capacity = capacity;
+		this.roomFeatureSet = roomFeatureSet;
+
+	}
+
+	public String getAllRoomFeaturesString(){
+		String result = "";
+
+		for (RoomFeature roomFeature: this.getRoomFeatureSet())
+			result += (roomFeature.getFeatureName() + ",");
+
+		return result.replaceAll(", $", "");    //to remove the last comma from the string.
+	}
+
+	public List<String> getAllFeatureNames(){
+		List<String> featureNames = new ArrayList<>();
+
+		for (RoomFeature roomFeature : this.getRoomFeatureSet())
+			featureNames.add(roomFeature.getFeatureName());
+
+		return featureNames;
 	}
 
 	public Long getMeetingRoomId() {
@@ -60,5 +88,13 @@ public class MeetingRoom extends BaseClass{
 
 	public void setMeetingRoomName(String meetingRoomName) {
 		this.meetingRoomName = meetingRoomName;
+	}
+
+	public Set<RoomFeature> getRoomFeatureSet() {
+		return roomFeatureSet;
+	}
+
+	public void setRoomFeatureSet(Set roomFeatureSet) {
+		this.roomFeatureSet = roomFeatureSet;
 	}
 }
