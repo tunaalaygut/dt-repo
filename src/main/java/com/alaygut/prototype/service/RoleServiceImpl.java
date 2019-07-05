@@ -6,6 +6,7 @@ import com.alaygut.prototype.domain.Right;
 import com.alaygut.prototype.domain.Role;
 import com.alaygut.prototype.dto.AddRoleForm;
 import com.alaygut.prototype.dto.IDTransfer;
+import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.repository.RightRepository;
 import com.alaygut.prototype.repository.RoleRepository;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,12 @@ public class RoleServiceImpl implements RoleService{
 
     private RoleRepository roleRepository;
     private RightRepository rightRepository;
+    private MemberRepository memberRepository;
 
-    public RoleServiceImpl(RoleRepository roleRepository, RightRepository rightRepository) {
+    public RoleServiceImpl(RoleRepository roleRepository, RightRepository rightRepository, MemberRepository memberRepository) {
         this.roleRepository = roleRepository;
         this.rightRepository = rightRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -38,6 +41,7 @@ public class RoleServiceImpl implements RoleService{
                 form.getDescription(),
                 rights
         );
+        role.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
         roleRepository.save(role);
     }
 

@@ -21,7 +21,7 @@
                     <textarea th:field="*{buildingAddr}" type="text" class="form-control" id="lastNameInput" placeholder="Adres" rows="3" maxlength="250" style="resize: none;"/>
                 </div>
 
-                <input th:attr="name=creatorId" type="hidden" th:value="${#authentication.principal.memberId}" >
+                <div th:replace="fragments/fragments :: creatorIdInput"></div>
 
                 <div th:replace="fragments/fragments :: successMessage"></div>
 

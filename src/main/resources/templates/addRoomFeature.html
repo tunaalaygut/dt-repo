@@ -23,7 +23,7 @@
             </div>
 
 
-
+            <div th:replace="fragments/fragments :: creatorIdInput"></div>
             <div th:if="${#fields.hasErrors('featureName')}" th:errors="*{featureName}" class="alert alert-danger alert-dismissible fade show" role="alert">
             </div>
             <div th:replace="fragments/fragments :: successMessage"></div>

@@ -4,15 +4,18 @@ import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.domain.Right;
 import com.alaygut.prototype.dto.AddRightForm;
 import com.alaygut.prototype.dto.IDTransfer;
+import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.repository.RightRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RightServiceImpl implements RightService{
     private RightRepository rightRepository;
+    private MemberRepository memberRepository;
 
-    public RightServiceImpl(RightRepository rightRepository) {
+    public RightServiceImpl(RightRepository rightRepository, MemberRepository memberRepository) {
         this.rightRepository = rightRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -21,6 +24,7 @@ public class RightServiceImpl implements RightService{
                 form.getRightName(),
                 form.getDescription()
         );
+        right.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
         rightRepository.save(right);
     }
 

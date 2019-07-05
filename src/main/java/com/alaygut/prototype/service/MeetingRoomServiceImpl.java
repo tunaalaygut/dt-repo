@@ -2,6 +2,7 @@ package com.alaygut.prototype.service;
 
 import com.alaygut.prototype.domain.*;
 import com.alaygut.prototype.repository.BuildingRepository;
+import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.repository.RoomFeatureRepository;
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.dto.AddMeetingRoomForm;
@@ -19,11 +20,13 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	private MeetingRoomRepository meetingRoomRepository;
 	private BuildingRepository buildingRepository;
 	private RoomFeatureRepository roomFeatureRepository;
+	private MemberRepository memberRepository;
 
-	public MeetingRoomServiceImpl(BuildingRepository buildingRepository, MeetingRoomRepository meetingRoomRepository, RoomFeatureRepository roomFeatureRepository) {
-		this.buildingRepository = buildingRepository;
+	public MeetingRoomServiceImpl(MeetingRoomRepository meetingRoomRepository, BuildingRepository buildingRepository, RoomFeatureRepository roomFeatureRepository, MemberRepository memberRepository) {
 		this.meetingRoomRepository = meetingRoomRepository;
+		this.buildingRepository = buildingRepository;
 		this.roomFeatureRepository = roomFeatureRepository;
+		this.memberRepository = memberRepository;
 	}
 
 	@Override
@@ -41,6 +44,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 				building.orElse(null),
 				addMeetingRoomForm.getCapacity(), roomFeatures
 				);
+		meetingRoom.setCreator(memberRepository.findById(addMeetingRoomForm.getCreatorId()).orElse(null));
 		meetingRoomRepository.save(meetingRoom);
 	}
 

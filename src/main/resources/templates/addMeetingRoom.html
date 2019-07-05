@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <div th:replace="fragments/fragments :: head(content = 'Toplantı Odası Ekleme Formu')"></div>
 
@@ -28,7 +28,9 @@
                     <label for="firstNameInput">Kapasite:</label>
                     <input th:field="*{capacity}" type="number" class="form-control" id="firstNameInput" placeholder="Kapasite">
                 </div>
-                       
+
+                <div th:replace="fragments/fragments :: creatorIdInput"></div>
+
                  <div th:replace="fragments/fragments :: successMessage"></div>
                 <div th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 </div>

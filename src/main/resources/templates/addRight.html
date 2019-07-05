@@ -21,7 +21,7 @@
                     <label for="lastNameInput">Yetki Açıklaması:</label>
                     <textarea th:field="*{description}" type="text" class="form-control" id="lastNameInput" placeholder="Açıklama" rows="3" maxlength="250" style="resize: none;"/>
                 </div>
-
+                <div th:replace="fragments/fragments :: creatorIdInput"></div>
                 <div th:replace="fragments/fragments :: successMessage"></div>
 
                 <div th:if="${#fields.hasErrors('rightName')}" th:errors="*{rightName}" class="alert alert-danger alert-dismissible fade show" role="alert">

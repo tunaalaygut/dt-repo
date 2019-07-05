@@ -1,5 +1,6 @@
 package com.alaygut.prototype.service;
 
+import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.Reason;
@@ -12,17 +13,20 @@ import com.alaygut.prototype.repository.ReasonRepository;
 public class ReasonServiceImpl implements ReasonService {
 	
 	private ReasonRepository reasonRepository;
+	private MemberRepository memberRepository;
 
-	public ReasonServiceImpl(ReasonRepository reasonRepository) {
+	public ReasonServiceImpl(ReasonRepository reasonRepository, MemberRepository memberRepository) {
 		this.reasonRepository = reasonRepository;
+		this.memberRepository = memberRepository;
 	}
-	
+
 	@Override
 	public void addReason(AddReasonForm addReasonForm) {
 		Reason reason = new Reason(
 				addReasonForm.getReasonName(),
 				addReasonForm.getDescription()
 		);
+		reason.setCreator(memberRepository.findById(addReasonForm.getCreatorId()).orElse(null));
 		reasonRepository.save(reason);
 	}
 

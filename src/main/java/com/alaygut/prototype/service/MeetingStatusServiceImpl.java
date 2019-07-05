@@ -1,6 +1,8 @@
 package com.alaygut.prototype.service;
 
 import java.util.Optional;
+
+import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.MeetingStatus;
 import com.alaygut.prototype.domain.Reason;
@@ -15,12 +17,14 @@ public class MeetingStatusServiceImpl implements MeetingStatusService {
 	
 	private MeetingStatusRepository meetingStatusRepository;
 	private ReasonRepository reasonRepository;
+	private MemberRepository memberRepository;
 
-	public MeetingStatusServiceImpl(MeetingStatusRepository meetingStatusRepository, ReasonRepository reasonRepository) {
+	public MeetingStatusServiceImpl(MeetingStatusRepository meetingStatusRepository, ReasonRepository reasonRepository, MemberRepository memberRepository) {
 		this.meetingStatusRepository = meetingStatusRepository;
 		this.reasonRepository = reasonRepository;
+		this.memberRepository = memberRepository;
 	}
-	
+
 	@Override
 	public void addStatus(AddMeetingStatusForm form) {
 		Optional<Reason> reason = reasonRepository.findById(form.getReasonId());
@@ -28,6 +32,7 @@ public class MeetingStatusServiceImpl implements MeetingStatusService {
 				form.getMeetingStatusName(),
 				reason.orElse(null)
 		);
+		meetingStatus.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
 		meetingStatusRepository.save(meetingStatus);
 	}
 

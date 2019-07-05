@@ -54,6 +54,7 @@ public class MemberServiceImpl implements MemberService {
                 login
         );
         loginService.addLogin(login);
+        member.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
         memberRepository.save(member);
     }
 

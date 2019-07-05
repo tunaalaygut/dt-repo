@@ -1,5 +1,6 @@
 package com.alaygut.prototype.service;
 
+import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.MeetingType;
 import com.alaygut.prototype.domain.RecordState;
@@ -11,17 +12,20 @@ import com.alaygut.prototype.repository.MeetingTypeRepository;
 public class MeetingTypeServiceImpl implements MeetingTypeService {
 	
 	private MeetingTypeRepository meetingTypeRepository;
+	private MemberRepository memberRepository;
 
-	public MeetingTypeServiceImpl(MeetingTypeRepository meetingTypeRepository) {
+	public MeetingTypeServiceImpl(MeetingTypeRepository meetingTypeRepository, MemberRepository memberRepository) {
 		this.meetingTypeRepository = meetingTypeRepository;
+		this.memberRepository = memberRepository;
 	}
-	
+
 	@Override
 	public void addType(AddMeetingTypeForm form) {
 		MeetingType meetingType = new MeetingType(
 				form.getMeetingTypeName(),
 				form.getDescription()
 		);
+		meetingType.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
 		meetingTypeRepository.save(meetingType);
 	}
 

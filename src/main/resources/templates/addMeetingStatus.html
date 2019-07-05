@@ -19,14 +19,15 @@
                 </div>
                        <div class="mb-4">
                           <div class="form-group">
-                            <label for="roleSelectMenu">Sebep:</label>
+                            <label for="reasonSelectMenu">Sebep:</label>
                             <select class="custom-select" id="reasonSelectMenu" th:field="*{reasonId}">
                                 <option th:each="r : *{allReasons}" th:text="${r?.reasonName}" th:value = "${r?.reasonId}"></option>
                             </select>
                         </div>
                     </div>
-                 <div th:replace="fragments/fragments :: successMessage"></div>
-                <div th:if="${#fields.hasErrors('meetingStatusName')}" th:errors="*{meetingStatusName}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div th:replace="fragments/fragments :: creatorIdInput"></div>
+                    <div th:replace="fragments/fragments :: successMessage"></div>
+                    <div th:if="${#fields.hasErrors('meetingStatusName')}" th:errors="*{meetingStatusName}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 </div>
                 <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Toplantı Durumu Ekle</button>
             </form>
