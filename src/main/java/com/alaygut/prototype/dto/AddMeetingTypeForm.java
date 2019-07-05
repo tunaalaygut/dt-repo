@@ -2,7 +2,7 @@ package com.alaygut.prototype.dto;
 
 import javax.validation.constraints.Size;
 
-public class AddMeetingTypeForm {
+public class AddMeetingTypeForm extends FormBase  {
 
 	@Size(min = 5, max = 50)
 	private String meetingTypeName;
