@@ -23,7 +23,7 @@ public class MeetingRoom extends BaseClass {
 	@JoinColumn(name = "buildingId")
 	private Building building;
 
-	@ManyToMany(targetEntity = RoomFeature.class)
+	@ManyToMany(targetEntity = RoomFeature.class, fetch = FetchType.EAGER)
 	private Set roomFeatureSet;
 
 	@Column(name = "capacity")
@@ -44,7 +44,7 @@ public class MeetingRoom extends BaseClass {
 		String result = "";
 
 		for (RoomFeature roomFeature: this.getRoomFeatureSet())
-			result += (roomFeature.getFeatureName() + ",");
+			result += (roomFeature.getFeatureName() + ", ");
 
 		return result.replaceAll(", $", "");    //to remove the last comma from the string.
 	}
