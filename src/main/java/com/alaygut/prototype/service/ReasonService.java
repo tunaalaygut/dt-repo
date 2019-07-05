@@ -8,5 +8,8 @@ public interface ReasonService {
 	void addReason(AddReasonForm addReasonForm);
 	Iterable<Reason> getAllReasons();
 	Iterable<Reason> getAllActiveReasons();
+	Reason getReason(Long reasonId);
 	void deactivate(IDTransfer idTransfer);
+	void edit(AddReasonForm addReasonForm);
+	
 }

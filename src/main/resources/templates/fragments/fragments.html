@@ -128,6 +128,9 @@
                     <li>
                         <a th:href="@{/list/meetingRoom}">Toplantı Odaları</a>
                     </li>
+                    <li>
+                        <a th:href="@{/add/roomFeature}">Toplantı Odası İçin Özellik Ekle</a>
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -152,13 +155,13 @@
 </nav>
 
 
-    <button th:fragment="listEditButton" class="btn btn-sm btn-outline-info">
-        <span class="fas fa-edit"/>
-    </button>
- 
-    <button th:fragment="listDeleteButton" class="btn btn-sm btn-outline-danger" type="submit">
-        <span class="fas fa-trash-alt"/>
-    </button>
+<button th:fragment="listEditButton" class="btn btn-sm btn-outline-info">
+    <span class="fas fa-edit"/>
+</button>
+
+<button th:fragment="listDeleteButton" class="btn btn-sm btn-outline-danger" type="submit">
+    <span class="fas fa-trash-alt"/>
+</button>
 
 <div th:fragment="scripts">
     <!-- Optional JavaScript -->

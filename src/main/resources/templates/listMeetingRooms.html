@@ -18,6 +18,7 @@
             <th scope="col">Toplantı Odası</th>
             <th scope="col">Bina</th>
             <th scope="col">Kapasite</th>
+            <th scope="col">Özellikler</th>
             <th scope="col">İşlemler</th>
         </tr>
         </thead>
@@ -26,6 +27,7 @@
             <td th:text="${meetingRoom.meetingRoomName}"></td>
             <td th:text="${meetingRoom.building?.buildingName}"></td>
             <td th:text="${meetingRoom.capacity}"></td>
+            <td th:text="${meetingRoom.getAllRoomFeaturesString()}"></td>
             	<td>
                  <form th:action="@{/list/meetingRoom}" th:object="${idTransfer}" th:method="post" class="deactivateForm">
                  		<div th:replace="fragments/fragments :: listDeleteButton"></div>

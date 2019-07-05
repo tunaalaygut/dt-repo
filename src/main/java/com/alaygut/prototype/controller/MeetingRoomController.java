@@ -2,7 +2,9 @@ package com.alaygut.prototype.controller;
 
 import javax.validation.Valid;
 
+import com.alaygut.prototype.domain.RoomFeature;
 import com.alaygut.prototype.service.BuildingService;
+import com.alaygut.prototype.service.RoomFeatureService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,16 +22,19 @@ public class MeetingRoomController {
 	
 	private MeetingRoomService meetingRoomService;
 	private BuildingService buildingService;
+	private RoomFeatureService roomFeatureService;
 
-	public MeetingRoomController(MeetingRoomService meetingRoomService, BuildingService buildingService) {
+	public MeetingRoomController(MeetingRoomService meetingRoomService, BuildingService buildingService, RoomFeatureService roomFeatureService) {
 		this.meetingRoomService = meetingRoomService;
 		this.buildingService = buildingService;
+		this.roomFeatureService = roomFeatureService;
 	}
 	
 	@GetMapping("/add/meetingRoom")
 	public ModelAndView addMeetingRoomPage() {
 		AddMeetingRoomForm addMeetingRoomForm = new AddMeetingRoomForm();
 		addMeetingRoomForm.setAllBuildings(buildingService.getAllBuildings());
+		addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllFeatures());
 		return new ModelAndView(
 				"addMeetingRoom",
 				"addMeetingRoomForm",
@@ -41,6 +46,7 @@ public class MeetingRoomController {
 	public String handleAddMeetingRoom(@Valid @ModelAttribute("addMeetingRoomForm") AddMeetingRoomForm addMeetingRoomForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
 			addMeetingRoomForm.setAllBuildings(buildingService.getAllBuildings());
+			addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllFeatures());
 			return "/addMeetingRoom";
 		}
 		meetingRoomService.addRoom(addMeetingRoomForm);
