@@ -32,9 +32,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers("/login").anonymous()
                 .antMatchers("/").authenticated()
                 .antMatchers("/profile").authenticated()
+                .antMatchers("/add/meetingRequest").authenticated()
                 .antMatchers("/add/**").hasRole("ADMIN")
+                .antMatchers("/list/meetingRequest").hasRole("SUPERVISOR")
                 .antMatchers("/list/**").hasRole("ADMIN")
                 .and()
                 .formLogin()

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<div th:replace="fragments/fragments :: head(content = 'Toplantı Sebebi Ekleme Formu')"></div>
+
+<body>
+
+
+<div class="wrapper">
+        <div th:replace="fragments/fragments :: sidebar"></div>
+        <div class="content">
+            <div th:replace="fragments/fragments :: navbar"></div>
+            <h2 class="mb-4">Toplantı Sebebi Değiştirme Formu</h2>
+            <form th:action="@{/edit/reason}" th:object="${addReasonForm}" th:method="post" autocomplete="off">
+                <div class="form-group">
+                    <label for="firstNameInput">Sebep Adı:</label>
+                   <input th:field="*{reasonName}" th:value="${addReasonForm.reasonName}" type="text" class="form-control" id="firstNameInput" placeholder="Sebep">
+               </div>
+                        <div class="form-group">
+		                    <label for="lastNameInput">Açıklama:</label>
+		                    <textarea th:field="*{description}" th:value="${addReasonForm.description}" type="text" class="form-control" id="lastNameInput" placeholder="Açıklama" rows="3" maxlength="250" style="resize: none;"></textarea>
+               		   </div>
+                 <div th:replace="fragments/fragments :: successMessage"></div>
+
+                 <div th:if="${#fields.hasErrors('reasonName')}" th:errors="*{reasonName}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                </div>
+                 <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                </div>
+                <input th:attr="name=recordId" type="hidden" th:value="${addReasonForm.recordId}">
+                <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Toplantı Sebebini Değiştir</button>
+            </form>
+        </div>
+    </div>
+    <div th:replace="fragments/fragments :: scripts"></div>
+</body>
+</html>
+

@@ -3,8 +3,15 @@ package com.alaygut.prototype.dto;
 public class IDTransfer {
 
     private Long recordId;
+    
+    public IDTransfer() {
+	}
 
-    public Long getRecordId() {
+	public IDTransfer(Long recordId) {
+		this.recordId = recordId;
+	}
+
+	public Long getRecordId() {
         return recordId;
     }
 
