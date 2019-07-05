@@ -1,5 +1,6 @@
 package com.alaygut.prototype.controller;
 
+import com.alaygut.prototype.domain.Right;
 import com.alaygut.prototype.dto.AddRightForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.RightService;
@@ -8,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -48,5 +50,5 @@ public class RightController {
     	rightService.deactivate(idTransfer);
     	return "redirect:/list/right";
     }
-
+    
 }

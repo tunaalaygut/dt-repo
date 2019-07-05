@@ -31,10 +31,24 @@ public class RoomFeatureServiceImpl implements RoomFeatureService {
         return roomFeatureRepository.findAllByStateEquals(RecordState.ACTIVE);
     }
 
+   @Override
+   public RoomFeature getRoomFeature(Long featureId) {
+	   return roomFeatureRepository.findById(featureId).orElse(null);
+   }
+   
     @Override
     public void deactivate(IDTransfer idTransfer) {
         RoomFeature roomFeature = roomFeatureRepository.findById(idTransfer.getRecordId()).orElse(null);
         roomFeature.setState(RecordState.NONACTIVE);
         roomFeatureRepository.save(roomFeature);
+    }
+    
+    @Override
+    public void edit(AddRoomFeatureForm addRoomFeatureForm) {
+    	RoomFeature roomFeature = roomFeatureRepository.findById(addRoomFeatureForm.getRecordId()).orElse(null);
+    	
+    	roomFeature.setFeatureName(addRoomFeatureForm.getFeatureName());
+    	roomFeature.setDescription(addRoomFeatureForm.getDescription());
+    	roomFeatureRepository.save(roomFeature);
     }
 }

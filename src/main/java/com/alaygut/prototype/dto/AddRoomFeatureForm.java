@@ -11,7 +11,7 @@ public class AddRoomFeatureForm extends FormBase {
 
     private  String description;
 
-    //sanırım olmayacak
+    //sanırım olmayacak //Guven verici
     private Set<MeetingRoom> meetingRooms;
 
     public String getFeatureName() {
