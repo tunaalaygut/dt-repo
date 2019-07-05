@@ -4,7 +4,7 @@ import com.alaygut.prototype.domain.Reason;
 
 import javax.validation.constraints.Size;
 
-public class AddMeetingStatusForm {
+public class AddMeetingStatusForm extends FormBase  {
 	@Size(min = 5, max = 30, message ="Durum ismi [5-30] karakter uzunluğunda olmalıdır.")
 	private String meetingStatusName;
 

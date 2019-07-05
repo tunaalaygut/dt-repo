@@ -5,15 +5,18 @@ import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.dto.AddBuildingForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.BuildingRepository;
+import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BuildingServiceImpl implements BuildingService {
 
     private BuildingRepository buildingRepository;
+    private MemberRepository memberRepository;
 
-    public BuildingServiceImpl(BuildingRepository buildingRepository) {
+    public BuildingServiceImpl(BuildingRepository buildingRepository, MemberRepository memberRepository) {
         this.buildingRepository = buildingRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -22,6 +25,7 @@ public class BuildingServiceImpl implements BuildingService {
                 form.getBuildingName(),
                 form.getBuildingAddr()
         );
+        building.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
         buildingRepository.save(building);
     }
 

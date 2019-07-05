@@ -3,7 +3,7 @@ package com.alaygut.prototype.dto;
 import javax.validation.constraints.Size;
 
 
-public class AddBuildingForm {
+public class AddBuildingForm extends FormBase {
     @Size(min = 3, max = 50, message = "Bina ismi 3-50 karakter uzunluğunda olmalıdır.")
     private String buildingName;
 
