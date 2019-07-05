@@ -1,5 +1,6 @@
 package com.alaygut.prototype.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.Reason;
 import com.alaygut.prototype.domain.RecordState;
@@ -36,9 +37,22 @@ public class ReasonServiceImpl implements ReasonService {
 	}
 	
 	@Override
+	public Reason getReason(Long reasonId) {
+		return reasonRepository.findById(reasonId).orElse(null);
+	}
+	
+	@Override
 	public void deactivate(IDTransfer idTransfer) {
 		Reason reason = reasonRepository.findById(idTransfer.getRecordId()).orElse(null);
 		reason.setState(RecordState.NONACTIVE);
+		reasonRepository.save(reason);
+	}
+	
+	@Override
+	public void edit(AddReasonForm addReasonForm) {
+		Reason reason = reasonRepository.findById(addReasonForm.getRecordId()).orElse(null);
+		reason.setReasonName(addReasonForm.getReasonName());
+		reason.setDescription(addReasonForm.getDescription());
 		reasonRepository.save(reason);
 	}
 }

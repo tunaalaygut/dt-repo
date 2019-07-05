@@ -29,7 +29,7 @@
 	                 <button th:replace="fragments/fragments :: listDeleteButton"></button>
 	                 <input th:attr="name=recordId" type="hidden" th:value="${reason.reasonId}">
                  </form>
-                 <form th:action="@{/list/reason}" th:object="${idTransfer}" th:method="post" class="editForm">
+                 <form th:action="@{/list/reason}" th:object="${idTransfer}" th:method="put" class="editForm">
 	                 <button th:replace="fragments/fragments :: listEditButton"></button>
 	                 <input th:attr="name=recordId" type="hidden" th:value="${reason.reasonId}">
                  </form>

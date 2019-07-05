@@ -2,7 +2,7 @@ package com.alaygut.prototype.dto;
 
 import javax.validation.constraints.Size;
 
-public class AddReasonForm {
+public class AddReasonForm extends EditForm{
 	
 	@Size(min = 3, max = 30, message = "Sebep adı [3-30] karakter uzunluğunda olmalıdır.")
 	private String reasonName;
