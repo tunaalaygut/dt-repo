@@ -35,9 +35,22 @@ public class RightServiceImpl implements RightService{
     }
     
     @Override
+    public Right getRight(Long rightId) {
+    	return rightRepository.findById(rightId).orElse(null); 	
+    }
+    
+    @Override
     public void deactivate(IDTransfer idTransfer) {
     	Right right = rightRepository.findById(idTransfer.getRecordId()).orElse(null);
     	right.setState(RecordState.NONACTIVE);
+    	rightRepository.save(right);
+    }
+    
+    @Override
+    public void edit(AddRightForm addRightForm) {
+    	Right right = rightRepository.findById(addRightForm.getRecordId()).orElse(null);
+    	right.setRightName(addRightForm.getRightName());
+    	right.setDescription(addRightForm.getDescription());
     	rightRepository.save(right);
     }
 }

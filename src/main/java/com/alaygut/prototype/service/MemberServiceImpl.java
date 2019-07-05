@@ -73,10 +73,27 @@ public class MemberServiceImpl implements MemberService {
     }
     
     @Override
+    public Member getMember(Long memberId) {
+    	return memberRepository.findById(memberId).orElse(null);
+    }
+    
+    @Override
     public void deactivate(IDTransfer idTransfer) {
     	Member member = memberRepository.findById(idTransfer.getRecordId()).orElse(null);
     	member.setState(RecordState.NONACTIVE);
     	memberRepository.save(member);
+    }
+    
+    @Override
+    public void edit(AddMemberForm addMemberForm) {
+    	Member member = memberRepository.findById(addMemberForm.getRecordId()).orElse(null);
+    	
+    	member.setFirstName(addMemberForm.getFirstName());
+    	member.setLastName(addMemberForm.getLastName());
+    	member.setEmail(addMemberForm.getEmail());
+    	member.setPhone(addMemberForm.getFirstName());
+    	member.setFirstName(addMemberForm.getFirstName());
+    	member.setFirstName(addMemberForm.getFirstName());
     }
 
     @Override

@@ -52,9 +52,23 @@ public class RoleServiceImpl implements RoleService{
     }
     
     @Override
+    public Role getRole(Long roleId) {
+    	return roleRepository.findById(roleId).orElse(null);
+    }
+    
+    @Override
     public void deactivate(IDTransfer idTransfer) {
         Role role = roleRepository.findById(idTransfer.getRecordId()).orElse(null);
         role.setState(RecordState.NONACTIVE);
         roleRepository.save(role);
+    }
+    
+    @Override
+    public void edit(AddRoleForm addRoleForm) {
+    	Role role = roleRepository.findById(addRoleForm.getRecordId()).orElse(null);
+    	
+    	role.setRoleName(addRoleForm.getRoleName());
+    	role.setDescription(addRoleForm.getDescription());
+    	roleRepository.save(role);
     }
 }
