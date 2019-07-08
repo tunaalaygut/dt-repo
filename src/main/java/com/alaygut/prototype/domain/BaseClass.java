@@ -1,16 +1,20 @@
 package com.alaygut.prototype.domain;
 
-import javax.persistence.*; 
-import java.time.LocalDate;
+import javax.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 public class BaseClass {
 
+	@CreationTimestamp
     @Column(name = "created")
-    private LocalDate created;
+    private LocalDateTime created;
 
+	@UpdateTimestamp
     @Column(name = "updated")
-    private LocalDate updated;
+    private LocalDateTime updated;
 
     @ManyToOne(optional = true)
     @JoinColumn(name = "creator")
@@ -24,28 +28,27 @@ public class BaseClass {
     private RecordState state;
 
     public BaseClass() {    //default constructor
-        this.setCreated(LocalDate.now());
         this.setState(RecordState.ACTIVE);
         //current user
     }
 
-    public LocalDate getCreated() {
-        return created;
-    }
+    public LocalDateTime getCreated() {
+		return created;
+	}
 
-    public void setCreated(LocalDate created) {
-        this.created = created;
-    }
+	public void setCreated(LocalDateTime created) {
+		this.created = created;
+	}
 
-    public LocalDate getUpdated() {
-        return updated;
-    }
+	public LocalDateTime getUpdated() {
+		return updated;
+	}
 
-    public void setUpdated(LocalDate updated) {
-        this.updated = updated;
-    }
+	public void setUpdated(LocalDateTime updated) {
+		this.updated = updated;
+	}
 
-    public Member getCreator() {
+	public Member getCreator() {
         return creator;
     }
 

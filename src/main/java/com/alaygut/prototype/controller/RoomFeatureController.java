@@ -2,8 +2,10 @@ package com.alaygut.prototype.controller;
 
 
 import com.alaygut.prototype.domain.MeetingRoom;
+import com.alaygut.prototype.domain.Reason;
 import com.alaygut.prototype.domain.RoomFeature;
 import com.alaygut.prototype.dto.AddMeetingRoomForm;
+import com.alaygut.prototype.dto.AddReasonForm;
 import com.alaygut.prototype.dto.AddRoomFeatureForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MeetingRoomService;
@@ -13,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -60,10 +63,25 @@ public class RoomFeatureController {
         roomFeatureService.deactivate(idTransfer);
         return "redirect:/list/roomFeature";
     }
-
-
-
-
-
-
+    
+    @PutMapping("/list/roomFeature")
+	public ModelAndView editRoomFeaturePage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
+		AddRoomFeatureForm addRoomFeatureForm = new AddRoomFeatureForm();
+		
+		RoomFeature roomFeature = roomFeatureService.getRoomFeature(idTransfer.getRecordId());
+		addRoomFeatureForm.setFeatureName(roomFeature.getFeatureName());
+		addRoomFeatureForm.setDescription(roomFeature.getDescription());
+		
+		
+		return new ModelAndView("editRoomFeature", "addRoomFeatureForm", addRoomFeatureForm);
+	}
+	
+	@PostMapping("/edit/roomFeature")
+	public String submitRoomFeatureEdit(@Valid @ModelAttribute("AddRoomFeatureForm") AddRoomFeatureForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors())
+			return null;
+		roomFeatureService.edit(form);
+		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
+		return "redirect:/list/roomFeature";
+	}
 }

@@ -40,10 +40,23 @@ public class MeetingTypeServiceImpl implements MeetingTypeService {
 	}
 	
 	@Override
+	public MeetingType getMeetingType(Long meetingTypeId) {
+		return meetingTypeRepository.findById(meetingTypeId).orElse(null);
+	}
+	
+	@Override
 	public void deactivate(IDTransfer idTransfer) {
 		MeetingType meetingType = meetingTypeRepository.findById(idTransfer.getRecordId()).orElse(null);
 		meetingType.setState(RecordState.NONACTIVE);
 		meetingTypeRepository.save(meetingType);
+	}
+	
+	@Override
+	public void edit(AddMeetingTypeForm addMeetingTypeForm) {
+		MeetingType meetingType = meetingTypeRepository.findById(addMeetingTypeForm.getRecordId()).orElse(null);
+		meetingType.setMeetingTypeName(addMeetingTypeForm.getMeetingTypeName());
+		meetingType.setDescription(addMeetingTypeForm.getDescription());
+		meetingTypeRepository.save(meetingType);	
 	}
 
 }

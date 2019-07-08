@@ -47,9 +47,25 @@ public class MeetingStatusServiceImpl implements MeetingStatusService {
 	}
 	
 	@Override
+	public MeetingStatus getMeetingStatus(Long meetingStatusId) {
+		return meetingStatusRepository.findById(meetingStatusId).orElse(null);
+	}
+	
+	@Override
 	public void deactivate(IDTransfer idTransfer) {
 		MeetingStatus meetingStatus = meetingStatusRepository.findById(idTransfer.getRecordId()).orElse(null);
 		meetingStatus.setState(RecordState.NONACTIVE);
 		meetingStatusRepository.save(meetingStatus);
 	}
+	
+	@Override
+	public void edit(AddMeetingStatusForm addMeetingStatusForm) {
+		MeetingStatus meetingStatus = meetingStatusRepository.findById(addMeetingStatusForm.getRecordId()).orElse(null);
+		Reason reason = reasonRepository.findById(addMeetingStatusForm.getReasonId()).orElse(null);
+		meetingStatus.setMeetingStatusName(addMeetingStatusForm.getMeetingStatusName());
+		meetingStatus.setReason(reason);
+		
+		
+		meetingStatusRepository.save(meetingStatus)
+;	}
 }

@@ -25,9 +25,13 @@
                     <td th:text="${roomFeature.description}"></td>
                     <td>
                         <form th:action="@{/list/roomFeature}" th:object="${idTransfer}" th:method="post" class="deactivateForm">
-                            <div th:replace="fragments/fragments :: listOpsButtons"></div>
+                            <div th:replace="fragments/fragments :: listDeleteButton"></div>
                             <input th:attr="name=recordId" type="hidden" th:value="${roomFeature.roomFeatureId}">
                         </form>
+                        <form th:action="@{/list/roomFeature}" th:object="${idTransfer}" th:method="put" class="editForm">
+			                <button th:replace="fragments/fragments :: listEditButton"></button>
+			                <input th:attr="name=recordId" type="hidden" th:value="${roomFeature.roomFeatureId}">
+	            		 </form>
                     </td>
                 </tr>
                 </tbody>

@@ -2,6 +2,8 @@ package com.alaygut.prototype.controller;
 
 import javax.validation.Valid;
 
+import com.alaygut.prototype.domain.MeetingRoom;
+import com.alaygut.prototype.domain.Reason;
 import com.alaygut.prototype.domain.RoomFeature;
 import com.alaygut.prototype.service.BuildingService;
 import com.alaygut.prototype.service.RoomFeatureService;
@@ -10,9 +12,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alaygut.prototype.dto.AddMeetingRoomForm;
+import com.alaygut.prototype.dto.AddReasonForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MeetingRoomService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -64,6 +68,27 @@ public class MeetingRoomController {
 		if(bindingResult.hasErrors())
 			return null;
 		meetingRoomService.deactivate(idTransfer);
+		return "redirect:/list/meetingRoom";
+	}
+	
+	@PutMapping("/list/meetingRoom")
+	public ModelAndView editMeetingRoomPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
+		AddMeetingRoomForm addMeetingRoomForm = new AddMeetingRoomForm();
+		
+		MeetingRoom meetingRoom = meetingRoomService.getMeetingRoom(idTransfer.getRecordId());
+		addMeetingRoomForm.setMeetingRoomName(meetingRoom.getMeetingRoomName());
+		addMeetingRoomForm.setCapacity(meetingRoom.getCapacity());
+		addMeetingRoomForm.setBuildingId(meetingRoom.getBuilding().getBuildingId());
+		
+		return new ModelAndView("editMeetingRoom", "addMeetingRoomForm", addMeetingRoomForm);
+	}
+	
+	@PostMapping("/edit/meetingRoom")
+	public String submitMeetingRoomEdit(@Valid @ModelAttribute("AddMeetingRoomForm") AddMeetingRoomForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors())
+			return null;
+		meetingRoomService.edit(form);
+		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
 		return "redirect:/list/meetingRoom";
 	}
 	

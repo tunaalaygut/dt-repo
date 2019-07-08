@@ -38,11 +38,25 @@ public class BuildingServiceImpl implements BuildingService {
     public Iterable<Building> getAllActiveBuildings() {
         return buildingRepository.findAllByStateEquals(RecordState.ACTIVE);
     }
+    
+    @Override
+    public Building getBuilding(Long buildingId) {
+    	return buildingRepository.findById(buildingId).orElse(null);
+    }
 
     @Override
     public void deactivate(IDTransfer idTransfer) {
         Building building = buildingRepository.findById(idTransfer.getRecordId()).orElse(null);
         building.setState(RecordState.NONACTIVE);
         buildingRepository.save(building);
+    }
+    
+    @Override
+    public void edit(AddBuildingForm addBuildingForm) {
+    	Building building = buildingRepository.findById(addBuildingForm.getRecordId()).orElse(null);
+    	building.setBuildingName(addBuildingForm.getBuildingName());
+    	building.setBuildingAddr(addBuildingForm.getBuildingAddr());
+    	
+    	buildingRepository.save(building);
     }
 }

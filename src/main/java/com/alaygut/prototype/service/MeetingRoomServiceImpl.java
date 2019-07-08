@@ -57,6 +57,11 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	public Iterable<MeetingRoom> getAllActiveRooms() {
 		return meetingRoomRepository.findAllByStateEquals(RecordState.ACTIVE);
 	}
+	
+	@Override
+	public MeetingRoom getMeetingRoom(Long meetingRoomId) {
+		return meetingRoomRepository.findById(meetingRoomId).orElse(null);
+	}
 
 	@Override
 	public void deactivate(IDTransfer idTransfer) {
@@ -64,5 +69,18 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 		meetingRoom.setState(RecordState.NONACTIVE);
 		meetingRoomRepository.save(meetingRoom);
 
+	}
+	
+	@Override
+	public void edit(AddMeetingRoomForm addMeetingRoomForm) {
+		MeetingRoom meetingRoom = meetingRoomRepository.findById(addMeetingRoomForm.getRecordId()).orElse(null);
+		Building building = buildingRepository.findById(addMeetingRoomForm.getRecordId()).orElse(null);
+		//RoomFeature roomFeature = roomFeatureRepository.findById(addMeetingRoomForm.getRecordId()).orElse(null);
+		meetingRoom.setMeetingRoomName(addMeetingRoomForm.getMeetingRoomName());
+		meetingRoom.setBuilding(building);
+		meetingRoom.setCapacity(addMeetingRoomForm.getCapacity());
+		//meetingRoom.setRoomFeatureSet(roomFeature);
+		
+		meetingRoomRepository.save(meetingRoom);
 	}
 }

@@ -8,5 +8,7 @@ public interface MeetingRoomService {
 	void addRoom(AddMeetingRoomForm addMeetingRoomForm);
 	Iterable<MeetingRoom> getAllRooms();
 	Iterable<MeetingRoom> getAllActiveRooms();
+	MeetingRoom getMeetingRoom(Long meetingRoomId);
 	void deactivate(IDTransfer idTransfer);
+	void edit(AddMeetingRoomForm addMeetingRoomForm);
 }

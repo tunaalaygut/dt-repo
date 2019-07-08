@@ -72,4 +72,6 @@ public class MeetingRequestController {
 		meetingRequestService.deactivate(idTransfer);
 		return "redirect:/list/meetingRequest";
 	}
+	
+	// Put ve Post Mapping Eklenecek
 }
