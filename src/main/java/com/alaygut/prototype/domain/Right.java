@@ -18,6 +18,9 @@ public class Right extends BaseClass {
     private String description;
 
     @ManyToMany(targetEntity = Role.class)
+    @JoinTable(name = "Role_Right",
+            joinColumns = @JoinColumn(name = "rightId"),
+            inverseJoinColumns = @JoinColumn(name = "roleId"))
     private Set<Role> roles;
 
     public Right() {

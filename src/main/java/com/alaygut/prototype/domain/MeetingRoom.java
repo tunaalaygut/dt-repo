@@ -24,6 +24,9 @@ public class MeetingRoom extends BaseClass {
 	private Building building;
 
 	@ManyToMany(targetEntity = RoomFeature.class, fetch = FetchType.EAGER)
+	@JoinTable(name = "Meeting_Room_Feature",
+			joinColumns = @JoinColumn(name = "meetingRoomId"),
+			inverseJoinColumns = @JoinColumn(name = "roomFeatureId"))
 	private Set roomFeatureSet;
 
 	@Column(name = "capacity")

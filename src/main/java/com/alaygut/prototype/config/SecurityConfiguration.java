@@ -36,7 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .antMatchers("/").authenticated()
                 .antMatchers("/profile").authenticated()
                 .antMatchers("/add/meetingRequest").authenticated()
-                .antMatchers("/add/**").hasRole("ADMIN")
+                //.antMatchers("/add/**").hasRole("ADMIN")
                 .antMatchers("/list/meetingRequest").hasRole("SUPERVISOR")
                 .antMatchers("/list/**").hasRole("ADMIN")
                 .and()

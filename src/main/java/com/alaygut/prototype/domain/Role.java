@@ -19,6 +19,9 @@ public class Role extends BaseClass{
     private String description;
 
     @ManyToMany(targetEntity = Right.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "Role_Right",
+            joinColumns = @JoinColumn(name = "roleId"),
+            inverseJoinColumns = @JoinColumn(name = "rightId"))
     private Set<Right> rights;
 
     public Role() {

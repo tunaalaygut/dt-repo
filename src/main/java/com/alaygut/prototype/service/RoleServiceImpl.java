@@ -41,7 +41,9 @@ public class RoleServiceImpl implements RoleService{
                 form.getDescription(),
                 rights
         );
-        role.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
+        if (form.getCreatorId() != null)
+            role.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
+
         roleRepository.save(role);
     }
 

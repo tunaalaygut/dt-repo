@@ -1,7 +1,5 @@
 package com.alaygut.prototype.domain;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -10,8 +8,8 @@ public class RoomFeature extends BaseClass {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "featureId")
-    private Long featureId;
+    @Column(name = "roomFeatureId")
+    private Long roomFeatureId;
 
     @Column (name="name")
     private String featureName;
@@ -21,7 +19,9 @@ public class RoomFeature extends BaseClass {
 
 
     @ManyToMany(targetEntity = MeetingRoom.class)
-    @JoinColumn(name = "meetingRoomId")
+    @JoinTable(name = "Meeting_Room_Feature",
+            joinColumns = @JoinColumn(name = "roomFeatureId"),
+            inverseJoinColumns = @JoinColumn(name = "meetingRoomId"))
     private Set meetingRoomSet;
 
     public RoomFeature() {
@@ -33,12 +33,12 @@ public class RoomFeature extends BaseClass {
         this.description=description;
     }
 
-    public Long getFeatureId() {
-        return featureId;
+    public Long getRoomFeatureId() {
+        return roomFeatureId;
     }
 
-    public void setFeatureId(Long featureId) {
-        this.featureId = featureId;
+    public void setRoomFeatureId(Long roomFeatureId) {
+        this.roomFeatureId = roomFeatureId;
     }
 
     public String getFeatureName() {

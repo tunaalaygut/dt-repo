@@ -8,7 +8,9 @@
     <div class="wrapper">
         <div th:replace="fragments/fragments :: sidebar"></div>
         <div class="content">
+<!--
             <div th:replace="fragments/fragments :: navbar"></div>
+-->
             <h2 class="mb-4">Rol Ekleme Formu</h2>
             <form th:action="@{/add/role}" th:object="${addRoleForm}" th:method="post" autocomplete="off">
 
@@ -28,7 +30,9 @@
                     <label for="descriptionInput">Rol Açıklaması:</label>
                     <textarea th:field="*{description}" type="text" class="form-control" id="descriptionInput" placeholder="Rol açıklaması" rows="3" maxlength="250" style="resize: none;"/>
                 </div>
+<!--
                 <div th:replace="fragments/fragments :: creatorIdInput"></div>
+-->
                 <div th:replace="fragments/fragments :: successMessage"></div>
 
                 <div th:if="${#fields.hasErrors('roleName')}" th:errors="*{roleName}" class="alert alert-danger alert-dismissible fade show" role="alert">

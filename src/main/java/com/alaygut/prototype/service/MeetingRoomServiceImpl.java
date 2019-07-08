@@ -10,7 +10,6 @@ import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.MeetingRoomRepository;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -37,7 +36,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 		Set<RoomFeature> roomFeatures = new HashSet<>();
 
 		for (RoomFeature roomFeature : selectedFeatures) {
-			roomFeatures.add((roomFeatureRepository.findById(roomFeature.getFeatureId())).orElse(null));
+			roomFeatures.add((roomFeatureRepository.findById(roomFeature.getRoomFeatureId())).orElse(null));
 		}
 		MeetingRoom meetingRoom = new MeetingRoom(
 				addMeetingRoomForm.getMeetingRoomName(),
