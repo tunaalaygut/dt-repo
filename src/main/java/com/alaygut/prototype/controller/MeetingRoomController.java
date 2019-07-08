@@ -49,7 +49,7 @@ public class MeetingRoomController {
 	@PostMapping("/add/meetingRoom")
 	public String handleAddMeetingRoom(@Valid @ModelAttribute("addMeetingRoomForm") AddMeetingRoomForm addMeetingRoomForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
-			addMeetingRoomForm.setAllBuildings(buildingService.getAllBuildings());
+			addMeetingRoomForm.setAllBuildings(buildingService.getAllActiveBuildings());
 			addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllFeatures());
 			return "/addMeetingRoom";
 		}
@@ -79,6 +79,9 @@ public class MeetingRoomController {
 		addMeetingRoomForm.setMeetingRoomName(meetingRoom.getMeetingRoomName());
 		addMeetingRoomForm.setCapacity(meetingRoom.getCapacity());
 		addMeetingRoomForm.setBuildingId(meetingRoom.getBuilding().getBuildingId());
+		addMeetingRoomForm.setRecordId(meetingRoom.getMeetingRoomId());
+		addMeetingRoomForm.setAllBuildings(buildingService.getAllActiveBuildings());
+		addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllFeatures());
 		
 		return new ModelAndView("editMeetingRoom", "addMeetingRoomForm", addMeetingRoomForm);
 	}

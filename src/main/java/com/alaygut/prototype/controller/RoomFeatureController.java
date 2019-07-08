@@ -71,6 +71,7 @@ public class RoomFeatureController {
 		RoomFeature roomFeature = roomFeatureService.getRoomFeature(idTransfer.getRecordId());
 		addRoomFeatureForm.setFeatureName(roomFeature.getFeatureName());
 		addRoomFeatureForm.setDescription(roomFeature.getDescription());
+		addRoomFeatureForm.setRecordId(roomFeature.getFeatureId());
 		
 		
 		return new ModelAndView("editRoomFeature", "addRoomFeatureForm", addRoomFeatureForm);
