@@ -1,8 +1,10 @@
 package com.alaygut.prototype.dto;
 
+import com.alaygut.prototype.annotation.UniqueUsername;
 import com.alaygut.prototype.domain.Role;
-
 import javax.validation.constraints.*;
+
+
 
 public class AddMemberForm extends FormBase  {
     @Size(min = 3, max = 20, message = "İsim [3-20] karakter uzunluğunda olmalıdır.")
@@ -21,6 +23,7 @@ public class AddMemberForm extends FormBase  {
     private Long roleId;
 
     @Size(min = 6, max = 20, message = "Kullanıcı adı [6-20] karakter uzunluğunda olmalıdır.")
+    @UniqueUsername(message = "Kullanıcı adı mevcut.")
     private String username;
 
     @Size(min = 6, max = 20, message = "Şifre [6-20] karakter uzunluğunda olmalıdır.")
