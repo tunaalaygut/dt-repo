@@ -1,6 +1,10 @@
 package com.alaygut.prototype.controller;
 
+import com.alaygut.prototype.domain.Member;
+import com.alaygut.prototype.domain.Reason;
+import com.alaygut.prototype.domain.Role;
 import com.alaygut.prototype.dto.AddMemberForm;
+import com.alaygut.prototype.dto.AddReasonForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MemberService;
 import com.alaygut.prototype.service.RoleService;
@@ -57,5 +61,32 @@ public class MemberController {
     	memberService.deactivate(idTransfer);
     	return "redirect:/list/member";
     }
+    
+    @PutMapping("/list/member")
+    public ModelAndView editMemberPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
+    	AddMemberForm addMemberForm = new AddMemberForm();
+		
+		Member member = memberService.getMember(idTransfer.getRecordId());
+		//Role role = roleService.getRole(idTransfer.getRecordId());
+		addMemberForm.setFirstName(member.getFirstName());
+		addMemberForm.setLastName(member.getLastName());
+		addMemberForm.setEmail(member.getEmail());
+		addMemberForm.setPhone(member.getPhone());
+		addMemberForm.setRoleId(member.getRole().getRoleId());
+		addMemberForm.setRecordId(member.getMemberId());
+		addMemberForm.setAllRoles(roleService.getAllRoles());
+		
+		return new ModelAndView("editmember", "addMemberForm", addMemberForm);
+    }
+    
+    @PostMapping("/edit/member")
+    public String submitMemberEdit(@Valid @ModelAttribute("AddMemberForm") AddMemberForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors())
+			return null;
+		
+		memberService.edit(form);
+		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
+		return "redirect:/list/reason";
+	}
 
 }

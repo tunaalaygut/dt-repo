@@ -8,5 +8,7 @@ public interface MeetingTypeService {
 	void addType(AddMeetingTypeForm addMeetingTypeForm);
 	Iterable<MeetingType> getAllTypes();
 	Iterable<MeetingType> getAllActiveTypes();
+	MeetingType getMeetingType(Long meetingTypeId);
 	void deactivate(IDTransfer idTransfer);
+	void edit(AddMeetingTypeForm addMeetingTypeForm);
 }

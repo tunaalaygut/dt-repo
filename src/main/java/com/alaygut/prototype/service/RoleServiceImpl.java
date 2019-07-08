@@ -1,6 +1,6 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.Building;
+
 import com.alaygut.prototype.domain.RecordState; 
 import com.alaygut.prototype.domain.Right;
 import com.alaygut.prototype.domain.Role;
@@ -65,10 +65,10 @@ public class RoleServiceImpl implements RoleService{
     
     @Override
     public void edit(AddRoleForm addRoleForm) {
-    	Role role = roleRepository.findById(addRoleForm.getRecordId()).orElse(null);
-    	
+    	Role role = roleRepository.findById(addRoleForm.getRecordId()).orElse(null);	
     	role.setRoleName(addRoleForm.getRoleName());
     	role.setDescription(addRoleForm.getDescription());
+    	
     	roleRepository.save(role);
     }
 }

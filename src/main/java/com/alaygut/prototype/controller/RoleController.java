@@ -1,5 +1,8 @@
 package com.alaygut.prototype.controller;
 
+import com.alaygut.prototype.domain.Reason;
+import com.alaygut.prototype.domain.Role;
+import com.alaygut.prototype.dto.AddReasonForm;
 import com.alaygut.prototype.dto.AddRoleForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.RightService;
@@ -9,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -60,5 +64,26 @@ public class RoleController {
         roleService.deactivate(idTransfer);
         return "redirect:/list/role";
     }
+    
+    @PutMapping("/list/role")
+	public ModelAndView editRolePage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
+		AddRoleForm addRoleForm = new AddRoleForm();
+		
+		Role role = roleService.getRole(idTransfer.getRecordId());
+		addRoleForm.setRoleName(role.getRoleName());
+		addRoleForm.setDescription(role.getDescription());
+		//addRoleForm.setRightIds(rightIds);
+		
+		return new ModelAndView("editRole", "addRoleForm", addRoleForm);
+	}
+	
+	@PostMapping("/edit/role")
+	public String submitRoleEdit(@Valid @ModelAttribute("AddRoleForm") AddRoleForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors())
+			return null;
+		roleService.edit(form);
+		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
+		return "redirect:/list/reason";
+	}
 
 }

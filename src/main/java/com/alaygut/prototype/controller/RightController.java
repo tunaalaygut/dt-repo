@@ -1,6 +1,9 @@
 package com.alaygut.prototype.controller;
 
+
+import com.alaygut.prototype.domain.Reason;
 import com.alaygut.prototype.domain.Right;
+import com.alaygut.prototype.dto.AddReasonForm;
 import com.alaygut.prototype.dto.AddRightForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.RightService;
@@ -50,5 +53,25 @@ public class RightController {
     	rightService.deactivate(idTransfer);
     	return "redirect:/list/right";
     }
+    
+    @PutMapping("/list/right")
+	public ModelAndView editRightPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
+		AddRightForm addRightForm = new AddRightForm();
+		
+		Right right = rightService.getRight(idTransfer.getRecordId());
+		addRightForm.setRightName(right.getRightName());
+		addRightForm.setDescription(right.getDescription());
+		
+		return new ModelAndView("editRight", "addRightForm", addRightForm);
+	}
+	
+	@PostMapping("/edit/right")
+	public String submitRightEdit(@Valid @ModelAttribute("AddightForm") AddRightForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors())
+			return null;
+		rightService.edit(form);
+		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
+		return "redirect:/list/right";
+	}
     
 }

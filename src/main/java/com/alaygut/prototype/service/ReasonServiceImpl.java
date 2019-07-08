@@ -1,6 +1,6 @@
 package com.alaygut.prototype.service;
 
-import org.springframework.beans.BeanUtils;
+ 
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.Reason;
 import com.alaygut.prototype.domain.RecordState;

@@ -45,10 +45,10 @@ public class RoomFeatureServiceImpl implements RoomFeatureService {
     
     @Override
     public void edit(AddRoomFeatureForm addRoomFeatureForm) {
-    	RoomFeature roomFeature = roomFeatureRepository.findById(addRoomFeatureForm.getRecordId()).orElse(null);
-    	
+    	RoomFeature roomFeature = roomFeatureRepository.findById(addRoomFeatureForm.getRecordId()).orElse(null);  	
     	roomFeature.setFeatureName(addRoomFeatureForm.getFeatureName());
     	roomFeature.setDescription(addRoomFeatureForm.getDescription());
+    	
     	roomFeatureRepository.save(roomFeature);
     }
 }
