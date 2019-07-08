@@ -66,7 +66,7 @@ public class BuildingController {
 		return new ModelAndView("editBuilding", "addBuildingForm", addBuildingForm);
 	}
 	
-	@PostMapping("/edit/reason")
+	@PostMapping("/edit/building")
 	public String submitBuildingEdit(@Valid @ModelAttribute("AddReasonForm") AddBuildingForm form, BindingResult bindingResult) {
 		if(bindingResult.hasErrors())
 			return null;
