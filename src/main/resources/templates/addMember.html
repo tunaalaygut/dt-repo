@@ -59,7 +59,9 @@
                 <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 </div>
                 <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
+            </div>
+                <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            </div>
                 <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 </div>
                 <div th:if="${#fields.hasErrors('roleId')}" th:errors="*{roleId}" class="alert alert-danger alert-dismissible fade show" role="alert">

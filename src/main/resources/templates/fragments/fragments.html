@@ -33,8 +33,9 @@
             </button>
             <div class="dropdown-menu float-left" aria-labelledby="profileMenuButton">
                 <a class="dropdown-item" th:href="@{/profile}"><i class="fas fa-user-circle text-right"></i> Profil</a>
-                <form th:action="@{/logout}" method="post">
+                <form th:action="@{/logout}" class="logoutForm" method="post">
                     <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt text-danger"></i> Çıkış</button>
+
                 </form>
             </div>
         </div>
@@ -177,6 +178,22 @@
             swal({
                     title: "Emin misiniz?",
                     text: "Silinen kayıtlar geri getirilemez.",
+                    icon: "warning",
+                    buttons: true,
+                    buttons: ["Vazgeç", "Evet"],
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                         form.submit()
+                    }
+                });
+        });
+        $('.logoutForm').on('submit', function(e) {
+            var form = this;
+            e.preventDefault();
+            swal({
+                    title: "Emin misiniz?",
+                    text: "Çıkmak istediğinize emin misiniz?.",
                     icon: "warning",
                     buttons: true,
                     buttons: ["Vazgeç", "Evet"],

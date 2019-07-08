@@ -2,6 +2,8 @@ package com.alaygut.prototype.domain;
 
 import javax.persistence.*;
 
+
+
 @Entity
 public class Login extends BaseClass{
 
@@ -10,7 +12,7 @@ public class Login extends BaseClass{
     @Column(name="loginId", nullable = false, updatable = false)
     private Long loginId;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "password")

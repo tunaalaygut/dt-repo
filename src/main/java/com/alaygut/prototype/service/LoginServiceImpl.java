@@ -20,4 +20,6 @@ public class LoginServiceImpl implements LoginService {
     public void addLogin(Login login) {
         loginRepository.save(login);
     }
+
+
 }

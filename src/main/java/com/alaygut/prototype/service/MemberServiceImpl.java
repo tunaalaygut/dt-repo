@@ -6,6 +6,7 @@ import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.domain.RecordState;
+import com.alaygut.prototype.repository.LoginRepository;
 import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.repository.RightRepository;
 import com.alaygut.prototype.repository.RoleRepository;
@@ -29,6 +30,7 @@ public class MemberServiceImpl implements MemberService {
     private MemberRepository memberRepository;
     private RoleRepository roleRepository;
     private LoginService loginService;
+
 
     private PasswordEncoder passwordEncoder;
 

@@ -19,6 +19,7 @@
                         <th scope="col">Soyisim</th>
                         <th scope="col">E-mail</th>
                         <th scope="col">Telefon</th>
+                        <th scope="col">Kullanıcı Adı</th>
                         <th scope="col">Rol</th>
                         <th scope="col">İşlemler</th>
                     </tr>
@@ -29,6 +30,7 @@
                         <td th:text="${member.lastName}"></td>
                         <td th:text="${member.email}"></td>
                         <td th:text="${member.phone}"></td>
+                        <td th:text="${member.getUsername()}"></td>
                         <td th:text="${member.role?.roleName}"></td>
                         <td>
                 			 <form th:action="@{/list/member}" th:object="${idTransfer}" th:method="post" class="deactivateForm">
