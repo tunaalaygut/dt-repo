@@ -8,5 +8,7 @@ public interface MeetingRequestService {
 	void addRequest(AddMeetingRequestForm addMeetingRequestForm);
 	Iterable<MeetingRequest> getAllRequests();
 	Iterable<MeetingRequest> getAllActiveRequests();
+	MeetingRequest getMeetingRequest(Long meetingRequestId);
 	void deactivate(IDTransfer idTransfer);
+	void edit(AddMeetingRequestForm addMeetingRequestForm);
 }

@@ -2,7 +2,7 @@ package com.alaygut.prototype.dto;
 
 import javax.validation.constraints.Size;
 
-public class AddRightForm {
+public class AddRightForm extends FormBase  {
 
     @Size(min = 3, max = 20, message = "Yetki adı [3-20] karakter uzunluğunda olmalıdır.")
     private String rightName;

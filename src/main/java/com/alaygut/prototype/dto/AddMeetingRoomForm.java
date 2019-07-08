@@ -5,7 +5,7 @@ import com.alaygut.prototype.domain.RoomFeature;
 
 import java.util.List;
 
-public class AddMeetingRoomForm {
+public class AddMeetingRoomForm extends FormBase  {
 
 	private String meetingRoomName;
 

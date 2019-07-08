@@ -1,6 +1,8 @@
 package com.alaygut.prototype.service;
 
 import java.util.Optional;
+
+import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.MeetingStatus;
 import com.alaygut.prototype.domain.Reason;
@@ -15,12 +17,14 @@ public class MeetingStatusServiceImpl implements MeetingStatusService {
 	
 	private MeetingStatusRepository meetingStatusRepository;
 	private ReasonRepository reasonRepository;
+	private MemberRepository memberRepository;
 
-	public MeetingStatusServiceImpl(MeetingStatusRepository meetingStatusRepository, ReasonRepository reasonRepository) {
+	public MeetingStatusServiceImpl(MeetingStatusRepository meetingStatusRepository, ReasonRepository reasonRepository, MemberRepository memberRepository) {
 		this.meetingStatusRepository = meetingStatusRepository;
 		this.reasonRepository = reasonRepository;
+		this.memberRepository = memberRepository;
 	}
-	
+
 	@Override
 	public void addStatus(AddMeetingStatusForm form) {
 		Optional<Reason> reason = reasonRepository.findById(form.getReasonId());
@@ -28,6 +32,7 @@ public class MeetingStatusServiceImpl implements MeetingStatusService {
 				form.getMeetingStatusName(),
 				reason.orElse(null)
 		);
+		meetingStatus.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
 		meetingStatusRepository.save(meetingStatus);
 	}
 
@@ -42,9 +47,25 @@ public class MeetingStatusServiceImpl implements MeetingStatusService {
 	}
 	
 	@Override
+	public MeetingStatus getMeetingStatus(Long meetingStatusId) {
+		return meetingStatusRepository.findById(meetingStatusId).orElse(null);
+	}
+	
+	@Override
 	public void deactivate(IDTransfer idTransfer) {
 		MeetingStatus meetingStatus = meetingStatusRepository.findById(idTransfer.getRecordId()).orElse(null);
 		meetingStatus.setState(RecordState.NONACTIVE);
 		meetingStatusRepository.save(meetingStatus);
 	}
+	
+	@Override
+	public void edit(AddMeetingStatusForm addMeetingStatusForm) {
+		MeetingStatus meetingStatus = meetingStatusRepository.findById(addMeetingStatusForm.getRecordId()).orElse(null);
+		Reason reason = reasonRepository.findById(addMeetingStatusForm.getReasonId()).orElse(null);
+		meetingStatus.setMeetingStatusName(addMeetingStatusForm.getMeetingStatusName());
+		meetingStatus.setReason(reason);
+		
+		
+		meetingStatusRepository.save(meetingStatus)
+;	}
 }

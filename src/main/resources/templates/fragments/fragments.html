@@ -155,6 +155,7 @@
     </div>
 </nav>
 
+<input th:fragment="creatorIdInput" th:attr="name=creatorId" type="hidden" th:value="${#authentication.principal.memberId}" >
 
 <button th:fragment="listEditButton" class="btn btn-sm btn-outline-info">
     <span class="fas fa-edit"/>

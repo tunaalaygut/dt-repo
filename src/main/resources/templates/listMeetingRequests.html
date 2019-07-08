@@ -39,6 +39,10 @@
                  		<div th:replace="fragments/fragments :: listDeleteButton"></div>
                  		<input th:attr="name=recordId" type="hidden" th:value="${meetingRequest.meetingRequestId}">
                  </form>
+                 <form th:action="@{/list/meetingRequest}" th:object="${idTransfer}" th:method="put" class="editForm">
+	                <button th:replace="fragments/fragments :: listEditButton"></button>
+	                <input th:attr="name=recordId" type="hidden" th:value="${meetingRequest.meetingRequestId}">
+	             </form>
               </td>
             </tr>
             </tbody>

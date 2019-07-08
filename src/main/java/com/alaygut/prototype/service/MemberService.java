@@ -9,5 +9,7 @@ public interface MemberService extends UserDetailsService {
     void addMember(AddMemberForm addMemberForm);
     Iterable<Member> getAllMembers();
     Iterable<Member> getAllActiveMembers();
+    Member getMember(Long memberId);
     void deactivate(IDTransfer idTransfer);
+    void edit(AddMemberForm addMemberForm);
 }

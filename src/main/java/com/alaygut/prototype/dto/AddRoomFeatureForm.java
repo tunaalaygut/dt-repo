@@ -5,13 +5,13 @@ import com.alaygut.prototype.domain.MeetingRoom;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
-public class AddRoomFeatureForm {
+public class AddRoomFeatureForm extends FormBase {
     @Size(min=5, max= 50, message = "Özellik ismi 5-50 karakter uzunluğunda olmalıdır.")
     private String featureName;
 
     private  String description;
 
-    //sanırım olmayacak
+    //sanırım olmayacak //Guven verici
     private Set<MeetingRoom> meetingRooms;
 
     public String getFeatureName() {

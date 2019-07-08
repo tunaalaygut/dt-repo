@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <div th:replace="fragments/fragments :: head(content = 'Şirket Binası Ekleme Formu')"></div>
 
@@ -20,6 +20,8 @@
                     <label for="lastNameInput">Bina Adresi:</label>
                     <textarea th:field="*{buildingAddr}" type="text" class="form-control" id="lastNameInput" placeholder="Adres" rows="3" maxlength="250" style="resize: none;"/>
                 </div>
+
+                <div th:replace="fragments/fragments :: creatorIdInput"></div>
 
                 <div th:replace="fragments/fragments :: successMessage"></div>
 

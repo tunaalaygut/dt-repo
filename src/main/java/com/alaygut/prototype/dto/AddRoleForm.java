@@ -5,7 +5,7 @@ import com.alaygut.prototype.domain.Right;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-public class AddRoleForm {
+public class AddRoleForm extends FormBase  {
     @Size(min = 3, max = 30, message = "Rol adı [3-30] karakter uzunluğunda olmalıdır.")
     private String roleName;
 

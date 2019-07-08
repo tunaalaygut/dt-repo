@@ -4,7 +4,7 @@ import com.alaygut.prototype.domain.Role;
 
 import javax.validation.constraints.*;
 
-public class AddMemberForm {
+public class AddMemberForm extends FormBase  {
     @Size(min = 3, max = 20, message = "İsim [3-20] karakter uzunluğunda olmalıdır.")
     private String firstName;
 

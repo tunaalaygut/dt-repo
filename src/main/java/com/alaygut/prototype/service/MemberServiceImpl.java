@@ -1,6 +1,6 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.Login;
+import com.alaygut.prototype.domain.Login; 
 import com.alaygut.prototype.domain.Role;
 import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.dto.IDTransfer;
@@ -8,20 +8,19 @@ import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.repository.LoginRepository;
 import com.alaygut.prototype.repository.MemberRepository;
-import com.alaygut.prototype.repository.RightRepository;
+
 import com.alaygut.prototype.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.attribute.UserPrincipal;
-import java.util.List;
+
 import java.util.Optional;
 
 @Service
@@ -56,6 +55,7 @@ public class MemberServiceImpl implements MemberService {
                 login
         );
         loginService.addLogin(login);
+        member.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
         memberRepository.save(member);
     }
 
@@ -75,9 +75,29 @@ public class MemberServiceImpl implements MemberService {
     }
     
     @Override
+    public Member getMember(Long memberId) {
+    	return memberRepository.findById(memberId).orElse(null);
+    }
+    
+    @Override
     public void deactivate(IDTransfer idTransfer) {
     	Member member = memberRepository.findById(idTransfer.getRecordId()).orElse(null);
     	member.setState(RecordState.NONACTIVE);
+    	memberRepository.save(member);
+    }
+    
+    @Override
+    public void edit(AddMemberForm addMemberForm) {
+    	Member member = memberRepository.findById(addMemberForm.getRecordId()).orElse(null);
+    	Role role = roleRepository.findById(addMemberForm.getRecordId()).orElse(null);
+    	//Login login =
+    	member.setFirstName(addMemberForm.getFirstName());
+    	member.setLastName(addMemberForm.getLastName());
+    	member.setEmail(addMemberForm.getEmail());
+    	member.setPhone(addMemberForm.getPhone());
+    	member.setRole(role);
+    	//member.setLogin(login);
+    	
     	memberRepository.save(member);
     }
 

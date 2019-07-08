@@ -8,5 +8,7 @@ public interface RoomFeatureService {
     void addRoomFeature(AddRoomFeatureForm addMeetingRoomForm);
     Iterable<RoomFeature> getAllFeatures();
     Iterable<RoomFeature> getAllActiveRoomFeatures();
+    RoomFeature getRoomFeature(Long featureId);
     void deactivate(IDTransfer idTransfer);
+    void edit(AddRoomFeatureForm addRoomFeatureForm);
 }

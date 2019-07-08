@@ -65,10 +65,21 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	}
 	
 	@Override
+	public MeetingRequest getMeetingRequest(Long meetingRequestId) {
+		return meetingRequestRepository.findById(meetingRequestId).orElse(null);
+	}
+	
+	@Override
 	public void deactivate(IDTransfer idTransfer) {
 		MeetingRequest meetingRequest = meetingRequestRepository.findById(idTransfer.getRecordId()).orElse(null);
 		meetingRequest.setState(RecordState.NONACTIVE);
 		meetingRequestRepository.save(meetingRequest);
+	}
+	
+	@Override
+	public void edit(AddMeetingRequestForm addMeetingRequestForm) {
+		//MeetingRequest meetingRequest = meetingRequestRepository.findById(addMeetingRequestForm.getRecordId()).orElse(null);
+		//meetingRequest.setMeetingRoom(meetingRoom);
 	}
 
 }

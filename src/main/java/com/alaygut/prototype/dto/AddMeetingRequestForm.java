@@ -13,7 +13,7 @@ import com.alaygut.prototype.domain.MeetingStatus;
 import com.alaygut.prototype.domain.MeetingType;
 import com.alaygut.prototype.domain.Member;
 
-public class AddMeetingRequestForm {
+public class AddMeetingRequestForm extends FormBase  {
 	
 	@NotNull(message = "Toplantı isteği için bir oda seçilmelidir.")
 	private Long meetingRoomId;
