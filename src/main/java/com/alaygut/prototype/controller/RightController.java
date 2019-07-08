@@ -61,6 +61,7 @@ public class RightController {
 		Right right = rightService.getRight(idTransfer.getRecordId());
 		addRightForm.setRightName(right.getRightName());
 		addRightForm.setDescription(right.getDescription());
+		addRightForm.setRecordId(right.getRightId());
 		
 		return new ModelAndView("editRight", "addRightForm", addRightForm);
 	}

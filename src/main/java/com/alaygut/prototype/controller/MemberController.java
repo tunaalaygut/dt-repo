@@ -41,7 +41,7 @@ public class MemberController {
     @PostMapping("/add/member")
     public String handleAddMember(@Valid @ModelAttribute("addMemberForm") AddMemberForm addMemberForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()) {
-            addMemberForm.setAllRoles(roleService.getAllRoles());
+            addMemberForm.setAllRoles(roleService.getAllActiveRoles());
             return "/addMember";
         }
         memberService.addMember(addMemberForm);
@@ -67,14 +67,14 @@ public class MemberController {
     	AddMemberForm addMemberForm = new AddMemberForm();
 		
 		Member member = memberService.getMember(idTransfer.getRecordId());
-		//Role role = roleService.getRole(idTransfer.getRecordId());
+
 		addMemberForm.setFirstName(member.getFirstName());
 		addMemberForm.setLastName(member.getLastName());
 		addMemberForm.setEmail(member.getEmail());
 		addMemberForm.setPhone(member.getPhone());
 		addMemberForm.setRoleId(member.getRole().getRoleId());
 		addMemberForm.setRecordId(member.getMemberId());
-		addMemberForm.setAllRoles(roleService.getAllRoles());
+		addMemberForm.setAllRoles(roleService.getAllActiveRoles());
 		
 		return new ModelAndView("editmember", "addMemberForm", addMemberForm);
     }
@@ -86,7 +86,7 @@ public class MemberController {
 		
 		memberService.edit(form);
 		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
-		return "redirect:/list/reason";
+		return "redirect:/list/member";
 	}
 
 }

@@ -62,6 +62,7 @@ public class MeetingTypeController {
 		MeetingType meetingType = meetingTypeService.getMeetingType(idTransfer.getRecordId());
 		addMeetingTypeForm.setMeetingTypeName(meetingType.getMeetingTypeName());
 		addMeetingTypeForm.setDescription(meetingType.getDescription());
+		addMeetingTypeForm.setRecordId(meetingType.getMeetingTypeId());
 		
 		return new ModelAndView("editMeetingType", "addMeetingTypeForm", addMeetingTypeForm);
 	}

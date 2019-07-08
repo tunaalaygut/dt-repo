@@ -62,12 +62,13 @@ public class BuildingController {
 		Building building = buildingService.getBuilding(idTransfer.getRecordId());
 		addBuildingForm.setBuildingName(building.getBuildingName());
 		addBuildingForm.setBuildingAddr(building.getBuildingAddr());
+		addBuildingForm.setRecordId(building.getBuildingId());
 		
 		return new ModelAndView("editBuilding", "addBuildingForm", addBuildingForm);
 	}
 	
 	@PostMapping("/edit/building")
-	public String submitBuildingEdit(@Valid @ModelAttribute("AddReasonForm") AddBuildingForm form, BindingResult bindingResult) {
+	public String submitBuildingEdit(@Valid @ModelAttribute("AddBuildingForm") AddBuildingForm form, BindingResult bindingResult) {
 		if(bindingResult.hasErrors())
 			return null;
 		buildingService.edit(form);

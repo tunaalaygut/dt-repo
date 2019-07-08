@@ -42,7 +42,7 @@ public class RoleController {
     @PostMapping("/add/role")
     public String handleAddRole(@Valid @ModelAttribute("addRoleForm") AddRoleForm addRoleForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()){
-            addRoleForm.setAllRights(rightService.getAllRights());
+            addRoleForm.setAllRights(rightService.getAllActiveRights());
             return "/addRole";
         }
         roleService.addRole(addRoleForm);
@@ -73,6 +73,8 @@ public class RoleController {
 		addRoleForm.setRoleName(role.getRoleName());
 		addRoleForm.setDescription(role.getDescription());
 		//addRoleForm.setRightIds(rightIds);
+		addRoleForm.setRecordId(role.getRoleId());
+		addRoleForm.setAllRights(rightService.getAllActiveRights());
 		
 		return new ModelAndView("editRole", "addRoleForm", addRoleForm);
 	}
@@ -83,7 +85,7 @@ public class RoleController {
 			return null;
 		roleService.edit(form);
 		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
-		return "redirect:/list/reason";
+		return "redirect:/list/role";
 	}
 
 }

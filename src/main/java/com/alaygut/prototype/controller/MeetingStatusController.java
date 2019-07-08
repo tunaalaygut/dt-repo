@@ -45,7 +45,7 @@ public class MeetingStatusController {
 	@PostMapping("/add/meetingStatus")
 	public String handleAddMeetingStatus(@Valid @ModelAttribute("addMeetingStatusForm") AddMeetingStatusForm addMeetingStatusForm, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
-			addMeetingStatusForm.setAllReasons(reasonService.getAllReasons());
+			addMeetingStatusForm.setAllReasons(reasonService.getAllActiveReasons());
 			return "/addMeetingStatus";
 		}
 		meetingStatusService.addStatus(addMeetingStatusForm);
@@ -73,6 +73,8 @@ public class MeetingStatusController {
 		MeetingStatus meetingStatus = meetingStatusService.getMeetingStatus(idTransfer.getRecordId());
 		addMeetingStatusForm.setMeetingStatusName(meetingStatus.getMeetingStatusName());
 		addMeetingStatusForm.setReasonId(meetingStatus.getReason().getReasonId());
+		addMeetingStatusForm.setRecordId(meetingStatus.getMeetingStatusId());
+		addMeetingStatusForm.setAllReasons(reasonService.getAllActiveReasons());
 		
 		return new ModelAndView("editMeetingStatus", "addMeetingStatusForm", addMeetingStatusForm);
 	}
