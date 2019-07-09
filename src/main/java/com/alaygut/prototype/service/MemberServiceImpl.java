@@ -29,14 +29,16 @@ public class MemberServiceImpl implements MemberService {
     private MemberRepository memberRepository;
     private RoleRepository roleRepository;
     private LoginService loginService;
+    private RoleService roleService;
 
 
     private PasswordEncoder passwordEncoder;
 
-    public MemberServiceImpl(MemberRepository memberRepository, RoleRepository roleRepository, LoginService loginService) {
+    public MemberServiceImpl(MemberRepository memberRepository, RoleRepository roleRepository, LoginService loginService, RoleService roleService) {
         this.memberRepository = memberRepository;
         this.roleRepository = roleRepository;
         this.loginService = loginService;
+        this.roleService = roleService;
     }
 
     @Override
@@ -90,7 +92,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void edit(AddMemberForm addMemberForm) {
     	Member member = memberRepository.findById(addMemberForm.getRecordId()).orElse(null);
-    	Role role = roleRepository.findById(addMemberForm.getRecordId()).orElse(null);
+    	Role role = roleRepository.findById(addMemberForm.getRoleId()).orElse(null);
     	//Login login =
     	member.setFirstName(addMemberForm.getFirstName());
     	member.setLastName(addMemberForm.getLastName());
@@ -98,8 +100,24 @@ public class MemberServiceImpl implements MemberService {
     	member.setPhone(addMemberForm.getPhone());
     	member.setRole(role);
     	//member.setLogin(login);
+        member.setUpdater(memberRepository.findById(addMemberForm.getUpdaterId()).orElse(null));
     	
     	memberRepository.save(member);
+    }
+
+    @Override
+    public AddMemberForm getEditForm(Long memberId) {
+        Member member = getMember(memberId);
+        AddMemberForm addMemberForm = new AddMemberForm();
+
+        addMemberForm.setRecordId(member.getMemberId());
+        addMemberForm.setFirstName(member.getFirstName());
+        addMemberForm.setLastName(member.getLastName());
+        addMemberForm.setEmail(member.getEmail());
+        addMemberForm.setPhone(member.getPhone());
+        addMemberForm.setRoleId(member.getRole().getRoleId());
+        addMemberForm.setAllRoles(roleService.getAllActiveRoles());
+        return addMemberForm;
     }
 
     @Override

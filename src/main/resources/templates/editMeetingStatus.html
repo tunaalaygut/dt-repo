@@ -23,9 +23,10 @@
                         <div th:each="r : *{allReasons}" th:switch="${addMeetingStatusForm.reasonId}">
             			<span th:case="${r.reasonId}"><option th:text="${r?.reasonName}" th:value = "${addMeetingStatusForm.reasonId}" selected></option></span>
                           <option th:text="${r?.reasonName}" th:value = "${r?.reasonId}"></option>
-                        </div>                                                       	
+                        </div>
                    </select>
                 </div>
+                 <div th:replace="fragments/fragments :: updaterIdInput"></div>
                  <div th:replace="fragments/fragments :: successMessage"></div>
 
                  <div th:if="${#fields.hasErrors('meetingStatusName')}" th:errors="*{meetingStatusName}" class="alert alert-danger alert-dismissible fade show" role="alert">

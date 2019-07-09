@@ -11,4 +11,5 @@ public interface MeetingTypeService {
 	MeetingType getMeetingType(Long meetingTypeId);
 	void deactivate(IDTransfer idTransfer);
 	void edit(AddMeetingTypeForm addMeetingTypeForm);
+	AddMeetingTypeForm getEditForm(Long meetingTypeId);
 }

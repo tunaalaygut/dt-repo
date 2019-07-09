@@ -55,7 +55,20 @@ public class RightServiceImpl implements RightService{
     	Right right = rightRepository.findById(addRightForm.getRecordId()).orElse(null);
     	right.setRightName(addRightForm.getRightName());
     	right.setDescription(addRightForm.getDescription());
+        right.setUpdater(memberRepository.findById(addRightForm.getUpdaterId()).orElse(null));
     	
     	rightRepository.save(right);
+    }
+
+    @Override
+    public AddRightForm getEditForm(Long rightId) {
+        Right right = getRight(rightId);
+        AddRightForm addRightForm = new AddRightForm();
+
+        addRightForm.setRecordId(right.getRightId());
+        addRightForm.setRightName(right.getRightName());
+        addRightForm.setDescription(right.getDescription());
+
+        return addRightForm;
     }
 }

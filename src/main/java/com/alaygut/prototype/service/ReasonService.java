@@ -11,5 +11,6 @@ public interface ReasonService {
 	Reason getReason(Long reasonId);
 	void deactivate(IDTransfer idTransfer);
 	void edit(AddReasonForm addReasonForm);
+	AddReasonForm getEditForm(Long reasonId);
 	
 }

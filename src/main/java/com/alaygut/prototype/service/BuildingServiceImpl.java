@@ -56,7 +56,20 @@ public class BuildingServiceImpl implements BuildingService {
     	Building building = buildingRepository.findById(addBuildingForm.getRecordId()).orElse(null);
     	building.setBuildingName(addBuildingForm.getBuildingName());
     	building.setBuildingAddr(addBuildingForm.getBuildingAddr());
+        building.setUpdater(memberRepository.findById(addBuildingForm.getUpdaterId()).orElse(null));
     	
     	buildingRepository.save(building);
+    }
+
+    @Override
+    public AddBuildingForm getEditForm(Long buildingId) {
+        Building building = getBuilding(buildingId);
+        AddBuildingForm addBuildingForm = new AddBuildingForm();
+
+        addBuildingForm.setRecordId(building.getBuildingId());
+        addBuildingForm.setBuildingName(building.getBuildingName());
+        addBuildingForm.setBuildingAddr(building.getBuildingAddr());
+
+        return addBuildingForm;
     }
 }

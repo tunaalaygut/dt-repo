@@ -40,10 +40,12 @@
                         <div class="form-group">
                             <label for="roleSelectMenu">Rol:</label>
                             <select class="custom-select" id="roleSelectMenu" th:field="*{roleId}">
-                            	<div th:each="r : *{allRoles}" th:switch="${addMemberForm.roleId}">
-            						<span th:case="${r.roleId}"><option th:text="${r?.roleName}" th:value = "${addMemberForm.roleId}" selected></option></span>
-                                	<option th:text="${r?.roleName}" th:value = "${r?.roleId}"></option>
-                                </div>                                                       	
+                                <div th:each="r : *{allRoles}">
+                                    <th:block th:switch="${r.roleId}">
+                                        <div th:case="${addMemberForm.roleId}"><option selected th:text="${r?.roleName}" th:value = "${r.roleId}"></option></div>
+                                        <div th:case="*"><option th:text="${r?.roleName}" th:value = "${r?.roleId}"/></div>
+                                    </th:block>
+                                </div>
                             </select>
                         </div>
                     </div>
@@ -58,7 +60,9 @@
                     <input th:field="*{password}" type="password" class="form-control" id="passwordInput" placeholder="******">
                 </div>
                 -->
+                <div th:replace="fragments/fragments :: updaterIdInput"></div>
                 <div th:replace="fragments/fragments :: successMessage"></div>
+
                 <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 </div>
                 <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="alert alert-danger alert-dismissible fade show" role="alert">

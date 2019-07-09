@@ -61,7 +61,7 @@
                     </li>
                     <li>
                         <a th:href="@{/list/member}">Kullanıcıları Listele</a>
-                    </li>
+                    </li>gt
                 </ul>
             </li>
 
@@ -132,6 +132,9 @@
                     <li>
                         <a th:href="@{/add/roomFeature}">Toplantı Odası İçin Özellik Ekle</a>
                     </li>
+                    <li>
+                        <a th:href="@{/list/roomFeature}">Toplantı Odası Özelliklerini Listele</a>
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -156,6 +159,8 @@
 </nav>
 
 <input th:fragment="creatorIdInput" th:attr="name=creatorId" type="hidden" th:value="${#authentication.principal.memberId}" >
+
+<input th:fragment="updaterIdInput" th:attr="name=updaterId" type="hidden" th:value="${#authentication.principal.memberId}" >
 
 <button th:fragment="listEditButton" class="btn btn-sm btn-outline-info">
     <span class="fas fa-edit"/>

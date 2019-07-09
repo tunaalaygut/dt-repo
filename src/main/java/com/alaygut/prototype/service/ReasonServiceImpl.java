@@ -56,6 +56,22 @@ public class ReasonServiceImpl implements ReasonService {
 		Reason reason = reasonRepository.findById(addReasonForm.getRecordId()).orElse(null);
 		reason.setReasonName(addReasonForm.getReasonName());
 		reason.setDescription(addReasonForm.getDescription());
-		reasonRepository.save(reason);
+		reason.setUpdater(memberRepository.findById(addReasonForm.getUpdaterId()).orElse(null));
+
+			reasonRepository.save(reason);
 	}
+
+	@Override
+	public AddReasonForm getEditForm(Long reasonId) {
+		Reason reason = getReason(reasonId);
+		AddReasonForm addReasonForm = new AddReasonForm();
+
+		addReasonForm.setRecordId(reason.getReasonId());
+		addReasonForm.setReasonName(reason.getReasonName());
+		addReasonForm.setDescription(reason.getDescription());
+
+		return addReasonForm;
+	}
+
+
 }

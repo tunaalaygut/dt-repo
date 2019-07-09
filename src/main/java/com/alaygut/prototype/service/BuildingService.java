@@ -11,5 +11,6 @@ public interface BuildingService {
     Building getBuilding(Long BuildingId);
     void deactivate(IDTransfer idTransfer);
     void edit(AddBuildingForm addBuildingForm);
+    AddBuildingForm getEditForm(Long buildingId);
     
 }

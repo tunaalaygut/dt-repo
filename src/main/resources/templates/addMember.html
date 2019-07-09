@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <div th:replace="fragments/fragments :: head(content = 'Kullanıcı Ekle')"></div>
 
@@ -8,9 +8,8 @@
     <div class="wrapper">
         <div th:replace="fragments/fragments :: sidebar"></div>
         <div class="content">
-<!--
             <div th:replace="fragments/fragments :: navbar"></div>
--->
+
             <h2 class="mb-4">Kullanıcı Ekleme Formu</h2>
             <form th:action="@{/add/member}" th:object="${addMemberForm}" th:method="post" autocomplete="off">
                 <div class="row">
@@ -55,9 +54,9 @@
                     <label for="passwordInput">Şifre:</label>
                     <input th:field="*{password}" type="password" class="form-control" id="passwordInput" placeholder="******">
                 </div>
-<!--
+
                 <div th:replace="fragments/fragments :: creatorIdInput"></div>
--->
+
                 <div th:replace="fragments/fragments :: successMessage"></div>
                 <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 </div>

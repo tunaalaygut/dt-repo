@@ -11,4 +11,5 @@ public interface RightService {
     Right getRight(Long rightId);
     void deactivate(IDTransfer idTransfer);
     void edit(AddRightForm addRightForm);
+    AddRightForm getEditForm(Long rightId);
 }

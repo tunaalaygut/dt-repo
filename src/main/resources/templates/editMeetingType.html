@@ -21,6 +21,7 @@
 		                    <label for="lastNameInput">Açıklama:</label>
 		                    <textarea th:field="*{description}" th:value="${addMeetingTypeForm.description}" type="text" class="form-control" id="lastNameInput" placeholder="Açıklama" rows="3" maxlength="250" style="resize: none;"></textarea>
                		   </div>
+                 <div th:replace="fragments/fragments :: updaterIdInput"></div>
                  <div th:replace="fragments/fragments :: successMessage"></div>
 
                  <div th:if="${#fields.hasErrors('meetingTypeName')}" th:errors="*{meetingTypeName}" class="alert alert-danger alert-dismissible fade show" role="alert">

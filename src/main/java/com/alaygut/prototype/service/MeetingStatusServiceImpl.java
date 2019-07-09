@@ -18,11 +18,13 @@ public class MeetingStatusServiceImpl implements MeetingStatusService {
 	private MeetingStatusRepository meetingStatusRepository;
 	private ReasonRepository reasonRepository;
 	private MemberRepository memberRepository;
+	private ReasonService reasonService;
 
-	public MeetingStatusServiceImpl(MeetingStatusRepository meetingStatusRepository, ReasonRepository reasonRepository, MemberRepository memberRepository) {
+	public MeetingStatusServiceImpl(MeetingStatusRepository meetingStatusRepository, ReasonRepository reasonRepository, MemberRepository memberRepository, ReasonService reasonService) {
 		this.meetingStatusRepository = meetingStatusRepository;
 		this.reasonRepository = reasonRepository;
 		this.memberRepository = memberRepository;
+		this.reasonService = reasonService;
 	}
 
 	@Override
@@ -64,8 +66,21 @@ public class MeetingStatusServiceImpl implements MeetingStatusService {
 		Reason reason = reasonRepository.findById(addMeetingStatusForm.getReasonId()).orElse(null);
 		meetingStatus.setMeetingStatusName(addMeetingStatusForm.getMeetingStatusName());
 		meetingStatus.setReason(reason);
-		
-		
+		meetingStatus.setUpdater(memberRepository.findById(addMeetingStatusForm.getUpdaterId()).orElse(null));
+
 		meetingStatusRepository.save(meetingStatus)
 ;	}
+
+	@Override
+	public AddMeetingStatusForm getEditForm(Long meetingStatusId) {
+		MeetingStatus meetingStatus = getMeetingStatus(meetingStatusId);
+		AddMeetingStatusForm addMeetingStatusForm = new AddMeetingStatusForm();
+
+		addMeetingStatusForm.setRecordId(meetingStatus.getMeetingStatusId());
+		addMeetingStatusForm.setMeetingStatusName(meetingStatus.getMeetingStatusName());
+		addMeetingStatusForm.setReasonId(meetingStatus.getReason().getReasonId());
+		addMeetingStatusForm.setAllReasons(reasonService.getAllActiveReasons());
+
+		return addMeetingStatusForm;
+	}
 }

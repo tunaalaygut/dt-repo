@@ -56,15 +56,8 @@ public class BuildingController {
     }
     
     @PutMapping("/list/building")
-	public ModelAndView editBuildingPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
-		AddBuildingForm addBuildingForm = new AddBuildingForm();
-		
-		Building building = buildingService.getBuilding(idTransfer.getRecordId());
-		addBuildingForm.setBuildingName(building.getBuildingName());
-		addBuildingForm.setBuildingAddr(building.getBuildingAddr());
-		addBuildingForm.setRecordId(building.getBuildingId());
-		
-		return new ModelAndView("editBuilding", "addBuildingForm", addBuildingForm);
+	public ModelAndView editBuildingPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer) {
+		return new ModelAndView("editBuilding", "addBuildingForm", buildingService.getEditForm(idTransfer.getRecordId()));
 	}
 	
 	@PostMapping("/edit/building")
