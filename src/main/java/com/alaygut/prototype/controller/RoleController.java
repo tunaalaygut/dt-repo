@@ -66,17 +66,8 @@ public class RoleController {
     }
     
     @PutMapping("/list/role")
-	public ModelAndView editRolePage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
-		AddRoleForm addRoleForm = new AddRoleForm();
-		
-		Role role = roleService.getRole(idTransfer.getRecordId());
-		addRoleForm.setRoleName(role.getRoleName());
-		addRoleForm.setDescription(role.getDescription());
-		//addRoleForm.setRightIds(rightIds);
-		addRoleForm.setRecordId(role.getRoleId());
-		addRoleForm.setAllRights(rightService.getAllActiveRights());
-		
-		return new ModelAndView("editRole", "addRoleForm", addRoleForm);
+	public ModelAndView editRolePage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer) {
+		return new ModelAndView("editRole", "addRoleForm", roleService.getEditPage(idTransfer.getRecordId()));
 	}
 	
 	@PostMapping("/edit/role")

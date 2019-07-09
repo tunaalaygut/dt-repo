@@ -26,10 +26,18 @@
                         </div>
                     </select>
                </div>
-                 <div class="form-group">
-		            <label for="lastNameInput">Kapasite:</label>
-		            <textarea th:field="*{capacity}" th:value="${addMeetingRoomForm.capacity}" type="text" class="form-control" id="lastNameInput" placeholder="Açıklama" rows="3" maxlength="250" style="resize: none;"></textarea>
+                <div class="form-group">
+                    <label for="capacityInput">Kapasite:</label>
+                    <input th:field="*{capacity}" type="number" class="form-control" id="capacityInput" placeholder="Kapasite">
                 </div>
+
+                <div class="form-group">
+                    <label for="rightSelectMenu">Özellikler: <span class="small text-muted">(CTRL ile toplu seçim yapılabilir.)</span></label>
+                    <select multiple class="custom-select" id="rightSelectMenu" th:attr="name=roomFeatureIds">
+                        <option th:each="feature : *{allFeatures}" th:value = "${feature?.roomFeatureId}"  th:text="${feature?.featureName}" th:selected="${addMeetingRoomForm.hasFeature( __(${feature.roomFeatureId})__ )}"></option>
+                    </select>
+                </div>
+
                  <div th:replace="fragments/fragments :: successMessage"></div>
 
                  <div th:if="${#fields.hasErrors('meetingRoomName')}" th:errors="*{meetingRoomName}" class="alert alert-danger alert-dismissible fade show" role="alert">

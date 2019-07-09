@@ -11,9 +11,11 @@ public class AddRoleForm extends FormBase  {
 
     private String description;
 
-    private List<Long> rightIds;
+    private List<Long> rightIds;        //selected in the add form.
 
-    private Iterable<Right> allRights;
+    private Iterable<Right> allRights;  //in the database.
+
+    private Iterable<Right> roleRights; //selected role's rights. carried to the edit page.
 
     public String getRoleName() {
         return roleName;
@@ -45,5 +47,23 @@ public class AddRoleForm extends FormBase  {
 
     public void setAllRights(Iterable<Right> allRights) {
         this.allRights = allRights;
+    }
+
+    public Iterable<Right> getRoleRights() {
+        return roleRights;
+    }
+
+    public void setRoleRights(Iterable<Right> roleRights) {
+        this.roleRights = roleRights;
+    }
+
+    public boolean hasRight(Long rightId){
+        boolean contains = false;
+        for (Right r: roleRights) {
+            if (r.getRightId() == rightId)
+                contains = true;
+        }
+
+        return contains;
     }
 }
