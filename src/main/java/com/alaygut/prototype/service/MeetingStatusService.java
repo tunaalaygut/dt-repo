@@ -11,4 +11,6 @@ public interface MeetingStatusService {
 	MeetingStatus getMeetingStatus(Long meetingStatusId);
 	void deactivate(IDTransfer idTransfer);
 	void edit(AddMeetingStatusForm addMeetingStatusForm);
+	AddMeetingStatusForm getEditForm(Long meetingStatusId);
+
 }

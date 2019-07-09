@@ -55,15 +55,8 @@ public class ReasonController {
 	}
 	
 	@PutMapping("/list/reason")
-	public ModelAndView editReasonPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
-		AddReasonForm addReasonForm = new AddReasonForm();
-		
-		Reason reason = reasonService.getReason(idTransfer.getRecordId());
-		addReasonForm.setReasonName(reason.getReasonName());
-		addReasonForm.setDescription(reason.getDescription());
-		addReasonForm.setRecordId(reason.getReasonId());
-		
-		return new ModelAndView("editReason", "addReasonForm", addReasonForm);
+	public ModelAndView editReasonPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer) {
+		return new ModelAndView("editReason", "addReasonForm", reasonService.getEditForm(idTransfer.getRecordId()));
 	}
 	
 	@PostMapping("/edit/reason")

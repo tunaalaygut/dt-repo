@@ -56,16 +56,9 @@ public class MeetingTypeController {
 	}
 	
 	@PutMapping("/list/meetingType")
-	public ModelAndView editMeetingTypePage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
-		AddMeetingTypeForm addMeetingTypeForm = new AddMeetingTypeForm();
-		
-		MeetingType meetingType = meetingTypeService.getMeetingType(idTransfer.getRecordId());
-		addMeetingTypeForm.setMeetingTypeName(meetingType.getMeetingTypeName());
-		addMeetingTypeForm.setDescription(meetingType.getDescription());
-		addMeetingTypeForm.setRecordId(meetingType.getMeetingTypeId());
-		
-		return new ModelAndView("editMeetingType", "addMeetingTypeForm", addMeetingTypeForm);
-	}
+	public ModelAndView editMeetingTypePage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer) {
+		return new ModelAndView("editMeetingType", "addMeetingTypeForm", meetingTypeService.getEditForm(idTransfer.getRecordId()));
+}
 	
 	@PostMapping("/edit/meetingType")
 	public String submitMeetingTypeEdit(@Valid @ModelAttribute("AddMeetingTypeForm") AddMeetingTypeForm form, BindingResult bindingResult) {

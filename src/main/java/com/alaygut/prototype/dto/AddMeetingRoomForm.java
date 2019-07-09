@@ -19,6 +19,8 @@ public class AddMeetingRoomForm extends FormBase  {
 
 	private Iterable<RoomFeature> allFeatures;
 
+	private Iterable<RoomFeature> meetingRoomFeatures;
+
 	public String getMeetingRoomName() {
 		return meetingRoomName;
 	}
@@ -65,5 +67,22 @@ public class AddMeetingRoomForm extends FormBase  {
 
 	public void setRoomFeatureIds(List<Long> roomFeatureIds) {
 		this.roomFeatureIds = roomFeatureIds;
+	}
+
+	public Iterable<RoomFeature> getMeetingRoomFeatures() {
+		return meetingRoomFeatures;
+	}
+
+	public void setMeetingRoomFeatures(Iterable<RoomFeature> meetingRoomFeatures) {
+		this.meetingRoomFeatures = meetingRoomFeatures;
+	}
+
+	public boolean hasFeature(Long featureId){
+		for (RoomFeature f: this.getMeetingRoomFeatures()) {
+			if (f.getRoomFeatureId() == featureId)
+				return true;
+		}
+
+		return false;
 	}
 }

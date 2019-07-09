@@ -20,11 +20,13 @@ public class RoleServiceImpl implements RoleService{
     private RoleRepository roleRepository;
     private RightRepository rightRepository;
     private MemberRepository memberRepository;
+    private RightService rightService;
 
-    public RoleServiceImpl(RoleRepository roleRepository, RightRepository rightRepository, MemberRepository memberRepository) {
+    public RoleServiceImpl(RoleRepository roleRepository, RightRepository rightRepository, MemberRepository memberRepository, RightService rightService) {
         this.roleRepository = roleRepository;
         this.rightRepository = rightRepository;
         this.memberRepository = memberRepository;
+        this.rightService = rightService;
     }
 
     @Override
@@ -74,7 +76,35 @@ public class RoleServiceImpl implements RoleService{
     	Role role = roleRepository.findById(addRoleForm.getRecordId()).orElse(null);	
     	role.setRoleName(addRoleForm.getRoleName());
     	role.setDescription(addRoleForm.getDescription());
+
+        Iterable<Right> selectedRights = rightRepository.findAllById(addRoleForm.getRightIds());
+        Set<Right> rights = new HashSet<>();
+
+        for (Right right:selectedRights){
+            rights.add((rightRepository.findById(right.getRightId())).orElse(null) );
+        }
+
+    	role.setRights(rights);
     	
     	roleRepository.save(role);
+    }
+
+    @Override
+    public AddRoleForm getEditPage(Long roleId) {
+        AddRoleForm addRoleForm = new AddRoleForm();
+
+        Role role = this.getRole(roleId);
+        addRoleForm.setRoleName(role.getRoleName());
+        addRoleForm.setDescription(role.getDescription());
+        addRoleForm.setRoleRights(this.getAllRights(roleId));
+        addRoleForm.setRecordId(role.getRoleId());
+        addRoleForm.setAllRights(rightService.getAllActiveRights());
+
+        return addRoleForm;
+    }
+
+    public Iterable<Right> getAllRights(Long roleId){
+        Role role = getRole(roleId);
+        return rightRepository.findAllByRoles(role);
     }
 }

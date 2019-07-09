@@ -63,20 +63,8 @@ public class MemberController {
     }
     
     @PutMapping("/list/member")
-    public ModelAndView editMemberPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
-    	AddMemberForm addMemberForm = new AddMemberForm();
-		
-		Member member = memberService.getMember(idTransfer.getRecordId());
-
-		addMemberForm.setFirstName(member.getFirstName());
-		addMemberForm.setLastName(member.getLastName());
-		addMemberForm.setEmail(member.getEmail());
-		addMemberForm.setPhone(member.getPhone());
-		addMemberForm.setRoleId(member.getRole().getRoleId());
-		addMemberForm.setRecordId(member.getMemberId());
-		addMemberForm.setAllRoles(roleService.getAllActiveRoles());
-		
-		return new ModelAndView("editmember", "addMemberForm", addMemberForm);
+    public ModelAndView editMemberPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer) {
+		return new ModelAndView("editMember", "addMemberForm", memberService.getEditForm(idTransfer.getRecordId()));
     }
     
     @PostMapping("/edit/member")

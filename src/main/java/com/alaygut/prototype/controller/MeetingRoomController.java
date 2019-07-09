@@ -72,18 +72,9 @@ public class MeetingRoomController {
 	}
 	
 	@PutMapping("/list/meetingRoom")
-	public ModelAndView editMeetingRoomPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
-		AddMeetingRoomForm addMeetingRoomForm = new AddMeetingRoomForm();
-		
-		MeetingRoom meetingRoom = meetingRoomService.getMeetingRoom(idTransfer.getRecordId());
-		addMeetingRoomForm.setMeetingRoomName(meetingRoom.getMeetingRoomName());
-		addMeetingRoomForm.setCapacity(meetingRoom.getCapacity());
-		addMeetingRoomForm.setBuildingId(meetingRoom.getBuilding().getBuildingId());
-		addMeetingRoomForm.setRecordId(meetingRoom.getMeetingRoomId());
-		addMeetingRoomForm.setAllBuildings(buildingService.getAllActiveBuildings());
-		addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllActiveRoomFeatures());
-		
-		return new ModelAndView("editMeetingRoom", "addMeetingRoomForm", addMeetingRoomForm);
+	public ModelAndView editMeetingRoomPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer) {
+		return new ModelAndView("editMeetingRoom", "addMeetingRoomForm", meetingRoomService.getEditPage(idTransfer.getRecordId()));
+
 	}
 	
 	@PostMapping("/edit/meetingRoom")

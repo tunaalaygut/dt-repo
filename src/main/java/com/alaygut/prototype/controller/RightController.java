@@ -55,15 +55,8 @@ public class RightController {
     }
     
     @PutMapping("/list/right")
-	public ModelAndView editRightPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
-		AddRightForm addRightForm = new AddRightForm();
-		
-		Right right = rightService.getRight(idTransfer.getRecordId());
-		addRightForm.setRightName(right.getRightName());
-		addRightForm.setDescription(right.getDescription());
-		addRightForm.setRecordId(right.getRightId());
-		
-		return new ModelAndView("editRight", "addRightForm", addRightForm);
+	public ModelAndView editRightPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer) {
+		return new ModelAndView("editRight", "addRightForm", rightService.getEditForm(idTransfer.getRecordId()));
 	}
 	
 	@PostMapping("/edit/right")

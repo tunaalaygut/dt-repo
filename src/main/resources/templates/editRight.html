@@ -12,15 +12,16 @@
         <div class="content">
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Yetki Değiştirme Formu</h2>
-            <form th:action="@{/edit/right}" th:object="${addReasonForm}" th:method="post" autocomplete="off">
+            <form th:action="@{/edit/right}" th:object="${addRightForm}" th:method="post" autocomplete="off">
                 <div class="form-group">
                     <label for="firstNameInput">Yetki Adı:</label>
-                   <input th:field="*{rightName}" th:value="${addRightForm.reasonName}" type="text" class="form-control" id="firstNameInput" placeholder="Yetki">
+                   <input th:field="*{rightName}" th:value="${addRightForm.rightName}" type="text" class="form-control" id="firstNameInput" placeholder="Yetki">
                </div>
                         <div class="form-group">
 		                    <label for="lastNameInput">Açıklama:</label>
 		                    <textarea th:field="*{description}" th:value="${addRightForm.description}" type="text" class="form-control" id="lastNameInput" placeholder="Açıklama" rows="3" maxlength="250" style="resize: none;"></textarea>
                		   </div>
+                 <div th:replace="fragments/fragments :: updaterIdInput"></div>
                  <div th:replace="fragments/fragments :: successMessage"></div>
 
                  <div th:if="${#fields.hasErrors('rightName')}" th:errors="*{rightName}" class="alert alert-danger alert-dismissible fade show" role="alert">
