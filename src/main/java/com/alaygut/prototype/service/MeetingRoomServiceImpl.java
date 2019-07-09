@@ -1,6 +1,6 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.*;
+import com.alaygut.prototype.domain.*; 
 import com.alaygut.prototype.repository.BuildingRepository;
 import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.repository.RoomFeatureRepository;
@@ -54,6 +54,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 
 	@Override
 	public Iterable<MeetingRoom> getAllActiveRooms() {
+		
 		return meetingRoomRepository.findAllByStateEquals(RecordState.ACTIVE);
 	}
 	
@@ -73,8 +74,8 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	@Override
 	public void edit(AddMeetingRoomForm addMeetingRoomForm) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findById(addMeetingRoomForm.getRecordId()).orElse(null);
-		Building building = buildingRepository.findById(addMeetingRoomForm.getRecordId()).orElse(null);
-		//RoomFeature roomFeature = roomFeatureRepository.findById(addMeetingRoomForm.getRecordId()).orElse(null);
+		Building building = buildingRepository.findById(addMeetingRoomForm.getBuildingId()).orElse(null);
+		//RoomFeature roomFeature = roomFeatureRepository.findById(addMeetingRoomForm.getRoomFeatureId()).orElse(null);
 		meetingRoom.setMeetingRoomName(addMeetingRoomForm.getMeetingRoomName());
 		meetingRoom.setBuilding(building);
 		meetingRoom.setCapacity(addMeetingRoomForm.getCapacity());

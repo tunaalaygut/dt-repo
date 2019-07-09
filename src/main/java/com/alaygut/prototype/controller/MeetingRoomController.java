@@ -37,8 +37,8 @@ public class MeetingRoomController {
 	@GetMapping("/add/meetingRoom")
 	public ModelAndView addMeetingRoomPage() {
 		AddMeetingRoomForm addMeetingRoomForm = new AddMeetingRoomForm();
-		addMeetingRoomForm.setAllBuildings(buildingService.getAllBuildings());
-		addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllFeatures());
+		addMeetingRoomForm.setAllBuildings(buildingService.getAllActiveBuildings());
+		addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllActiveRoomFeatures());
 		return new ModelAndView(
 				"addMeetingRoom",
 				"addMeetingRoomForm",
@@ -50,7 +50,7 @@ public class MeetingRoomController {
 	public String handleAddMeetingRoom(@Valid @ModelAttribute("addMeetingRoomForm") AddMeetingRoomForm addMeetingRoomForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
 			addMeetingRoomForm.setAllBuildings(buildingService.getAllActiveBuildings());
-			addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllFeatures());
+			addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllActiveRoomFeatures());
 			return "/addMeetingRoom";
 		}
 		meetingRoomService.addRoom(addMeetingRoomForm);
@@ -81,7 +81,7 @@ public class MeetingRoomController {
 		addMeetingRoomForm.setBuildingId(meetingRoom.getBuilding().getBuildingId());
 		addMeetingRoomForm.setRecordId(meetingRoom.getMeetingRoomId());
 		addMeetingRoomForm.setAllBuildings(buildingService.getAllActiveBuildings());
-		addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllFeatures());
+		addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllActiveRoomFeatures());
 		
 		return new ModelAndView("editMeetingRoom", "addMeetingRoomForm", addMeetingRoomForm);
 	}
