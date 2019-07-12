@@ -29,9 +29,8 @@
                  		<div th:replace="fragments/fragments :: listDeleteButton"></div>
                  		<input th:attr="name=recordId" type="hidden" th:value="${meetingStatus.meetingStatusId}">
                  </form>
-                 <form th:action="@{/list/meetingStatus}" th:object="${idTransfer}" th:method="put" class="editForm">
+                 <form th:action="@{/edit/meetingStatus/__${meetingStatus.meetingStatusId}__}" th:object="${idTransfer}" th:method="get" class="editForm">
 	                <button th:replace="fragments/fragments :: listEditButton"></button>
-	                <input th:attr="name=recordId" type="hidden" th:value="${meetingStatus.meetingStatusId}">
 	             </form>
               </td>
             </tr>

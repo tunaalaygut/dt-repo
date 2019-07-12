@@ -1,19 +1,22 @@
 package com.alaygut.prototype.controller;
 
-import javax.validation.Valid;
+import java.util.List;
+
+import javax.validation.Valid;  
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alaygut.prototype.domain.MeetingStatus;
-import com.alaygut.prototype.domain.Reason;
+
 import com.alaygut.prototype.dto.AddMeetingStatusForm;
-import com.alaygut.prototype.dto.AddReasonForm;
+
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MeetingStatusService;
 import com.alaygut.prototype.service.ReasonService;
@@ -60,23 +63,26 @@ public class MeetingStatusController {
 	
 	@PostMapping("/list/meetingStatus")
 	public String handleMeetingStatusDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
-		if(bindingResult.hasErrors())
-			return null;
 		meetingStatusService.deactivate(idTransfer);
 		return "redirect:/list/meetingStatus";
 	}
 	
-	@PutMapping("/list/meetingStatus")
-	public ModelAndView editMeetingStatusPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer) {
-		System.out.println("********" +meetingStatusService.getEditForm(idTransfer.getRecordId()) + "**********");
-		return new ModelAndView("editMeetingStatus", "addMeetingStatusForm", meetingStatusService.getEditForm(idTransfer.getRecordId()));
-
+	@GetMapping("/edit/meetingStatus/{id}")
+	public ModelAndView editMeetingStatusPage(@PathVariable Long id) {
+		return new ModelAndView("editMeetingStatus", "addMeetingStatusForm", meetingStatusService.getEditForm(id));
 	}
 	
-	@PostMapping("/edit/meetingStatus")
-	public String submitReasonEdit(@Valid @ModelAttribute("AddMeetingStatusForm") AddMeetingStatusForm form, BindingResult bindingResult) {
-		if(bindingResult.hasErrors())
-			return null;
+	@PostMapping("/edit/meetingStatus/{id}")
+	public String submitReasonEdit(@Valid @ModelAttribute("addMeetingStatusForm") AddMeetingStatusForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()){
+            List<ObjectError> error = bindingResult.getAllErrors();
+
+            for (ObjectError e : error){
+                System.out.println(e.toString());
+            }
+
+            return "editMeetingStatus";
+        }
 		meetingStatusService.edit(form);
 		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
 		return "redirect:/list/meetingStatus";

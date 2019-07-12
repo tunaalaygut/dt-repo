@@ -1,18 +1,20 @@
 package com.alaygut.prototype.controller;
 
-import javax.validation.Valid; 
+import java.util.List;
+
+import javax.validation.Valid;  
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alaygut.prototype.domain.MeetingRoom;
-import com.alaygut.prototype.domain.MeetingType;
-import com.alaygut.prototype.dto.AddMeetingRoomForm;
+
 import com.alaygut.prototype.dto.AddMeetingTypeForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MeetingTypeService;
@@ -48,22 +50,27 @@ public class MeetingTypeController {
 	
 	@PostMapping("/list/meetingType")
 	public String handleMeetingTypeDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
-		if(bindingResult.hasErrors())
-			return null;
 		meetingTypeService.deactivate(idTransfer);
 		return "redirect:/list/meetingType";
 		
 	}
 	
-	@PutMapping("/list/meetingType")
-	public ModelAndView editMeetingTypePage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer) {
-		return new ModelAndView("editMeetingType", "addMeetingTypeForm", meetingTypeService.getEditForm(idTransfer.getRecordId()));
+	@GetMapping("/edit/meetingType/{id}")
+	public ModelAndView editMeetingTypePage(@PathVariable Long id) {
+		return new ModelAndView("editMeetingType", "addMeetingTypeForm", meetingTypeService.getEditForm(id));
 }
 	
-	@PostMapping("/edit/meetingType")
-	public String submitMeetingTypeEdit(@Valid @ModelAttribute("AddMeetingTypeForm") AddMeetingTypeForm form, BindingResult bindingResult) {
-		if(bindingResult.hasErrors())
-			return null;
+	@PostMapping("/edit/meetingType/{id}")
+	public String submitMeetingTypeEdit(@Valid @ModelAttribute("addMeetingTypeForm") AddMeetingTypeForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()){
+            List<ObjectError> error = bindingResult.getAllErrors();
+
+            for (ObjectError e : error){
+                System.out.println(e.toString());
+            }
+
+            return "editMeetingType";
+        }
 		meetingTypeService.edit(form);
 		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
 		return "redirect:/list/meetingType";

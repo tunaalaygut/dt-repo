@@ -12,7 +12,9 @@
         <div class="content">
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Toplantı Sebebi Değiştirme Formu</h2>
-            <form th:action="@{/edit/reason}" th:object="${addReasonForm}" th:method="post" autocomplete="off">
+             
+             <form th:action="@{__${#httpServletRequest.requestURL}__}" th:object="${addReasonForm}" th:method="post" id="reasonEditForm" autocomplete="off">
+                   	
                 <div class="form-group">
                     <label for="firstNameInput">Sebep Adı:</label>
                    <input th:field="*{reasonName}" th:value="${addReasonForm.reasonName}" type="text" class="form-control" id="firstNameInput" placeholder="Sebep">
@@ -21,6 +23,9 @@
 		                    <label for="lastNameInput">Açıklama:</label>
 		                    <textarea th:field="*{description}" th:value="${addReasonForm.description}" type="text" class="form-control" id="lastNameInput" placeholder="Açıklama" rows="3" maxlength="250" style="resize: none;"></textarea>
                		   </div>
+               		   
+                <input th:attr="name=recordId" type="hidden" th:value="${addReasonForm.recordId}">
+                
                 <div th:replace="fragments/fragments :: updaterIdInput"></div>
                  <div th:replace="fragments/fragments :: successMessage"></div>
 
@@ -28,7 +33,7 @@
                 </div>
                  <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 </div>
-                <input th:attr="name=recordId" type="hidden" th:value="${addReasonForm.recordId}">
+
                 <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Toplantı Sebebini Değiştir</button>
             </form>
         </div>

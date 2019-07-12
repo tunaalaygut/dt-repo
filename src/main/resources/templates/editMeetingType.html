@@ -12,7 +12,9 @@
         <div class="content">
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Toplantı Türü Değiştirme Formu</h2>
-            <form th:action="@{/edit/meetingType}" th:object="${addMeetingTypeForm}" th:method="post" autocomplete="off">
+     	   
+             <form th:action="@{__${#httpServletRequest.requestURL}__}" th:object="${addMeetingTypeForm}" th:method="post" id="meetingTypeEditForm" autocomplete="off">
+               
                 <div class="form-group">
                     <label for="firstNameInput">Sebep Adı:</label>
                    <input th:field="*{meetingTypeName}" th:value="${addMeetingTypeForm.meetingTypeName}" type="text" class="form-control" id="firstNameInput" placeholder="Toplantı Türü">
@@ -21,6 +23,9 @@
 		                    <label for="lastNameInput">Açıklama:</label>
 		                    <textarea th:field="*{description}" th:value="${addMeetingTypeForm.description}" type="text" class="form-control" id="lastNameInput" placeholder="Açıklama" rows="3" maxlength="250" style="resize: none;"></textarea>
                		   </div>
+               		   
+               	 <input th:attr="name=recordId" type="hidden" th:value="${addMeetingTypeForm.recordId}">
+               		   
                  <div th:replace="fragments/fragments :: updaterIdInput"></div>
                  <div th:replace="fragments/fragments :: successMessage"></div>
 
