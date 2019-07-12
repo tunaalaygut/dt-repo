@@ -28,19 +28,17 @@ public class MemberController {
 
     @GetMapping("/add/member")
     public ModelAndView addMemberPage(){
-        AddMemberForm addMemberForm = new AddMemberForm();
-        addMemberForm.setAllRoles(roleService.getAllActiveRoles());
         return new ModelAndView(
                 "addMember",
                 "addMemberForm",
-                addMemberForm
+                memberService.getAddMemberForm()
         );
     }
 
     @PostMapping("/add/member")
     public String handleAddMember(@Valid @ModelAttribute("addMemberForm") AddMemberForm addMemberForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()) {
-            addMemberForm.setAllRoles(roleService.getAllActiveRoles());
+            memberService.fixForm(addMemberForm);
             return "/addMember";
         }
         memberService.addMember(addMemberForm);
@@ -55,15 +53,16 @@ public class MemberController {
     
     @PostMapping("/list/member")
     public String handleMemberDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
-    	if(bindingResult.hasErrors())
-    		return null;
     	memberService.deactivate(idTransfer);
     	return "redirect:/list/member";
     }
 
     @GetMapping("/edit/member/{id}")
     public ModelAndView editMemberPage(@PathVariable Long id) {
-        return new ModelAndView("editMember", "addMemberForm", memberService.getEditForm(id));
+        return new ModelAndView(
+                "editMember",
+                "addMemberForm",
+                memberService.getEditForm(id));
     }
 
     @PostMapping("/edit/member/{id}")
@@ -83,9 +82,8 @@ public class MemberController {
             memberService.edit(form);
         }
         catch (Exception e){
-            bindingResult.addError(new FieldError("addMemberForm", "email", "Email ** mevcut."));
-            bindingResult.addError(new FieldError("addMemberForm", "username", "Kullanıcı ** adı mevcut."));
-            form.setAllRoles(roleService.getAllActiveRoles());
+            memberService.addErrors(form, bindingResult);
+            memberService.fixForm(form);
             return "editMember";
         }
 

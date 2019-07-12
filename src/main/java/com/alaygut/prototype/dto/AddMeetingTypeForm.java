@@ -4,7 +4,7 @@ import javax.validation.constraints.Size;
 
 public class AddMeetingTypeForm extends FormBase  {
 
-	@Size(min = 5, max = 50)
+	@Size(min = 5, max = 50, message ="Tür ismi [5-30] karakter uzunluğunda olmalıdır.")
 	private String meetingTypeName;
 
 	@Size(max = 200)

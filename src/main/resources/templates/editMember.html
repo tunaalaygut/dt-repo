@@ -11,22 +11,24 @@
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Kullanıcı Değiştirme Formu</h2>
             <form th:action="@{__${#httpServletRequest.requestURL}__}" th:object="${addMemberForm}" th:method="post"  id="memberEditForm" autocomplete="off">
-
+                <div class="row">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="firstNameInput">İsim:</label>
                             <input th:attr="name=firstName" th:value="${addMemberForm.firstName}" type="text" class="form-control" id="firstNameInput" placeholder="İsim">
-
                         </div>
+                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="lastNameInput">Soyisim:</label>
                             <input th:field="*{lastName}" th:value="${addMemberForm.lastName}" type="text" class="form-control" id="lastNameInput" placeholder="Soyisim">
                         </div>
+                    </div>
                 </div>
                 <input th:attr="name=originalEmail" type="hidden" th:value="${addMemberForm.email}">
                 <div class="form-group">
                     <label for="newEmail">E-mail:</label>
-                    <input th:attr="name = newEmail" th:value="${addMemberForm.email}" type="text" class="form-control" id="newEmail" placeholder="Email">
+                    <input th:attr="name=newEmail" th:value="${addMemberForm.email}" type="text" class="form-control" id="newEmail" placeholder="Email">
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -49,7 +51,7 @@
 
                 <div class="form-group">
                     <label for="newUsername">Kullanıcı Adı:</label>
-                    <input th:attr="name = newUsername" th:value="${addMemberForm.username}" type="text" class="form-control" id="newUsername" placeholder="Kullanıcı Adı">
+                    <input th:attr="name=newUsername" th:value="${addMemberForm.username}" type="text" class="form-control" id="newUsername" placeholder="Kullanıcı Adı">
                 </div>
 
                 <div th:replace="fragments/fragments :: updaterIdInput"></div>

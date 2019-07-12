@@ -5,6 +5,7 @@ import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.repository.BuildingRepository;
 import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.repository.RoomFeatureRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.dto.AddMeetingRoomForm;
 import com.alaygut.prototype.dto.IDTransfer;
@@ -17,39 +18,40 @@ import java.util.Set;
 public class MeetingRoomServiceImpl implements MeetingRoomService {
 
 	private MeetingRoomRepository meetingRoomRepository;
-	private BuildingRepository buildingRepository;
-	private RoomFeatureRepository roomFeatureRepository;
-	private MemberRepository memberRepository;
+
+	@Autowired
+	RoomFeatureRepository roomFeatureRepository;
 
 	private BuildingService buildingService;
 	private RoomFeatureService roomFeatureService;
+	private MemberService memberService;
 
-	public MeetingRoomServiceImpl(MeetingRoomRepository meetingRoomRepository, BuildingRepository buildingRepository, RoomFeatureRepository roomFeatureRepository, MemberRepository memberRepository, BuildingService buildingService, RoomFeatureService roomFeatureService) {
+	public MeetingRoomServiceImpl(MeetingRoomRepository meetingRoomRepository, BuildingService buildingService, RoomFeatureService roomFeatureService, MemberService memberService) {
 		this.meetingRoomRepository = meetingRoomRepository;
-		this.buildingRepository = buildingRepository;
-		this.roomFeatureRepository = roomFeatureRepository;
-		this.memberRepository = memberRepository;
 		this.buildingService = buildingService;
 		this.roomFeatureService = roomFeatureService;
+		this.memberService = memberService;
 	}
 
 	@Override
 	public void addRoom(AddMeetingRoomForm addMeetingRoomForm) {
-		Optional<Building> building = buildingRepository.findById(addMeetingRoomForm.getBuildingId());
+		Building building = buildingService.getBuilding(addMeetingRoomForm.getBuildingId());
 
 		Iterable<RoomFeature> selectedFeatures = roomFeatureRepository.findAllById(addMeetingRoomForm.getRoomFeatureIds());
+		//Iterable<RoomFeature> selectedFeatures = roomFeatureService.getAllById(addMeetingRoomForm.getRoomFeatureIds()); //bunun böyle olması lazım
+
 		Set<RoomFeature> roomFeatures = new HashSet<>();
 
 		for (RoomFeature roomFeature : selectedFeatures) {
-			roomFeatures.add((roomFeatureRepository.findById(roomFeature.getRoomFeatureId())).orElse(null));
+			roomFeatures.add(roomFeatureService.getRoomFeature(roomFeature.getRoomFeatureId()));
 		}
 		MeetingRoom meetingRoom = new MeetingRoom(
 				addMeetingRoomForm.getMeetingRoomName(),
-				building.orElse(null),
+				building,
 				addMeetingRoomForm.getCapacity(),
 				roomFeatures
 				);
-		meetingRoom.setCreator(memberRepository.findById(addMeetingRoomForm.getCreatorId()).orElse(null));
+		meetingRoom.setCreator(memberService.getMember(addMeetingRoomForm.getCreatorId()));
 		meetingRoomRepository.save(meetingRoom);
 	}
 
@@ -80,7 +82,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	@Override
 	public void edit(AddMeetingRoomForm addMeetingRoomForm) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findById(addMeetingRoomForm.getRecordId()).orElse(null);
-		Building building = buildingRepository.findById(addMeetingRoomForm.getBuildingId()).orElse(null);
+		Building building = buildingService.getBuilding(addMeetingRoomForm.getBuildingId());
 
 		meetingRoom.setMeetingRoomName(addMeetingRoomForm.getMeetingRoomName());
 		meetingRoom.setBuilding(building);
@@ -94,13 +96,13 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 		}
 
 		meetingRoom.setRoomFeatureSet(roomFeatures);
-		meetingRoom.setUpdater(memberRepository.findById(addMeetingRoomForm.getUpdaterId()).orElse(null));
+		meetingRoom.setUpdater(memberService.getMember(addMeetingRoomForm.getUpdaterId()));
 		
 		meetingRoomRepository.save(meetingRoom);
 	}
 
 	@Override
-	public AddMeetingRoomForm getEditPage(Long meetingRoomId) {
+	public AddMeetingRoomForm getEditPage(Long meetingRoomId) { //returns a dto that is pre-filled with a record's details.
 		AddMeetingRoomForm addMeetingRoomForm = new AddMeetingRoomForm();
 
 		MeetingRoom meetingRoom = this.getMeetingRoom(meetingRoomId);
@@ -123,7 +125,21 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 
 	@Override
 	public Iterable<MeetingRoom> getAllInBuilding(Long buildingId) {
-		return meetingRoomRepository.findByBuilding(buildingRepository.findById(buildingId).orElse(null));
+		return meetingRoomRepository.findByBuilding(buildingService.getBuilding(buildingId));
+	}
+
+	@Override
+	public AddMeetingRoomForm getAddMeetingRoomPage() {	//returns an empty dto.
+		AddMeetingRoomForm addMeetingRoomForm = new AddMeetingRoomForm();
+		addMeetingRoomForm.setAllBuildings(buildingService.getAllActiveBuildings());
+		addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllActiveRoomFeatures());
+		return addMeetingRoomForm;
+	}
+
+	@Override
+	public void fixAddForm(AddMeetingRoomForm addMeetingRoomForm) {
+		addMeetingRoomForm.setAllBuildings(buildingService.getAllActiveBuildings());
+		addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllActiveRoomFeatures());
 	}
 
 }

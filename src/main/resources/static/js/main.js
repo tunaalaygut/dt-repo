@@ -26,3 +26,5 @@ $(document).ready(function () {
 jQuery('a').click( function(e) {
     jQuery('.collapse').collapse('hide');
 });
+
+$(".alert").alert();

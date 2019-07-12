@@ -18,32 +18,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class MeetingRoomController {
 	
 	private MeetingRoomService meetingRoomService;
-	private BuildingService buildingService;
-	private RoomFeatureService roomFeatureService;
 
-	public MeetingRoomController(MeetingRoomService meetingRoomService, BuildingService buildingService, RoomFeatureService roomFeatureService) {
+	public MeetingRoomController(MeetingRoomService meetingRoomService) {
 		this.meetingRoomService = meetingRoomService;
-		this.buildingService = buildingService;
-		this.roomFeatureService = roomFeatureService;
 	}
 	
 	@GetMapping("/add/meetingRoom")
 	public ModelAndView addMeetingRoomPage() {
-		AddMeetingRoomForm addMeetingRoomForm = new AddMeetingRoomForm();
-		addMeetingRoomForm.setAllBuildings(buildingService.getAllActiveBuildings());
-		addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllActiveRoomFeatures());
 		return new ModelAndView(
 				"addMeetingRoom",
 				"addMeetingRoomForm",
-				addMeetingRoomForm
+				meetingRoomService.getAddMeetingRoomPage()
 		);
 	}
 	
 	@PostMapping("/add/meetingRoom")
 	public String handleAddMeetingRoom(@Valid @ModelAttribute("addMeetingRoomForm") AddMeetingRoomForm addMeetingRoomForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
-			addMeetingRoomForm.setAllBuildings(buildingService.getAllActiveBuildings());
-			addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllActiveRoomFeatures());
+			meetingRoomService.fixAddForm(addMeetingRoomForm);
 			return "/addMeetingRoom";
 		}
 		meetingRoomService.addRoom(addMeetingRoomForm);
@@ -58,8 +50,6 @@ public class MeetingRoomController {
 	
 	@PostMapping("/list/meetingRoom")
 	public String handleMeetingRoomDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
-		if(bindingResult.hasErrors())
-			return null;
 		meetingRoomService.deactivate(idTransfer);
 		return "redirect:/list/meetingRoom";
 	}
@@ -72,13 +62,12 @@ public class MeetingRoomController {
 	@PostMapping("/edit/meetingRoom/{id}")
 	public String submitMeetingRoomEdit(@Valid @ModelAttribute("addMeetingRoomForm") AddMeetingRoomForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()){
-			form.setAllBuildings(buildingService.getAllActiveBuildings());
-			form.setAllFeatures(roomFeatureService.getAllActiveRoomFeatures());
+			meetingRoomService.fixAddForm(form);
 			return "editMeetingRoom";
 		}
 
 		meetingRoomService.edit(form);
 		redirectAttributes.addFlashAttribute("successMessage", "Toplantı odası başarıyla değiştirildi.");
-		return "redirect:/edit/meetingRoom/" + form.getRecordId() ;
+		return "redirect:/list/meetingRoom";
 	}
 }

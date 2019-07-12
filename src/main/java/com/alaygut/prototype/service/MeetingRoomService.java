@@ -16,4 +16,7 @@ public interface MeetingRoomService {
 	AddMeetingRoomForm getEditPage(Long meetingRoomId);
 	Iterable<RoomFeature> getAllRoomFeatures(MeetingRoom meetingRoom);
 	Iterable<MeetingRoom> getAllInBuilding(Long buildingId);
+	AddMeetingRoomForm getAddMeetingRoomPage();
+	void fixAddForm(AddMeetingRoomForm addMeetingRoomForm);
+
 }

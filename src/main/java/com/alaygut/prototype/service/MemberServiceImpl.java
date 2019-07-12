@@ -8,20 +8,15 @@ import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.repository.LoginRepository;
 import com.alaygut.prototype.repository.MemberRepository;
-
 import com.alaygut.prototype.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.security.Principal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import java.util.Optional;
 
 @Service
@@ -139,6 +134,38 @@ public class MemberServiceImpl implements MemberService {
     	//member.setLogin(login); 	
     	loginService.addLogin(login);
     	memberRepository.save(member);
+    }
+
+    @Override
+    public AddMemberForm getAddMemberForm() {
+        AddMemberForm addMemberForm = new AddMemberForm();
+
+        addMemberForm.setAllRoles(roleService.getAllActiveRoles());
+
+        return addMemberForm;
+    }
+
+    @Override
+    public void fixForm(AddMemberForm addMemberForm) {
+        addMemberForm.setAllRoles(roleService.getAllActiveRoles());
+    }
+
+    @Override
+    public void addErrors(AddMemberForm form, BindingResult bindingResult) {
+        if (this.usernameExists(form.getNewUsername()) && !(form.getNewUsername().equals(form.getOriginalUsername())))
+            bindingResult.addError(new FieldError("addMemberForm", "username", "Kullanıcı adı mevcut."));
+        if (this.emailExists(form.getNewEmail()) && !(form.getNewEmail().equals(form.getOriginalEmail())))
+            bindingResult.addError(new FieldError("addMemberForm", "email", "E-mail mevcut."));
+    }
+
+    @Override
+    public boolean usernameExists(String username) {
+        return memberRepository.existsByLoginUsername(username);
+    }
+
+    @Override
+    public boolean emailExists(String email){
+        return memberRepository.existsByEmail(email);
     }
 
     @Override

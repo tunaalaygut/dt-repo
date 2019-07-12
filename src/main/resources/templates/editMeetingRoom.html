@@ -35,11 +35,10 @@
                 <div class="form-group">
                     <label for="rightSelectMenu">Özellikler: <span class="small text-muted">(CTRL ile toplu seçim yapılabilir.)</span></label>
                     <select multiple class="custom-select" id="rightSelectMenu" th:attr="name=roomFeatureIds">
-                        <option th:each="feature : *{allFeatures}" th:value = "${feature?.roomFeatureId}"  th:text="${feature?.featureName}" ></option>
+                        <option th:each="feature : *{allFeatures}" th:value = "${feature?.roomFeatureId}"  th:text="${feature?.featureName}" th:selected="${addMeetingRoomForm.hasFeature(__${feature.roomFeatureId}__)}"></option>
                     </select>
                 </div>
                 <div th:replace="fragments/fragments :: updaterIdInput"></div>
-                 <div th:replace="fragments/fragments :: successMessage"></div>
 
                  <div th:if="${#fields.hasErrors('meetingRoomName')}" th:errors="${addMeetingRoomForm.meetingRoomName}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 </div>
