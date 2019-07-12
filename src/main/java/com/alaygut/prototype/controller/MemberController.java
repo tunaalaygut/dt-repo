@@ -1,20 +1,20 @@
 package com.alaygut.prototype.controller;
 
-import com.alaygut.prototype.domain.Member;
-import com.alaygut.prototype.domain.Reason;
-import com.alaygut.prototype.domain.Role;
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.alaygut.prototype.dto.AddMemberForm;
-import com.alaygut.prototype.dto.AddReasonForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MemberService;
 import com.alaygut.prototype.service.RoleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class MemberController {
@@ -61,20 +61,36 @@ public class MemberController {
     	memberService.deactivate(idTransfer);
     	return "redirect:/list/member";
     }
-    
-    @PutMapping("/list/member")
-    public ModelAndView editMemberPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer) {
-		return new ModelAndView("editMember", "addMemberForm", memberService.getEditForm(idTransfer.getRecordId()));
+
+    @GetMapping("/edit/member/{id}")
+    public ModelAndView editMemberPage(@PathVariable Long id) {
+        return new ModelAndView("editMember", "addMemberForm", memberService.getEditForm(id));
     }
-    
-    @PostMapping("/edit/member")
-    public String submitMemberEdit(@Valid @ModelAttribute("AddMemberForm") AddMemberForm form, BindingResult bindingResult) {
-		if(bindingResult.hasErrors())
-			return null;
-		
-		memberService.edit(form);
-		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
-		return "redirect:/list/member";
+
+    @PostMapping("/edit/member/{id}")
+    public String submitMemberEdit(@Valid @ModelAttribute("addMemberForm")AddMemberForm form, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+
+            List<ObjectError> error = bindingResult.getAllErrors();
+
+            for (ObjectError e : error){
+                System.out.println(e.toString());
+            }
+
+            form.setAllRoles(roleService.getAllActiveRoles());
+            return "editMember";
+        }
+        try{
+            memberService.edit(form);
+        }
+        catch (Exception e){
+            bindingResult.addError(new FieldError("addMemberForm", "email", "Email ** mevcut."));
+            bindingResult.addError(new FieldError("addMemberForm", "username", "Kullanıcı ** adı mevcut."));
+            form.setAllRoles(roleService.getAllActiveRoles());
+            return "editMember";
+        }
+
+        return "redirect:/list/member";
 	}
 
 }

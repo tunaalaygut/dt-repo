@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <div th:replace="fragments/fragments :: head(content = 'Şirket Binaları')"></div>
 
@@ -29,9 +29,11 @@
                     <div th:replace="fragments/fragments :: listDeleteButton"></div>
                     <input th:attr="name=recordId" type="hidden" th:value="${building.buildingId}" >
                 </form>
-                <form th:action="@{/list/building}" th:object="${idTransfer}" th:method="put" class="editForm">
+                <form th:action="@{/edit/building/__${building.buildingId}__}" th:object="${idTransfer}" th:method="get" class="editForm">
 	                <button th:replace="fragments/fragments :: listEditButton"></button>
+<!--
 	                <input th:attr="name=recordId" type="hidden" th:value="${building.buildingId}">
+-->
 	             </form>
               </td>
             </tr>

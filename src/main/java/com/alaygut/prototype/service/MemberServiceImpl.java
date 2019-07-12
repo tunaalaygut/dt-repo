@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.Optional;
@@ -91,17 +92,26 @@ public class MemberServiceImpl implements MemberService {
     
     @Override
     public void edit(AddMemberForm addMemberForm) {
+
     	Member member = memberRepository.findById(addMemberForm.getRecordId()).orElse(null);
     	Role role = roleRepository.findById(addMemberForm.getRoleId()).orElse(null);
-    	//Login login =
+    	Login login = member.getLogin();
     	member.setFirstName(addMemberForm.getFirstName());
     	member.setLastName(addMemberForm.getLastName());
-    	member.setEmail(addMemberForm.getEmail());
-    	member.setPhone(addMemberForm.getPhone());
-    	member.setRole(role);
-    	//member.setLogin(login);
+        member.setPhone(addMemberForm.getPhone());
+        member.setRole(role);
+
+        if (!addMemberForm.getNewUsername().equals(member.getUsername()))
+            login.setUsername(addMemberForm.getNewUsername());
+
+        if (!addMemberForm.getNewEmail().equals(member.getEmail()) )
+            member.setEmail(addMemberForm.getNewEmail());
+
+    	//login.setPassword(addMemberForm.getPassword());
+    	//login.setPassword(passwordEncoder.encode(addMemberForm.getPassword()));
         member.setUpdater(memberRepository.findById(addMemberForm.getUpdaterId()).orElse(null));
-    	
+
+        loginService.addLogin(login);
     	memberRepository.save(member);
     }
 
@@ -115,6 +125,8 @@ public class MemberServiceImpl implements MemberService {
         addMemberForm.setLastName(member.getLastName());
         addMemberForm.setEmail(member.getEmail());
         addMemberForm.setPhone(member.getPhone());
+        addMemberForm.setUsername(member.getUsername());
+        addMemberForm.setPassword(member.getPassword());
         addMemberForm.setRoleId(member.getRole().getRoleId());
         addMemberForm.setAllRoles(roleService.getAllActiveRoles());
         return addMemberForm;
@@ -129,4 +141,11 @@ public class MemberServiceImpl implements MemberService {
 
         return member;
     }
+
+    public Member LoadUserEmail(String email) {
+        Member member = this.memberRepository.findByEmail(email);
+        return member;
+    }
+
+
 }

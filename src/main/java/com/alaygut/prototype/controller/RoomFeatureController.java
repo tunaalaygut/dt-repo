@@ -65,16 +65,8 @@ public class RoomFeatureController {
     }
     
     @PutMapping("/list/roomFeature")
-	public ModelAndView editRoomFeaturePage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
-		AddRoomFeatureForm addRoomFeatureForm = new AddRoomFeatureForm();
-		
-		RoomFeature roomFeature = roomFeatureService.getRoomFeature(idTransfer.getRecordId());
-		addRoomFeatureForm.setFeatureName(roomFeature.getFeatureName());
-		addRoomFeatureForm.setDescription(roomFeature.getDescription());
-		addRoomFeatureForm.setRecordId(roomFeature.getRoomFeatureId());
-		
-		
-		return new ModelAndView("editRoomFeature", "addRoomFeatureForm", addRoomFeatureForm);
+	public ModelAndView editRoomFeaturePage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer) {
+		return new ModelAndView("editRoomFeature", "addRoomFeatureForm", roomFeatureService.getEditForm(idTransfer.getRecordId()));
 	}
 	
 	@PostMapping("/edit/roomFeature")

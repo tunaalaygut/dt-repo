@@ -1,6 +1,7 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.*; 
+import com.alaygut.prototype.domain.*;
+import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.repository.BuildingRepository;
 import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.repository.RoomFeatureRepository;
@@ -92,6 +93,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 		}
 
 		meetingRoom.setRoomFeatureSet(roomFeatures);
+		meetingRoom.setUpdater(memberRepository.findById(addMeetingRoomForm.getUpdaterId()).orElse(null));
 		
 		meetingRoomRepository.save(meetingRoom);
 	}
@@ -116,4 +118,5 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	public Iterable<RoomFeature> getAllRoomFeatures(MeetingRoom meetingRoom) {
 		return roomFeatureRepository.findAllByMeetingRoomSet(this.getMeetingRoom(meetingRoom.getMeetingRoomId()));
 	}
+
 }

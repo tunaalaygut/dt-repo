@@ -11,4 +11,5 @@ public interface RoomFeatureService {
     RoomFeature getRoomFeature(Long featureId);
     void deactivate(IDTransfer idTransfer);
     void edit(AddRoomFeatureForm addRoomFeatureForm);
+    AddRoomFeatureForm getEditForm(Long roomFeatureId);
 }

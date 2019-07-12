@@ -31,7 +31,6 @@
                 </div>
 
                 <div th:replace="fragments/fragments :: creatorIdInput"></div>
-
                 <div th:replace="fragments/fragments :: successMessage"></div>
 
                 <div th:if="${#fields.hasErrors('roleName')}" th:errors="*{roleName}" class="alert alert-danger alert-dismissible fade show" role="alert">

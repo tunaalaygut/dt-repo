@@ -52,7 +52,20 @@ public class RoomFeatureServiceImpl implements RoomFeatureService {
     	RoomFeature roomFeature = roomFeatureRepository.findById(addRoomFeatureForm.getRecordId()).orElse(null);  	
     	roomFeature.setFeatureName(addRoomFeatureForm.getFeatureName());
     	roomFeature.setDescription(addRoomFeatureForm.getDescription());
+        roomFeature.setUpdater(memberRepository.findById(addRoomFeatureForm.getUpdaterId()).orElse(null));
     	
     	roomFeatureRepository.save(roomFeature);
+    }
+
+    @Override
+    public AddRoomFeatureForm getEditForm(Long roomFeatureId) {
+        RoomFeature roomFeature = getRoomFeature(roomFeatureId);
+        AddRoomFeatureForm addRoomFeatureForm = new AddRoomFeatureForm();
+
+        addRoomFeatureForm.setRecordId(roomFeature.getRoomFeatureId());
+        addRoomFeatureForm.setFeatureName(roomFeature.getFeatureName());
+        addRoomFeatureForm.setDescription(roomFeature.getDescription());
+
+        return addRoomFeatureForm;
     }
 }

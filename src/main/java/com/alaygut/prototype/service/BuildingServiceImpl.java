@@ -8,7 +8,10 @@ import com.alaygut.prototype.repository.BuildingRepository;
 import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class BuildingServiceImpl implements BuildingService {
 
     private BuildingRepository buildingRepository;
@@ -54,11 +57,13 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public void edit(AddBuildingForm addBuildingForm) {
     	Building building = buildingRepository.findById(addBuildingForm.getRecordId()).orElse(null);
-    	building.setBuildingName(addBuildingForm.getBuildingName());
+
+    	if (!addBuildingForm.getNewBuildingName().equals(building.getBuildingName()))
+    	    building.setBuildingName(addBuildingForm.getNewBuildingName());
+
     	building.setBuildingAddr(addBuildingForm.getBuildingAddr());
         building.setUpdater(memberRepository.findById(addBuildingForm.getUpdaterId()).orElse(null));
-    	
-    	buildingRepository.save(building);
+
     }
 
     @Override
@@ -72,4 +77,10 @@ public class BuildingServiceImpl implements BuildingService {
 
         return addBuildingForm;
     }
+
+    public Building LoadBuildingName(String buildingName) {
+        Building building = this.buildingRepository.findByBuildingName(buildingName);
+        return building;
+    }
+
 }

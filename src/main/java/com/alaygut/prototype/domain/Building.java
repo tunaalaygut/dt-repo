@@ -1,5 +1,7 @@
 package com.alaygut.prototype.domain;
 
+import com.alaygut.prototype.annotation.UniqueBuildingName;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,7 +12,8 @@ public class Building extends BaseClass {
     @Column(name = "buildingId")
     private Long buildingId;
 
-    @Column(name = "buildingName")
+    //@UniqueBuildingName(message = "Bina ismi mevcut.")
+    @Column(name = "buildingName",unique = true)
     private String buildingName;
 
     @Column(name = "buildingAddr")

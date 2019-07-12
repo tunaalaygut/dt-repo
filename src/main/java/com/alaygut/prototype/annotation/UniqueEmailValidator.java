@@ -1,28 +1,27 @@
 package com.alaygut.prototype.annotation;
 
-import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class UniqueUsernameValidator implements ConstraintValidator <UniqueUsername, String > {
+public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String > {
 
 
     @Autowired
     private MemberRepository memberRepository;
 
     @Override
-    public void initialize(UniqueUsername constraintAnnotation) {
+    public void initialize(UniqueEmail constraintAnnotation) {
     }
 
     @Override
-    public boolean isValid(String username, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
         if(memberRepository==null) {
-
             return false;
         }
-        return memberRepository.findByLoginUsername(username) == null;
+        return memberRepository.findByEmail(email) == null;
     }
+
 }

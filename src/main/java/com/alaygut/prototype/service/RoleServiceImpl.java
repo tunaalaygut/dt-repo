@@ -85,6 +85,7 @@ public class RoleServiceImpl implements RoleService{
         }
 
     	role.setRights(rights);
+        role.setUpdater(memberRepository.findById(addRoleForm.getUpdaterId()).orElse(null));
     	
     	roleRepository.save(role);
     }

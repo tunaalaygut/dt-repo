@@ -60,7 +60,7 @@ public class RightController {
 	}
 	
 	@PostMapping("/edit/right")
-	public String submitRightEdit(@Valid @ModelAttribute("AddightForm") AddRightForm form, BindingResult bindingResult) {
+	public String submitRightEdit(@Valid @ModelAttribute("AddRightForm") AddRightForm form, BindingResult bindingResult) {
 		if(bindingResult.hasErrors())
 			return null;
 		rightService.edit(form);

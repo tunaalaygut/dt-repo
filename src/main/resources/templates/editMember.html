@@ -10,24 +10,23 @@
         <div class="content">
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Kullanıcı Değiştirme Formu</h2>
-            <form th:action="@{/edit/member}" th:object="${addMemberForm}" th:method="post" autocomplete="off">
-                <div class="row">
-                    <div class="col-md-6">
+            <form th:action="@{__${#httpServletRequest.requestURL}__}" th:object="${addMemberForm}" th:method="post"  id="memberEditForm" autocomplete="off">
+
                         <div class="form-group">
                             <label for="firstNameInput">İsim:</label>
-                            <input th:field="*{firstName}" th:value="${addMemberForm.firstName}" type="text" class="form-control" id="firstNameInput" placeholder="İsim">
+                            <input th:attr="name=firstName" th:value="${addMemberForm.firstName}" type="text" class="form-control" id="firstNameInput" placeholder="İsim">
+
                         </div>
-                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="lastNameInput">Soyisim:</label>
                             <input th:field="*{lastName}" th:value="${addMemberForm.lastName}" type="text" class="form-control" id="lastNameInput" placeholder="Soyisim">
                         </div>
-                    </div>
                 </div>
+                <input th:attr="name=originalEmail" type="hidden" th:value="${addMemberForm.email}">
                 <div class="form-group">
-                    <label for="emailInput">E-mail:</label>
-                    <input th:field="*{email}" th:value="${addMemberForm.email}" type="text" class="form-control" id="emailInput" placeholder="isim@ornek.com">
+                    <label for="newEmail">E-mail:</label>
+                    <input th:attr="name = newEmail" th:value="${addMemberForm.email}" type="text" class="form-control" id="newEmail" placeholder="Email">
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -39,27 +38,21 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="roleSelectMenu">Rol:</label>
-                            <select class="custom-select" id="roleSelectMenu" th:field="*{roleId}">
-                                <div th:each="r : *{allRoles}">
-                                    <th:block th:switch="${r.roleId}">
-                                        <div th:case="${addMemberForm.roleId}"><option selected th:text="${r?.roleName}" th:value = "${r.roleId}"></option></div>
-                                        <div th:case="*"><option th:text="${r?.roleName}" th:value = "${r?.roleId}"/></div>
-                                    </th:block>
-                                </div>
+                            <select class="custom-select" id="roleSelectMenu" th:attr="name=roleId">
+                                <option th:each="r : *{allRoles}" th:text="${r.roleName}" th:value="${r.roleId}" th:selected="(*{roleId} == ${r.roleId})"></option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <!--  
+                <input th:attr="name=originalUsername" type="hidden" th:value="${addMemberForm.username}">
                 <div class="form-group">
-                    <label for="usernameInput">Kullanıcı Adı:</label>
-                    <input th:field="*{username}" type="text" class="form-control" id="usernameInput" placeholder="Kullanıcı Adı">
+                    <label for="newUsername">Kullanıcı Adı:</label>
+                    <input th:attr="name = newUsername" th:value="${addMemberForm.username}" type="text" class="form-control" id="newUsername" placeholder="Kullanıcı Adı">
                 </div>
-                <div class="form-group">
-                    <label for="passwordInput">Şifre:</label>
-                    <input th:field="*{password}" type="password" class="form-control" id="passwordInput" placeholder="******">
-                </div>
-                -->
+               <!--<div class="form-group">
+                <label for="passwordInput">Şifre:</label>
+                  <input th:field="*{password}" type="password" class="form-control" id="passwordInput" placeholder="******">
+              </div>-->
                 <div th:replace="fragments/fragments :: updaterIdInput"></div>
                 <div th:replace="fragments/fragments :: successMessage"></div>
 
@@ -69,8 +62,12 @@
                 </div>
                 <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 </div>
+                <div th:if="${#fields.hasErrors('newEmail')}" th:errors="*{newEmail}" class="alert alert-danger alert-dismissible fade show" role="alert"></div>
                 <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 </div>
+                <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                </div>
+                <div th:if="${#fields.hasErrors('newUsername')}" th:errors="*{newUsername}" class="alert alert-danger alert-dismissible fade show" role="alert"></div>
                 <div th:if="${#fields.hasErrors('roleId')}" th:errors="*{roleId}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 </div>
                 <input th:attr="name=recordId" type="hidden" th:value="${addMemberForm.recordId}">
