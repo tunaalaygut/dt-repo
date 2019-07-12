@@ -1,4 +1,9 @@
 package com.alaygut.prototype.service;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -15,43 +20,53 @@ import com.alaygut.prototype.repository.MeetingRoomRepository;
 import com.alaygut.prototype.repository.MeetingStatusRepository;
 import com.alaygut.prototype.repository.MeetingTypeRepository;
 import com.alaygut.prototype.repository.MemberRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 public class MeetingRequestServiceImpl implements MeetingRequestService {
 	
 	private MeetingRequestRepository meetingRequestRepository;
 	private MeetingRoomRepository meetingRoomRepository;
-	private MemberRepository memberRepository;
+	private MemberService memberService;
 	private MeetingTypeRepository meetingTypeRepository;
 	private MeetingStatusRepository meetingStatusRepository;
 
-	public MeetingRequestServiceImpl(MeetingRequestRepository meetingRequestRepository, MeetingRoomRepository meetingRoomRepository,
-									 MemberRepository memberRepository, MeetingTypeRepository meetingTypeRepository,
-									 MeetingStatusRepository meetingStatusRepository) {
+	public MeetingRequestServiceImpl(MeetingRequestRepository meetingRequestRepository, MeetingRoomRepository meetingRoomRepository, MemberService memberService, MeetingTypeRepository meetingTypeRepository, MeetingStatusRepository meetingStatusRepository) {
 		this.meetingRequestRepository = meetingRequestRepository;
 		this.meetingRoomRepository = meetingRoomRepository;
-		this.meetingStatusRepository = meetingStatusRepository;
+		this.memberService = memberService;
 		this.meetingTypeRepository = meetingTypeRepository;
-		this.memberRepository = memberRepository;
+		this.meetingStatusRepository = meetingStatusRepository;
 	}
 
 	@Override
+	@Transactional
 	public void addRequest(AddMeetingRequestForm form) {
-		Optional<MeetingRoom> meetingRoom = meetingRoomRepository.findById(form.getMeetingRoomId());
+		/*Optional<MeetingRoom> meetingRoom = meetingRoomRepository.findById(form.getMeetingRoomId());
 		Optional<MeetingStatus> meetingStatus = meetingStatusRepository.findById(form.getMeetingStatusId());
 		Optional<MeetingType> meetingType = meetingTypeRepository.findById(form.getMeetingTypeId());
-		Optional<Member> member = memberRepository.findById(form.getMemberId());
-		
-		MeetingRequest meetingRequest = new MeetingRequest(
+		Optional<Member> member = memberRepository.findById(form.getMemberId());*/
+
+		LocalDate date = LocalDate.parse(form.getDate());
+		LocalTime startTime = LocalTime.parse(form.getBeginningTime());
+		LocalTime endTime = LocalTime.parse(form.getEndTime());
+
+		System.out.println(date + " " + startTime + " - " + endTime);
+
+
+
+
+		/*MeetingRequest meetingRequest = new MeetingRequest(
 				meetingRoom.orElse(null),
 				member.orElse(null),
 				meetingType.orElse(null),
-				form.getStartTime(),
+				form.getBeginningTime(),
 				form.getEndTime(),
 				form.getDescription(),
 				meetingStatus.orElse(null));
 			
-		meetingRequestRepository.save(meetingRequest);
+		meetingRequestRepository.save(meetingRequest);*/
 	}
 
 	@Override

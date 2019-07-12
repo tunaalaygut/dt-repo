@@ -45,7 +45,8 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 		MeetingRoom meetingRoom = new MeetingRoom(
 				addMeetingRoomForm.getMeetingRoomName(),
 				building.orElse(null),
-				addMeetingRoomForm.getCapacity(), roomFeatures
+				addMeetingRoomForm.getCapacity(),
+				roomFeatures
 				);
 		meetingRoom.setCreator(memberRepository.findById(addMeetingRoomForm.getCreatorId()).orElse(null));
 		meetingRoomRepository.save(meetingRoom);
@@ -78,7 +79,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	@Override
 	public void edit(AddMeetingRoomForm addMeetingRoomForm) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findById(addMeetingRoomForm.getRecordId()).orElse(null);
-		Building building = buildingRepository.findById(addMeetingRoomForm.getRecordId()).orElse(null);
+		Building building = buildingRepository.findById(addMeetingRoomForm.getBuildingId()).orElse(null);
 
 		meetingRoom.setMeetingRoomName(addMeetingRoomForm.getMeetingRoomName());
 		meetingRoom.setBuilding(building);
@@ -101,6 +102,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 		AddMeetingRoomForm addMeetingRoomForm = new AddMeetingRoomForm();
 
 		MeetingRoom meetingRoom = this.getMeetingRoom(meetingRoomId);
+
 		addMeetingRoomForm.setMeetingRoomName(meetingRoom.getMeetingRoomName());
 		addMeetingRoomForm.setCapacity(meetingRoom.getCapacity());
 		addMeetingRoomForm.setBuildingId(meetingRoom.getBuilding().getBuildingId());
@@ -115,5 +117,10 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	@Override
 	public Iterable<RoomFeature> getAllRoomFeatures(MeetingRoom meetingRoom) {
 		return roomFeatureRepository.findAllByMeetingRoomSet(this.getMeetingRoom(meetingRoom.getMeetingRoomId()));
+	}
+
+	@Override
+	public Iterable<MeetingRoom> getAllInBuilding(Long buildingId) {
+		return meetingRoomRepository.findByBuilding(buildingRepository.findById(buildingId).orElse(null));
 	}
 }

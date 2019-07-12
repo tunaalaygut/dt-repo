@@ -2,21 +2,14 @@ package com.alaygut.prototype.controller;
 
 import javax.validation.Valid;
 
-import com.alaygut.prototype.domain.MeetingRoom;
-import com.alaygut.prototype.domain.Reason;
-import com.alaygut.prototype.domain.RoomFeature;
 import com.alaygut.prototype.service.BuildingService;
 import com.alaygut.prototype.service.RoomFeatureService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alaygut.prototype.dto.AddMeetingRoomForm;
-import com.alaygut.prototype.dto.AddReasonForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MeetingRoomService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -70,20 +63,22 @@ public class MeetingRoomController {
 		meetingRoomService.deactivate(idTransfer);
 		return "redirect:/list/meetingRoom";
 	}
-	
-	@PutMapping("/list/meetingRoom")
-	public ModelAndView editMeetingRoomPage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer) {
-		return new ModelAndView("editMeetingRoom", "addMeetingRoomForm", meetingRoomService.getEditPage(idTransfer.getRecordId()));
 
+	@GetMapping("/edit/meetingRoom/{id}")
+	public ModelAndView editMeetingRoomPage(@PathVariable Long id) {
+		return new ModelAndView("editMeetingRoom", "addMeetingRoomForm", meetingRoomService.getEditPage(id));
 	}
-	
-	@PostMapping("/edit/meetingRoom")
-	public String submitMeetingRoomEdit(@Valid @ModelAttribute("AddMeetingRoomForm") AddMeetingRoomForm form, BindingResult bindingResult) {
-		if(bindingResult.hasErrors())
-			return null;
+
+	@PostMapping("/edit/meetingRoom/{id}")
+	public String submitMeetingRoomEdit(@Valid @ModelAttribute("addMeetingRoomForm") AddMeetingRoomForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+		if(bindingResult.hasErrors()){
+			form.setAllBuildings(buildingService.getAllActiveBuildings());
+			form.setAllFeatures(roomFeatureService.getAllActiveRoomFeatures());
+			return "editMeetingRoom";
+		}
+
 		meetingRoomService.edit(form);
-		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
-		return "redirect:/list/meetingRoom";
+		redirectAttributes.addFlashAttribute("successMessage", "Toplantı odası başarıyla değiştirildi.");
+		return "redirect:/edit/meetingRoom/" + form.getRecordId() ;
 	}
-	
 }
