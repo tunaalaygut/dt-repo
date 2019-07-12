@@ -1,6 +1,7 @@
 package com.alaygut.prototype.domain;
 
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import javax.persistence.*;
 
@@ -23,6 +24,9 @@ public class MeetingRequest extends BaseClass{
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "meetingTypeId")
 	private MeetingType meetingType;
+
+	@Column(name = "date")
+	private LocalDate date;
 	
 	@Column(name = "startTime")
 	private LocalTime startTime;
@@ -114,6 +118,12 @@ public class MeetingRequest extends BaseClass{
 	public void setEndTime(LocalTime endTime) {
 		this.endTime = endTime;
 	}
-	
-	
+
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
 }

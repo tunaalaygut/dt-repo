@@ -2,47 +2,56 @@ package com.alaygut.prototype.dto;
 
  
 import java.time.LocalTime;
+import java.util.*;
 
 
 import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.alaygut.prototype.domain.MeetingRoom;
-import com.alaygut.prototype.domain.MeetingStatus;
-import com.alaygut.prototype.domain.MeetingType;
-import com.alaygut.prototype.domain.Member;
+import com.alaygut.prototype.domain.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class AddMeetingRequestForm extends FormBase  {
 	
-	@NotNull(message = "Toplantı isteği için bir oda seçilmelidir.")
+	//@NotNull(message = "Toplantı isteği için bir oda seçilmelidir.")
 	private Long meetingRoomId;
 	
-	@NotNull(message = "Toplantı isteği bir üye tarafından ayarlanmalıdır.")
+	//@NotNull(message = "Toplantı isteği bir üye tarafından ayarlanmalıdır.")
 	private Long memberId;
 	
 	@NotNull(message = "Toplantı isteği bir türe sahip olmalıdır.")
 	private Long meetingTypeId;
+
+	private Long buildingId;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotEmpty(message = "Tarih seçilmedi.")
+	private String date;
+
+	@NotEmpty(message = "Başlangıç zamanı seçilmedi.")
+	private String beginningTime;
+
+	@NotEmpty(message = "Bitiş zamanı seçilmedi.")
+	private String endTime;
 	
-	@FutureOrPresent(message = "Toplantı isteğinin bir başlangıç zamanı olmalıdır")
-	private LocalTime startTime;
-	
-	@FutureOrPresent(message = "Toplantı isteğinin bir bitiş zamanı olmalıdır")
-	private LocalTime endTime;
-	
-	@Size(min = 0, max = 250)
+	@Size(max = 250)
 	private String description;
+
+	private Iterable<Building> allBuildings;
 	
-	@NotNull(message = "Toplantı isteğinin bir durumu olmalıdır.")
-	private Long meetingStatusId;
-	
-	private Iterable<MeetingRoom> allMeetingRoom;
-	
-	private Iterable<Member> allMember;
-	
-	private Iterable<MeetingType> allMeetingType;
-	
-	private Iterable<MeetingStatus> allMeetingStatus;
+	private Iterable<Member> allMembers;
+
+	private ArrayList<Long> addedMembers;
+
+	private Iterable<MeetingType> allMeetingTypes;
+
+	private Iterable<MeetingRoom> allMeetingRooms;
+
+	private ArrayList<String> times;
+
+	private Map<String, Set<String>> buildingMeetingRooms;
 
 	public Long getMeetingRoomId() {
 		return meetingRoomId;
@@ -76,61 +85,83 @@ public class AddMeetingRequestForm extends FormBase  {
 		this.description = description;
 	}
 
-	public Long getMeetingStatusId() {
-		return meetingStatusId;
+	public String getDate() {
+		return date;
 	}
 
-	public void setMeetingStatusId(Long meetingStatusId) {
-		this.meetingStatusId = meetingStatusId;
+	public void setDate(String date) {
+		this.date = date;
 	}
 
-	public LocalTime getStartTime() {
-		return startTime;
+	public String getBeginningTime() {
+		return beginningTime;
 	}
 
-	public void setStartTime(LocalTime startTime) {
-		this.startTime = startTime;
+	public void setBeginningTime(String beginningTime) {
+		this.beginningTime = beginningTime;
 	}
 
-	public LocalTime getEndTime() {
+	public String getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(LocalTime endTime) {
+	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
 
-	public Iterable<MeetingRoom> getAllMeetingRoom() {
-		return allMeetingRoom;
+	public Iterable<Member> getAllMembers() {
+		return allMembers;
 	}
 
-	public void setAllMeetingRoom(Iterable<MeetingRoom> allMeetingRoom) {
-		this.allMeetingRoom = allMeetingRoom;
+	public void setAllMembers(Iterable<Member> allMembers) {
+		this.allMembers = allMembers;
 	}
 
-	public Iterable<Member> getAllMember() {
-		return allMember;
+	public Iterable<MeetingType> getAllMeetingTypes() {
+		return allMeetingTypes;
 	}
 
-	public void setAllMember(Iterable<Member> allMember) {
-		this.allMember = allMember;
+	public void setAllMeetingTypes(Iterable<MeetingType> allMeetingTypes) {
+		this.allMeetingTypes = allMeetingTypes;
 	}
 
-	public Iterable<MeetingType> getAllMeetingType() {
-		return allMeetingType;
+	public ArrayList<String> getTimes() {
+		return times;
 	}
 
-	public void setAllMeetingType(Iterable<MeetingType> allMeetingType) {
-		this.allMeetingType = allMeetingType;
+	public void setTimes(ArrayList<String> times) {
+		this.times = times;
 	}
 
-	public Iterable<MeetingStatus> getAllMeetingStatus() {
-		return allMeetingStatus;
+	public Iterable<Building> getAllBuildings() {
+		return allBuildings;
 	}
 
-	public void setAllMeetingStatus(Iterable<MeetingStatus> allMeetingStatus) {
-		this.allMeetingStatus = allMeetingStatus;
+	public void setAllBuildings(Iterable<Building> allBuildings) {
+		this.allBuildings = allBuildings;
 	}
-	
-	
+
+	public Iterable<MeetingRoom> getAllMeetingRooms() {
+		return allMeetingRooms;
+	}
+
+	public void setAllMeetingRooms(Iterable<MeetingRoom> allMeetingRooms) {
+		this.allMeetingRooms = allMeetingRooms;
+	}
+
+	public Long getBuildingId() {
+		return buildingId;
+	}
+
+	public void setBuildingId(Long buildingId) {
+		this.buildingId = buildingId;
+	}
+
+	public ArrayList<Long> getAddedMembers() {
+		return addedMembers;
+	}
+
+	public void setAddedMembers(ArrayList<Long> addedMembers) {
+		this.addedMembers = addedMembers;
+	}
 }
