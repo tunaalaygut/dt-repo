@@ -7,8 +7,10 @@ import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.dto.AddReasonForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.ReasonRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class ReasonServiceImpl implements ReasonService {
 	
 	private ReasonRepository reasonRepository;

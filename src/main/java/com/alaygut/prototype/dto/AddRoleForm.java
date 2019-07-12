@@ -58,12 +58,9 @@ public class AddRoleForm extends FormBase  {
     }
 
     public boolean hasRight(Long rightId){
-        boolean contains = false;
-        for (Right r: roleRights) {
+        for (Right r: this.getRoleRights())
             if (r.getRightId() == rightId)
-                contains = true;
-        }
-
-        return contains;
+                return true;
+        return false;
     }
 }

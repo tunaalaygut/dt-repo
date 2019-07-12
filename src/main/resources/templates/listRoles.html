@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <div th:replace="fragments/fragments :: head(content = 'Rol Ekleme Formu')"></div>
 
@@ -11,7 +11,7 @@
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Roller</h2>
             <div class="table-responsive">
-                <table class="table table-hover table-striped">
+                <table class="table table-hover">
                     <thead>
                     <tr>
                         <th scope="col">Rol Adı</th>
@@ -31,9 +31,9 @@
 	                 			<div th:replace="fragments/fragments :: listDeleteButton"></div>
 	                 			<input th:attr="name=recordId" type="hidden" th:value="${role.roleId}" >
                  			</form>
-                 			<form th:action="@{/list/role}" th:object="${idTransfer}" th:method="put" class="editForm">
+                 			<form th:action="@{/edit/role/__${role.roleId}__}" th:object="${idTransfer}" th:method="get" class="editForm">
 	                 			<button th:replace="fragments/fragments :: listEditButton"></button>
-	                			<input th:attr="name=recordId" type="hidden" th:value="${role.roleId}">
+	                			<!--<input th:attr="name=recordId" type="hidden" th:value="${role.roleId}">-->
 	                		 </form>
               			</td>
                     </tr>

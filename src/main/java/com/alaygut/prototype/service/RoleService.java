@@ -14,4 +14,6 @@ public interface RoleService {
     void edit (AddRoleForm addRoleForm);
     AddRoleForm getEditPage(Long roleId);
     Iterable<Right> getAllRights(Long roleId);
+    void fixForm(AddRoleForm form);
+    AddRoleForm getAddRoleForm();
 }

@@ -108,4 +108,17 @@ public class RoleServiceImpl implements RoleService{
         Role role = getRole(roleId);
         return rightRepository.findAllByRoles(role);
     }
+
+    @Override
+    public void fixForm(AddRoleForm form) {
+        form.setAllRights(rightService.getAllActiveRights());
+        form.setRoleRights(this.getAllRights(form.getRecordId()));
+    }
+
+    @Override
+    public AddRoleForm getAddRoleForm() {
+        AddRoleForm addRoleForm = new AddRoleForm();
+        addRoleForm.setAllRights(rightService.getAllActiveRights());
+        return addRoleForm;
+    }
 }

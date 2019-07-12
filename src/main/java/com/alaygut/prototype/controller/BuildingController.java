@@ -1,13 +1,9 @@
 package com.alaygut.prototype.controller;
 
-import com.alaygut.prototype.annotation.UniqueBuildingName;
-import com.alaygut.prototype.domain.Building;
-import com.alaygut.prototype.domain.Reason;
+
 import com.alaygut.prototype.dto.AddBuildingForm;
-import com.alaygut.prototype.dto.AddReasonForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.BuildingService;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -15,8 +11,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.persistence.RollbackException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -66,15 +60,8 @@ public class BuildingController  {
     @PostMapping("/edit/building/{id}")
     public String submitBuildingEdit(@Valid @ModelAttribute("addBuildingForm") AddBuildingForm form, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
-            List<ObjectError> error = bindingResult.getAllErrors();
-
-            for (ObjectError e : error){
-                System.out.println(e.toString());
-            }
-
             return "editBuilding";
         }
-
         try{
             buildingService.edit(form);
         }
