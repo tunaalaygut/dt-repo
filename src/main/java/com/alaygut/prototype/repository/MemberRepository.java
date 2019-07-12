@@ -9,4 +9,6 @@ public interface MemberRepository extends CrudRepository<Member, Long> {
     Member findByEmail(String email);
     Member findByLoginUsername(String username);
     Iterable<Member> findByStateEquals(RecordState state);
+    boolean existsByLoginUsername(String username);
+    boolean existsByEmail(String email);
 }

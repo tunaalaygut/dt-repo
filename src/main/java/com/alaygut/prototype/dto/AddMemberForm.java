@@ -31,20 +31,12 @@ public class AddMemberForm extends FormBase  {
 
     private String originalEmail;
 
-    public String getOriginalUsername() {
-        return originalUsername;
-    }
-
-    public void setOriginalUsername(String originalUsername) {
-        this.originalUsername = originalUsername;
-    }
-
     private String originalUsername;
 
     @Size(min = 3, max = 20, message = "Telefon numarasını kontrol edin.")
     private String phone;
 
-    //@NotNull(message = "Kullanıcı bir rol'e sahip olmalıdır.")
+    @NotNull(message = "Kullanıcı bir rol'e sahip olmalıdır.")
     private Long roleId;
 
     @Size(min = 6, max = 20, message = "Kullanıcı adı [6-20] karakter uzunluğunda olmalıdır.")
@@ -146,6 +138,14 @@ public class AddMemberForm extends FormBase  {
 
     public void setNewUsername(String newUsername) {
         this.newUsername = newUsername;
+    }
+
+    public String getOriginalUsername() {
+        return originalUsername;
+    }
+
+    public void setOriginalUsername(String originalUsername) {
+        this.originalUsername = originalUsername;
     }
 
 }
