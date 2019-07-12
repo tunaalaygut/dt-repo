@@ -1,6 +1,6 @@
 package com.alaygut.prototype.config;
 
-import com.alaygut.prototype.service.MemberService;
+import com.alaygut.prototype.service.MemberService; 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .antMatchers("/profile").authenticated()
                 .antMatchers("/add/meetingRequest").authenticated()
                 //.antMatchers("/add/**").hasRole("ADMIN")
-                .antMatchers("/list/meetingRequest").hasRole("SUPERVISOR")
+                .antMatchers("/list/meetingRequest").hasAnyRole("SUPERVISOR", "ADMIN")
                 .antMatchers("/list/**").hasRole("ADMIN")
                 .and()
                 .formLogin()

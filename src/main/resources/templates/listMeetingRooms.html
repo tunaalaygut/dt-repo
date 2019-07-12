@@ -29,13 +29,13 @@
             <td th:text="${meetingRoom.capacity}"></td>
             <td th:text="${meetingRoom.getAllRoomFeaturesString()}"></td>
             	<td>
-                 <form th:action="@{/list/meetingRoom}" th:object="${idTransfer}" th:method="post" class="deactivateForm float-left mr-2">
+                 <form th:action="@{/list/meetingRoom/}" th:object="${idTransfer}" th:method="post" class="deactivateForm float-left mr-2">
                  		<div th:replace="fragments/fragments :: listDeleteButton"></div>
                  		<input th:attr="name=recordId" type="hidden" th:value="${meetingRoom.meetingRoomId}">
                  </form>
-                 <form th:action="@{/list/meetingRoom}" th:object="${idTransfer}" th:method="put" class="editForm">
+                 <form th:action="@{/edit/meetingRoom/__${meetingRoom.meetingRoomId}__}" th:object="${idTransfer}" th:method="get" class="editForm">
 	                <button th:replace="fragments/fragments :: listEditButton"></button>
-	                <input th:attr="name=recordId" type="hidden" th:value="${meetingRoom.meetingRoomId}">
+	                <!--<input th:attr="name=recordId" type="hidden" th:value="${meetingRoom.meetingRoomId}">-->
 	             </form>
               </td>
             </tr>
@@ -45,5 +45,8 @@
      </div>
     </div>
    <div th:replace="fragments/fragments :: scripts"></div>
+    <script>
+
+    </script>
 </body>
 </html>

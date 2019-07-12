@@ -1,6 +1,5 @@
 package com.alaygut.prototype.controller;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MemberService;
@@ -30,7 +29,7 @@ public class MemberController {
     @GetMapping("/add/member")
     public ModelAndView addMemberPage(){
         AddMemberForm addMemberForm = new AddMemberForm();
-        addMemberForm.setAllRoles(roleService.getAllRoles());
+        addMemberForm.setAllRoles(roleService.getAllActiveRoles());
         return new ModelAndView(
                 "addMember",
                 "addMemberForm",

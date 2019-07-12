@@ -13,4 +13,5 @@ public interface MemberService extends UserDetailsService {
     void deactivate(IDTransfer idTransfer);
     void edit(AddMemberForm addMemberForm);
     AddMemberForm getEditForm(Long memberId);
+    void profileEdit(AddMemberForm addMemberForm);
 }

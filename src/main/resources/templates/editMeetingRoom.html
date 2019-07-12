@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <div th:replace="fragments/fragments :: head(content = 'Toplantı Odası Değiştirme Formu')"></div>
 
@@ -12,17 +12,18 @@
         <div class="content">
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Toplantı Odası Değiştirme Formu</h2>
-            <form th:action="@{/edit/meetingRoom}" th:object="${addMeetingRoomForm}" th:method="post" autocomplete="off">
+            <form th:action="@{__${#httpServletRequest.requestURL}__}" th:object="${addMeetingRoomForm}" th:method="post" autocomplete="off">
                 <div class="form-group">
-                    <label for="buildingNameInput">Sebep Adı:</label>
-                   <input th:field="*{meetingRoomName}" th:value="${addMeetingRoomForm.meetingRoomName}" type="text" class="form-control" id="buildingNameInput" placeholder="Sebep">
+
+                    <label for="firstNameInput">Toplantı Odası Adı:</label>
+                   <input th:field="*{meetingRoomName}" th:value="${addMeetingRoomForm.meetingRoomName}" type="text" class="form-control" id="firstNameInput" placeholder="Sebep">
+
                </div>
                <div class="form-group">
                     <label for="buildingSelectMenu">Bina Adı:</label>
                     <select class="custom-select" id="buildingSelectMenu" th:field="*{buildingId}">
                         <div th:each="building : *{allBuildings}" th:switch="${addMeetingRoomForm.buildingId}">
-	                        <span th:case="${building.buildingId}"><option th:text="${building?.buildingName}" th:value = "${addMeetingRoomForm.buildingId}" selected></option></span>
-	                         <option th:text="${building?.buildingName}" th:value = "${building?.buildingId}"></option>
+	                         <option th:text="${building?.buildingName}" th:value = "${building?.buildingId}" th:selected="${building.buildingId} == ${addMeetingRoomForm.buildingId}"></option>
                         </div>
                     </select>
                </div>
@@ -34,17 +35,19 @@
                 <div class="form-group">
                     <label for="rightSelectMenu">Özellikler: <span class="small text-muted">(CTRL ile toplu seçim yapılabilir.)</span></label>
                     <select multiple class="custom-select" id="rightSelectMenu" th:attr="name=roomFeatureIds">
-                        <option th:each="feature : *{allFeatures}" th:value = "${feature?.roomFeatureId}"  th:text="${feature?.featureName}" th:selected="${addMeetingRoomForm.hasFeature( __(${feature.roomFeatureId})__ )}"></option>
+                        <option th:each="feature : *{allFeatures}" th:value = "${feature?.roomFeatureId}"  th:text="${feature?.featureName}" ></option>
                     </select>
                 </div>
                 <div th:replace="fragments/fragments :: updaterIdInput"></div>
                  <div th:replace="fragments/fragments :: successMessage"></div>
 
-                 <div th:if="${#fields.hasErrors('meetingRoomName')}" th:errors="*{meetingRoomName}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                 <div th:if="${#fields.hasErrors('meetingRoomName')}" th:errors="${addMeetingRoomForm.meetingRoomName}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 </div>
                  <div th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 </div>
                 <div th:if="${#fields.hasErrors('buildingId')}" th:errors="*{buildingId}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                </div>
+                <div th:if="${#fields.hasErrors('roomFeatureIds')}" th:errors="*{roomFeatureIds}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 </div>
                 <input th:attr="name=recordId" type="hidden" th:value="${addMeetingRoomForm.recordId}">
                 <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Toplantı Odasını Değiştir</button>
@@ -52,7 +55,6 @@
         </div>
     </div>
     <div th:replace="fragments/fragments :: scripts"></div>
-
 </body>
 </html>
 

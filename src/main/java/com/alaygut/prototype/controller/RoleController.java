@@ -32,7 +32,7 @@ public class RoleController {
     @GetMapping("/add/role")
     public ModelAndView addRolePage(){
         AddRoleForm addRoleForm = new AddRoleForm();
-        addRoleForm.setAllRights(rightService.getAllRights());
+        addRoleForm.setAllRights(rightService.getAllActiveRights());
         return new ModelAndView(
                 "addRole",
                 "addRoleForm",

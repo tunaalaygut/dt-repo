@@ -58,7 +58,6 @@ public class BuildingController  {
         return "redirect:/list/building";
     }
 
-
 	@GetMapping("/edit/building/{id}")
     public ModelAndView editBuildingPage(@PathVariable Long id) {
         return new ModelAndView("editBuilding", "addBuildingForm", buildingService.getEditForm(id));

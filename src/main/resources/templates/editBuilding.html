@@ -13,7 +13,6 @@
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Bina Değiştirme Formu</h2>
 
-
             <form th:action="@{__${#httpServletRequest.requestURL}__}" th:object="${addBuildingForm}" th:method="post" id="buildingEditForm" autocomplete="off">
 
                 <input th:attr="name=originalName" type="hidden" th:value="${addBuildingForm.buildingName}">

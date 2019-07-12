@@ -3,16 +3,21 @@ package com.alaygut.prototype.dto;
 import com.alaygut.prototype.domain.Building;
 import com.alaygut.prototype.domain.RoomFeature;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class AddMeetingRoomForm extends FormBase  {
 
+	@Size(min = 2, max = 5, message = "Toplantı odası ismi en az 2 karakter içermelidir.")
 	private String meetingRoomName;
 
 	private Long buildingId;
 
 	private Integer capacity;
 
+	@NotEmpty(message = "En az bir oda özelliği seçilmeli.")
 	private List<Long> roomFeatureIds;
 
 	private Iterable<Building> allBuildings;
