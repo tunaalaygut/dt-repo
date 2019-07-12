@@ -63,7 +63,7 @@ public class BuildingController {
 	@PostMapping("/edit/building")
 	public String submitBuildingEdit(@Valid @ModelAttribute("AddBuildingForm") AddBuildingForm form, BindingResult bindingResult) {
 		if(bindingResult.hasErrors())
-			return null;
+			return "redirect:/list/building";
 		buildingService.edit(form);
 		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
 		return "redirect:/list/building";

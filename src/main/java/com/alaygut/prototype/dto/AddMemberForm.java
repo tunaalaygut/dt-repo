@@ -19,11 +19,11 @@ public class AddMemberForm extends FormBase  {
     @Size(min = 3, max = 20, message = "Telefon numarasını kontrol edin.")
     private String phone;
 
-    @NotNull(message = "Kullanıcı bir rol'e sahip olmalıdır.")
+    //@NotNull(message = "Kullanıcı bir rol'e sahip olmalıdır.")
     private Long roleId;
 
     @Size(min = 6, max = 20, message = "Kullanıcı adı [6-20] karakter uzunluğunda olmalıdır.")
-    @UniqueUsername(message = "Kullanıcı adı mevcut.")
+    //@UniqueUsername(message = "Kullanıcı adı mevcut.")
     private String username;
 
     @Size(min = 6, max = 20, message = "Şifre [6-20] karakter uzunluğunda olmalıdır.")
@@ -98,4 +98,5 @@ public class AddMemberForm extends FormBase  {
     public void setAllRoles(Iterable<Role> allRoles) {
         this.allRoles = allRoles;
     }
+ 
 }

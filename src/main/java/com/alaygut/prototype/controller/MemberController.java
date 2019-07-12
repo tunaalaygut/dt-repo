@@ -1,6 +1,6 @@
 package com.alaygut.prototype.controller;
 
-import com.alaygut.prototype.domain.Member;
+import com.alaygut.prototype.domain.Member; 
 import com.alaygut.prototype.domain.Reason;
 import com.alaygut.prototype.domain.Role;
 import com.alaygut.prototype.dto.AddMemberForm;
@@ -30,7 +30,7 @@ public class MemberController {
     @GetMapping("/add/member")
     public ModelAndView addMemberPage(){
         AddMemberForm addMemberForm = new AddMemberForm();
-        addMemberForm.setAllRoles(roleService.getAllRoles());
+        addMemberForm.setAllRoles(roleService.getAllActiveRoles());
         return new ModelAndView(
                 "addMember",
                 "addMemberForm",
@@ -70,11 +70,11 @@ public class MemberController {
     @PostMapping("/edit/member")
     public String submitMemberEdit(@Valid @ModelAttribute("AddMemberForm") AddMemberForm form, BindingResult bindingResult) {
 		if(bindingResult.hasErrors())
-			return null;
+			return "redirect:/list/member";
 		
-		memberService.edit(form);
-		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
-		return "redirect:/list/member";
+			memberService.edit(form);
+			//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
+			return "redirect:/list/member";
 	}
 
 }

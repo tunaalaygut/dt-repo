@@ -20,7 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
+import java.security.Principal;
 import java.util.Optional;
 
 @Service
@@ -28,6 +28,7 @@ public class MemberServiceImpl implements MemberService {
 
     private MemberRepository memberRepository;
     private RoleRepository roleRepository;
+    private LoginRepository loginRepository;
     private LoginService loginService;
     private RoleService roleService;
 
@@ -93,15 +94,40 @@ public class MemberServiceImpl implements MemberService {
     public void edit(AddMemberForm addMemberForm) {
     	Member member = memberRepository.findById(addMemberForm.getRecordId()).orElse(null);
     	Role role = roleRepository.findById(addMemberForm.getRoleId()).orElse(null);
-    	//Login login =
+    	Login login = member.getLogin();
     	member.setFirstName(addMemberForm.getFirstName());
     	member.setLastName(addMemberForm.getLastName());
     	member.setEmail(addMemberForm.getEmail());
     	member.setPhone(addMemberForm.getPhone());
     	member.setRole(role);
-    	//member.setLogin(login);
+        login.setUsername(addMemberForm.getUsername());
+        login.setPassword(passwordEncoder.encode(addMemberForm.getPassword()));
         member.setUpdater(memberRepository.findById(addMemberForm.getUpdaterId()).orElse(null));
+        if (addMemberForm.getCreatorId() != null)
+            member.setCreator(memberRepository.findById(addMemberForm.getCreatorId()).orElse(null));
     	
+    	//member.setLogin(login); 	
+    	loginService.addLogin(login);
+    	memberRepository.save(member);
+    }
+    
+    @Override
+    public void profileEdit(AddMemberForm addMemberForm) {
+    	Member member = memberRepository.findById(addMemberForm.getRecordId()).orElse(null);
+    	Login login = member.getLogin();
+    	member.setFirstName(addMemberForm.getFirstName());
+    	member.setLastName(addMemberForm.getLastName());
+    	member.setEmail(addMemberForm.getEmail());
+    	member.setPhone(addMemberForm.getPhone());
+    	
+        login.setUsername(addMemberForm.getUsername());
+        login.setPassword(passwordEncoder.encode(addMemberForm.getPassword()));
+        member.setUpdater(memberRepository.findById(addMemberForm.getUpdaterId()).orElse(null));
+        if (addMemberForm.getCreatorId() != null)
+            member.setCreator(memberRepository.findById(addMemberForm.getCreatorId()).orElse(null));
+    	
+    	//member.setLogin(login); 	
+    	loginService.addLogin(login);
     	memberRepository.save(member);
     }
 
@@ -109,14 +135,17 @@ public class MemberServiceImpl implements MemberService {
     public AddMemberForm getEditForm(Long memberId) {
         Member member = getMember(memberId);
         AddMemberForm addMemberForm = new AddMemberForm();
-
+        Login login = member.getLogin();
         addMemberForm.setRecordId(member.getMemberId());
         addMemberForm.setFirstName(member.getFirstName());
         addMemberForm.setLastName(member.getLastName());
         addMemberForm.setEmail(member.getEmail());
         addMemberForm.setPhone(member.getPhone());
         addMemberForm.setRoleId(member.getRole().getRoleId());
+        addMemberForm.setUsername(login.getUsername());
+        addMemberForm.setPassword(login.getPassword()); //olmuyor
         addMemberForm.setAllRoles(roleService.getAllActiveRoles());
+        
         return addMemberForm;
     }
 
