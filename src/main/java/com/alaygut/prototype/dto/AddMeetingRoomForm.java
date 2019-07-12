@@ -3,9 +3,7 @@ package com.alaygut.prototype.dto;
 import com.alaygut.prototype.domain.Building;
 import com.alaygut.prototype.domain.RoomFeature;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.List;
 
 public class AddMeetingRoomForm extends FormBase  {
@@ -13,11 +11,14 @@ public class AddMeetingRoomForm extends FormBase  {
 	@Size(min = 2, max = 5, message = "Toplantı odası ismi en az 2 karakter içermelidir.")
 	private String meetingRoomName;
 
+	@NotNull(message = "Bir bina seçilmelidir.")
 	private Long buildingId;
 
+	@NotNull(message = "Oda kapasitesi belirtilmelidir.")
+	@Min(value = 1L, message = "Oda kapasitesi en az 1 kişi olmalıdır.")
 	private Integer capacity;
 
-	@NotEmpty(message = "En az bir oda özelliği seçilmeli.")
+	@NotEmpty(message = "En az bir oda özelliği seçilmelidir.")
 	private List<Long> roomFeatureIds;
 
 	private Iterable<Building> allBuildings;
