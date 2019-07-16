@@ -7,28 +7,28 @@ import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.BuildingRepository;
 import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class BuildingServiceImpl implements BuildingService {
 
     private BuildingRepository buildingRepository;
-    private MemberRepository memberRepository;
+    private MemberService memberService;
 
-    public BuildingServiceImpl(BuildingRepository buildingRepository, MemberRepository memberRepository) {
+    public BuildingServiceImpl(BuildingRepository buildingRepository, MemberService memberService) {
         this.buildingRepository = buildingRepository;
-        this.memberRepository = memberRepository;
+        this.memberService = memberService;
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void addBuilding(AddBuildingForm form) {
         Building building = new Building(
                 form.getBuildingName(),
                 form.getBuildingAddr()
         );
-        building.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
+        building.setCreator(memberService.getMember(form.getCreatorId()));
         buildingRepository.save(building);
     }
 
@@ -48,6 +48,7 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void deactivate(IDTransfer idTransfer) {
         Building building = buildingRepository.findById(idTransfer.getRecordId()).orElse(null);
         building.setState(RecordState.NONACTIVE);
@@ -55,6 +56,7 @@ public class BuildingServiceImpl implements BuildingService {
     }
     
     @Override
+    @Transactional(readOnly = false)
     public void edit(AddBuildingForm addBuildingForm) {
     	Building building = buildingRepository.findById(addBuildingForm.getRecordId()).orElse(null);
 
@@ -62,7 +64,7 @@ public class BuildingServiceImpl implements BuildingService {
     	    building.setBuildingName(addBuildingForm.getNewBuildingName());
 
     	building.setBuildingAddr(addBuildingForm.getBuildingAddr());
-        building.setUpdater(memberRepository.findById(addBuildingForm.getUpdaterId()).orElse(null));
+        building.setUpdater(memberService.getMember(addBuildingForm.getUpdaterId()));
 
     }
 

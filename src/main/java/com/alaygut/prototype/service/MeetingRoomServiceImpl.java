@@ -10,17 +10,18 @@ import org.springframework.stereotype.Service;
 import com.alaygut.prototype.dto.AddMeetingRoomForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.MeetingRoomRepository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Transactional(readOnly = true)
 public class MeetingRoomServiceImpl implements MeetingRoomService {
 
 	private MeetingRoomRepository meetingRoomRepository;
 
-	@Autowired
-	RoomFeatureRepository roomFeatureRepository;
 
 	private BuildingService buildingService;
 	private RoomFeatureService roomFeatureService;
@@ -34,11 +35,12 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void addRoom(AddMeetingRoomForm addMeetingRoomForm) {
 		Building building = buildingService.getBuilding(addMeetingRoomForm.getBuildingId());
 
-		Iterable<RoomFeature> selectedFeatures = roomFeatureRepository.findAllById(addMeetingRoomForm.getRoomFeatureIds());
-		//Iterable<RoomFeature> selectedFeatures = roomFeatureService.getAllById(addMeetingRoomForm.getRoomFeatureIds()); //bunun böyle olması lazım
+
+		Iterable<RoomFeature> selectedFeatures = roomFeatureService.getAllById(addMeetingRoomForm.getRoomFeatureIds());
 
 		Set<RoomFeature> roomFeatures = new HashSet<>();
 
@@ -72,6 +74,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void deactivate(IDTransfer idTransfer) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findById(idTransfer.getRecordId()).orElse(null);
 		meetingRoom.setState(RecordState.NONACTIVE);
@@ -80,6 +83,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void edit(AddMeetingRoomForm addMeetingRoomForm) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findById(addMeetingRoomForm.getRecordId()).orElse(null);
 		Building building = buildingService.getBuilding(addMeetingRoomForm.getBuildingId());
@@ -88,11 +92,11 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 		meetingRoom.setBuilding(building);
 		meetingRoom.setCapacity(addMeetingRoomForm.getCapacity());
 
-		Iterable<RoomFeature> selectedFeatures = roomFeatureRepository.findAllById(addMeetingRoomForm.getRoomFeatureIds());
+		Iterable<RoomFeature> selectedFeatures = roomFeatureService.getAllById(addMeetingRoomForm.getRoomFeatureIds());
 		Set<RoomFeature> roomFeatures = new HashSet<>();
 
 		for (RoomFeature roomFeature : selectedFeatures) {
-			roomFeatures.add((roomFeatureRepository.findById(roomFeature.getRoomFeatureId())).orElse(null));
+			roomFeatures.add(roomFeatureService.getById(roomFeature.getRoomFeatureId()));
 		}
 
 		meetingRoom.setRoomFeatureSet(roomFeatures);
@@ -112,7 +116,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 		addMeetingRoomForm.setBuildingId(meetingRoom.getBuilding().getBuildingId());
 		addMeetingRoomForm.setRecordId(meetingRoom.getMeetingRoomId());
 		addMeetingRoomForm.setAllBuildings(buildingService.getAllActiveBuildings());
-		addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllFeatures());
+		addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllActiveRoomFeatures());
 		addMeetingRoomForm.setMeetingRoomFeatures(this.getAllRoomFeatures(meetingRoom));
 
 		return addMeetingRoomForm;
@@ -120,7 +124,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 
 	@Override
 	public Iterable<RoomFeature> getAllRoomFeatures(MeetingRoom meetingRoom) {
-		return roomFeatureRepository.findAllByMeetingRoomSet(this.getMeetingRoom(meetingRoom.getMeetingRoomId()));
+		return roomFeatureService.getAllByMeetingRoomSet(this.getMeetingRoom(meetingRoom.getMeetingRoomId()));
 	}
 
 	@Override

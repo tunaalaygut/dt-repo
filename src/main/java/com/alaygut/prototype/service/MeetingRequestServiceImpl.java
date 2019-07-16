@@ -27,21 +27,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class MeetingRequestServiceImpl implements MeetingRequestService {
 	
 	private MeetingRequestRepository meetingRequestRepository;
-	private MeetingRoomRepository meetingRoomRepository;
+	private MeetingRoomService meetingRoomService;
 	private MemberService memberService;
-	private MeetingTypeRepository meetingTypeRepository;
-	private MeetingStatusRepository meetingStatusRepository;
+	private MeetingTypeService meetingTypeService;
+	private MeetingStatusService meetingStatusService;
 
-	public MeetingRequestServiceImpl(MeetingRequestRepository meetingRequestRepository, MeetingRoomRepository meetingRoomRepository, MemberService memberService, MeetingTypeRepository meetingTypeRepository, MeetingStatusRepository meetingStatusRepository) {
+	public MeetingRequestServiceImpl(MeetingRequestRepository meetingRequestRepository, MeetingRoomService meetingRoomService, MemberService memberService, MeetingTypeService meetingTypeService, MeetingStatusService meetingStatusService) {
 		this.meetingRequestRepository = meetingRequestRepository;
-		this.meetingRoomRepository = meetingRoomRepository;
+		this.meetingRoomService = meetingRoomService;
 		this.memberService = memberService;
-		this.meetingTypeRepository = meetingTypeRepository;
-		this.meetingStatusRepository = meetingStatusRepository;
+		this.meetingTypeService = meetingTypeService;
+		this.meetingStatusService = meetingStatusService;
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = false)
 	public void addRequest(AddMeetingRequestForm form) {
 		/*Optional<MeetingRoom> meetingRoom = meetingRoomRepository.findById(form.getMeetingRoomId());
 		Optional<MeetingStatus> meetingStatus = meetingStatusRepository.findById(form.getMeetingStatusId());
@@ -85,6 +85,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void deactivate(IDTransfer idTransfer) {
 		MeetingRequest meetingRequest = meetingRequestRepository.findById(idTransfer.getRecordId()).orElse(null);
 		meetingRequest.setState(RecordState.NONACTIVE);

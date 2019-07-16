@@ -2,7 +2,9 @@ package com.alaygut.prototype.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;  
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.validation.BindingResult;
@@ -75,12 +77,7 @@ public class MeetingStatusController {
 	@PostMapping("/edit/meetingStatus/{id}")
 	public String submitReasonEdit(@Valid @ModelAttribute("addMeetingStatusForm") AddMeetingStatusForm form, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()){
-            List<ObjectError> error = bindingResult.getAllErrors();
-
-            for (ObjectError e : error){
-                System.out.println(e.toString());
-            }
-
+           meetingStatusService.fixForm(form);
             return "editMeetingStatus";
         }
 		meetingStatusService.edit(form);

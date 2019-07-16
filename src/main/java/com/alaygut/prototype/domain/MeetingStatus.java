@@ -47,7 +47,6 @@ public class MeetingStatus extends BaseClass{
 		this.meetingStatusName = meetingStatusName;
 	}
 
-
 	public Reason getReason() {
 		return reason;
 	}

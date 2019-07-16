@@ -2,7 +2,11 @@ package com.alaygut.prototype.service;
 
 import com.alaygut.prototype.domain.Participant;
 import com.alaygut.prototype.repository.ParticipantRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service
+@Transactional(readOnly = true)
 public class ParticipantServiceImpl implements ParticipantService {
 	
 	private ParticipantRepository participantRepository;
@@ -12,6 +16,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void addParticipant(Participant participant) {
 		participantRepository.save(participant);
 	}

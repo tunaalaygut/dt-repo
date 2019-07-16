@@ -12,6 +12,8 @@ public class AddMeetingStatusForm extends FormBase  {
 
 	private Iterable<Reason> allReasons; //to be used to retrieve reasons from ReasonService.
 
+	/*private Iterable<Reason> meetingStatusReasons;*/
+
 	public String getMeetingStatusName() {
 		return meetingStatusName;
 	}
@@ -35,4 +37,9 @@ public class AddMeetingStatusForm extends FormBase  {
 	public void setAllReasons(Iterable<Reason> allReasons) {
 		this.allReasons = allReasons;
 	}
+
+	/*public Iterable<Reason> getMeetingStatusReasons() { return meetingStatusReasons; }
+
+	public void setMeetingStatusReasons(Iterable<Reason> meetingStatusReasons) { this.meetingStatusReasons = meetingStatusReasons; }
+*/
 }
