@@ -3,7 +3,7 @@ $(document).ready(function () {
         $('#sidebar').toggleClass('active');
     });
     $('.table-hover').DataTable();
-    $('#example').dataTable( {
+    $('#example').DataTable( {
         "pageLength": 5,
         "bLengthChange": false,
         "language": {
@@ -12,7 +12,7 @@ $(document).ready(function () {
         }
     } );
 
-    $('#example2').dataTable( {
+    $('#example2').DataTable( {
         "pageLength": 5,
         "bLengthChange": false,
         "language": {
