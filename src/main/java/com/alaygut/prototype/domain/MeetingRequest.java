@@ -42,19 +42,18 @@ public class MeetingRequest extends BaseClass{
 	private MeetingStatus meetingStatus;
 	
 	public MeetingRequest() {}; //default constructor
-	
-	public MeetingRequest(MeetingRoom meetingRoom, Member member, MeetingType meetingType,
-			LocalTime startTime,LocalTime endTime, String description,  MeetingStatus meetingStatus) {
+
+
+	public MeetingRequest(MeetingRoom meetingRoom, Member member, MeetingType meetingType, LocalDate date, LocalTime startTime, LocalTime endTime, String description) {
 		this.meetingRoom = meetingRoom;
 		this.member = member;
 		this.meetingType = meetingType;
+		this.date = date;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.description = description;
-		this.meetingStatus = meetingStatus;
-		
 	}
-	
+
 	public Long getMeetingRequestId() {
 		return meetingRequestId;
 	}

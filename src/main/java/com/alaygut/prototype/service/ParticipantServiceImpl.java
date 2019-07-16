@@ -1,14 +1,26 @@
 package com.alaygut.prototype.service;
 
+import com.alaygut.prototype.domain.MeetingRequest;
+import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.domain.Participant;
 import com.alaygut.prototype.repository.ParticipantRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@Transactional
 public class ParticipantServiceImpl implements ParticipantService {
 	
 	private ParticipantRepository participantRepository;
 
-	public ParticipantServiceImpl(ParticipantRepository participantRepository) {
+	private MemberService memberService;
+
+	public ParticipantServiceImpl(ParticipantRepository participantRepository, MemberService memberService) {
 		this.participantRepository = participantRepository;
+		this.memberService = memberService;
 	}
 	
 	@Override
@@ -21,4 +33,22 @@ public class ParticipantServiceImpl implements ParticipantService {
 		return participantRepository.findAll();
 	}
 
+	@Override
+	public void generateParticipants(List<String> participantDetails, MeetingRequest meetingRequest) {
+		for (int i = 0; i < participantDetails.size(); i+=3){
+			String fullName, email;
+			Member member;
+
+			if (participantDetails.get(i).equals(""))
+				member = null;
+			else									//member
+				member = memberService.getMember(Long.parseLong(participantDetails.get(i)));	//reference to the member
+
+			fullName = participantDetails.get(i+1);
+			email = participantDetails.get(i+2);
+
+			Participant participant = new Participant(member, fullName, email, meetingRequest);
+			participantRepository.save(participant);
+		}
+	}
 }

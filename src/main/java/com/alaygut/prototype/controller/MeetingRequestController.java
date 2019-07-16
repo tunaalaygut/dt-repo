@@ -37,23 +37,17 @@ public class MeetingRequestController {
 
 	@GetMapping("/add/meetingRequest")
 	public ModelAndView addMeetingRequestPage() {
-		AddMeetingRequestForm addMeetingRequestForm = new AddMeetingRequestForm();
-		addMeetingRequestForm.setAllBuildings(buildingService.getAllActiveBuildings());
-		addMeetingRequestForm.setAllMeetingRooms(meetingRoomService.getAllActiveRooms());
-		addMeetingRequestForm.setAllMeetingTypes(meetingTypeService.getAllActiveTypes());
-		addMeetingRequestForm.setTimes(meetingRequestTimeGenerator.generateTimes(8, 18, 5));
-		addMeetingRequestForm.setAllMembers(memberService.getAllActiveMembers());
-
-		return new ModelAndView("addMeetingRequest", "addMeetingRequestForm", addMeetingRequestForm);
+		return new ModelAndView(
+				"addMeetingRequest",
+				"addMeetingRequestForm",
+				meetingRequestService.getAddMeetingRequestForm());
 	}
 	
 	@PostMapping("/add/meetingRequest")
 	public String handleAddMeetingRequest(@Valid @ModelAttribute("addMeetingRequestForm") AddMeetingRequestForm addMeetingRequestForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
-			addMeetingRequestForm.setAllMeetingRooms(meetingRoomService.getAllRooms());
-			addMeetingRequestForm.setAllMembers(memberService.getAllMembers());
-			addMeetingRequestForm.setAllMeetingTypes(meetingTypeService.getAllTypes());
-			addMeetingRequestForm.setTimes(meetingRequestTimeGenerator.generateTimes(8, 18, 5));
+			System.out.println(bindingResult.getFieldError());
+			meetingRequestService.setExternalData(addMeetingRequestForm);
 			return "/addMeetingRequest";
 		}
 		meetingRequestService.addRequest(addMeetingRequestForm);
@@ -68,37 +62,19 @@ public class MeetingRequestController {
 	
 	@PostMapping("/list/meetingRequest")
 	public String handleMeetingRequestDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
-		if(bindingResult.hasErrors())
-			return null;
 		meetingRequestService.deactivate(idTransfer);
 		return "redirect:/list/meetingRequest";
 	}
 
 	@GetMapping("/getBuildingMeetingRooms")
 	public @ResponseBody Map<String, String> getBuildingMeetingRooms(@RequestParam("buildingId") Long buildingId){
-		Map<String, String> buildingMeetingRooms = new HashMap<>();
-
-		Iterable<MeetingRoom> meetingRooms = meetingRoomService.getAllInBuilding(buildingId);
-
-		for (MeetingRoom meetingRoom : meetingRooms)
-			buildingMeetingRooms.put(String.valueOf(meetingRoom.getMeetingRoomId()), meetingRoom.getMeetingRoomName());
-
-		return buildingMeetingRooms;
+		return meetingRequestService.getBuildingMeetingRooms(buildingId);
 	}
 
-	@GetMapping("/addMemberToParticipants/{memberId}")
-	public @ResponseBody void addMemberToParticipants(@PathVariable("memberId") Long memberId, @RequestParam("addMeetingRequestForm")AddMeetingRequestForm addMeetingRequestForm){
-
-		addMeetingRequestForm.getAddedMembers().add(memberId);
-		System.out.println(
-				addMeetingRequestForm.getAddedMembers()
-		);
-
-		/*Iterable<MeetingRoom> meetingRooms = meetingRoomService.getAllInBuilding(buildingId);
-
-		for (MeetingRoom meetingRoom : meetingRooms)
-			buildingMeetingRooms.put(String.valueOf(meetingRoom.getMeetingRoomId()), meetingRoom.getMeetingRoomName());*/
-
+	@GetMapping("/getMeetingRoomCapacity")
+	public @ResponseBody int getMeetingRoomCapacity(@RequestParam("meetingRoomId") Long meetingRoomId){
+		return meetingRoomService.getMeetingRoom(meetingRoomId).getCapacity();
 	}
+
 
 }

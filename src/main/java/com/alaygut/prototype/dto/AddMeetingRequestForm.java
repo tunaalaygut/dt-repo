@@ -1,11 +1,6 @@
 package com.alaygut.prototype.dto;
 
- 
-import java.time.LocalTime;
 import java.util.*;
-
-
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -43,11 +38,13 @@ public class AddMeetingRequestForm extends FormBase  {
 	
 	private Iterable<Member> allMembers;
 
-	private ArrayList<Long> addedMembers;
+	private List<Long> addedMemberIds;
 
 	private Iterable<MeetingType> allMeetingTypes;
 
 	private Iterable<MeetingRoom> allMeetingRooms;
+
+	private List<String> participantDetails;
 
 	private ArrayList<String> times;
 
@@ -157,11 +154,19 @@ public class AddMeetingRequestForm extends FormBase  {
 		this.buildingId = buildingId;
 	}
 
-	public ArrayList<Long> getAddedMembers() {
-		return addedMembers;
+	public List<Long> getAddedMemberIds() {
+		return addedMemberIds;
 	}
 
-	public void setAddedMembers(ArrayList<Long> addedMembers) {
-		this.addedMembers = addedMembers;
+	public void setAddedMemberIds(List<Long> addedMemberIds) {
+		this.addedMemberIds = addedMemberIds;
+	}
+
+	public List<String> getParticipantDetails() {
+		return participantDetails;
+	}
+
+	public void setParticipantDetails(List<String> participantDetails) {
+		this.participantDetails = participantDetails;
 	}
 }
