@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import com.alaygut.prototype.domain.MeetingRoom;
 import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.dto.AddMeetingRoomForm;
+import com.alaygut.prototype.dto.MeetingRequestDetailProvider;
 import com.alaygut.prototype.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -57,13 +58,18 @@ public class MeetingRequestController {
 	
 	@GetMapping("/list/meetingRequest")
 	public ModelAndView listMeetingRequestsPage() {
-		return new ModelAndView("listMeetingRequests", "listMeetingRequests", meetingRequestService.getAllActiveRequests());
+		return new ModelAndView("listMeetingRequests", "meetingRequestDetailProvider", meetingRequestService.getListMeetingRequestsDetailProvider());
 	}
 	
 	@PostMapping("/list/meetingRequest")
 	public String handleMeetingRequestDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
 		meetingRequestService.deactivate(idTransfer);
 		return "redirect:/list/meetingRequest";
+	}
+
+	@GetMapping("/list/pendingRequest")
+	public ModelAndView listPendingMeetingRequestsPage() {
+		return new ModelAndView("pendingRequests", "meetingRequestDetailProvider", meetingRequestService.getPendingMeetingRequestsDetailProvider());
 	}
 
 	@GetMapping("/getBuildingMeetingRooms")
@@ -76,5 +82,16 @@ public class MeetingRequestController {
 		return meetingRoomService.getMeetingRoom(meetingRoomId).getCapacity();
 	}
 
+	@PostMapping("/accept/meetingRequest/{meetingRequestId}")
+	public String acceptMeetingRequest(@PathVariable Long meetingRequestId){
+		meetingRequestService.acceptMeetingRequest(meetingRequestId);
+		return "redirect:/list/pendingRequest";
+	}
+
+	@PostMapping("/decline/meetingRequest/{meetingRequestId}")
+	public String declineMeetingRequest(@PathVariable Long meetingRequestId){
+		meetingRequestService.declineMeetingRequest(meetingRequestId);
+		return "redirect:/list/pendingRequest";
+	}
 
 }

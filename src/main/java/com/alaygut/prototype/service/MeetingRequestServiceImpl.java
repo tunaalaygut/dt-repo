@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import com.alaygut.prototype.domain.*;
+import com.alaygut.prototype.dto.MeetingRequestDetailProvider;
 import com.alaygut.prototype.dto.ParticipantDetails;
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.dto.AddMeetingRequestForm;
@@ -69,7 +70,12 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	public Iterable<MeetingRequest> getAllActiveRequests() {
 		return meetingRequestRepository.findAllByStateEquals(RecordState.ACTIVE);
 	}
-	
+
+	@Override
+	public Iterable<MeetingRequest> getAllPendingRequests() {
+		return meetingRequestRepository.findAllByMeetingRequestStateEquals(MeetingState.ONAY_BEKLIYOR);
+	}
+
 	@Override
 	public MeetingRequest getMeetingRequest(Long meetingRequestId) {
 		return meetingRequestRepository.findById(meetingRequestId).orElse(null);
@@ -117,6 +123,55 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 			buildingMeetingRooms.put(String.valueOf(meetingRoom.getMeetingRoomId()), meetingRoom.getMeetingRoomName());
 
 		return buildingMeetingRooms;
+	}
+
+    @Override
+    public MeetingRequestDetailProvider getListMeetingRequestsDetailProvider() {
+        MeetingRequestDetailProvider meetingRequestDetailProvider = new MeetingRequestDetailProvider();
+        Iterable<MeetingRequest> requests = this.getAllRequests();
+
+        meetingRequestDetailProvider.setMeetingParticipants(mapParticipants(requests));
+        return meetingRequestDetailProvider;
+    }
+
+	@Override
+	public MeetingRequestDetailProvider getPendingMeetingRequestsDetailProvider() {
+		MeetingRequestDetailProvider meetingRequestDetailProvider = new MeetingRequestDetailProvider();
+		Iterable<MeetingRequest> requests = this.getAllPendingRequests();
+
+		meetingRequestDetailProvider.setMeetingParticipants(mapParticipants(requests));
+		return meetingRequestDetailProvider;
+	}
+
+	private Map<MeetingRequest, List<Participant>> mapParticipants(Iterable<MeetingRequest> requests){
+		Iterator<MeetingRequest> requestIterator = requests.iterator();
+		Map<MeetingRequest, List<Participant>> meetingParticipants = new HashMap<>();
+
+		while(requestIterator.hasNext()){
+			MeetingRequest meetingRequest = requestIterator.next();
+			meetingParticipants.put(meetingRequest, participantService.getAllParticipantsInMeetingRequest(meetingRequest));
+		}
+
+		return meetingParticipants;
+	}
+
+	@Override
+	public int getNumberOfPendingRequests() {
+		return meetingRequestRepository.countAllByMeetingRequestState(MeetingState.ONAY_BEKLIYOR);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void declineMeetingRequest(Long meetingRequestId) {
+		MeetingRequest request = this.getMeetingRequest(meetingRequestId);
+		request.setMeetingRequestState(MeetingState.REDDEDILDI);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void acceptMeetingRequest(Long meetingRequestId) {
+		MeetingRequest request = this.getMeetingRequest(meetingRequestId);
+		request.setMeetingRequestState(MeetingState.ONAYLANDI);
 	}
 
 }

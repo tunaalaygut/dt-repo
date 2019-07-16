@@ -158,7 +158,7 @@
         <ul class="list-unstyled components">
             <p>İşlemler</p>
             <li>
-                <a th:href="@{/list/meetingRequest}">Toplantı Talepleri <span class="badge badge-danger">10</span></a>
+                <a th:href="@{/list/pendingRequest}">Toplantı Talepleri <span class="badge badge-danger" th:text="${numOfPendingRequests}"></span></a>
                 <a th:href="@{/add/meetingRequest}">Toplantı Talep Et</a>
             </li>
         </ul>

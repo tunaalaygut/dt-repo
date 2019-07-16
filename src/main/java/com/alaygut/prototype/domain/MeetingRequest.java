@@ -37,12 +37,11 @@ public class MeetingRequest extends BaseClass{
 	@Column(name = "description")
 	private String description;
 	
-	@ManyToOne(optional = true)
-	@JoinColumn(name = "meetingStatusId")
-	private MeetingStatus meetingStatus;
-	
-	public MeetingRequest() {}; //default constructor
+	@Column(name = "meetingRequestState")
+	private MeetingState meetingRequestState;
 
+	public MeetingRequest() {
+	}
 
 	public MeetingRequest(MeetingRoom meetingRoom, Member member, MeetingType meetingType, LocalDate date, LocalTime startTime, LocalTime endTime, String description) {
 		this.meetingRoom = meetingRoom;
@@ -52,6 +51,7 @@ public class MeetingRequest extends BaseClass{
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.description = description;
+		this.meetingRequestState = MeetingState.ONAY_BEKLIYOR;
 	}
 
 	public Long getMeetingRequestId() {
@@ -94,12 +94,12 @@ public class MeetingRequest extends BaseClass{
 		this.description = description;
 	}
 
-	public MeetingStatus getMeetingStatus() {
-		return meetingStatus;
+	public MeetingState getMeetingRequestState() {
+		return meetingRequestState;
 	}
 
-	public void setMeetingStatus(MeetingStatus meetingStatus) {
-		this.meetingStatus = meetingStatus;
+	public void setMeetingRequestState(MeetingState meetingRequestState) {
+		this.meetingRequestState = meetingRequestState;
 	}
 
 	public LocalTime getStartTime() {
