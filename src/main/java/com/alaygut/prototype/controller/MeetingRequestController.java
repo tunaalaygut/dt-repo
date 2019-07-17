@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.alaygut.prototype.dto.AddMeetingRequestForm;
 import com.alaygut.prototype.dto.IDTransfer;
 
+import java.security.Principal;
 import java.util.*;
 
 @Controller
@@ -92,6 +93,12 @@ public class MeetingRequestController {
 	public String declineMeetingRequest(@PathVariable Long meetingRequestId){
 		meetingRequestService.declineMeetingRequest(meetingRequestId);
 		return "redirect:/list/pendingRequest";
+	}
+
+	@GetMapping("/member/meetingRequest")
+	public ModelAndView getMemberMeetingRequestsPage(Principal principal){
+		Member member = memberService.getMember(principal.getName());
+		return new ModelAndView("listMeetingRequests", "meetingRequestDetailProvider", meetingRequestService.getMemberMeetingRequestDetailsProvider(member));
 	}
 
 }

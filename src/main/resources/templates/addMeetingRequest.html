@@ -185,7 +185,20 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-chained/1.0.1/jquery.chained.remote.min.js" integrity="sha256-s4fvhjtBM8Qdr848fG5m3T6LjoJl799Qax4fr/24r30=" crossorigin="anonymous"></script>
 	<script type="text/javascript">
 
-		let meetingRoomCapacity;
+		$( document ).ready(function() {
+			getAndPopulateMeetingRooms();
+			meetingRoomCapacity = getRoomCapacity();
+			document.querySelector("#datePicker").valueAsDate = new Date();
+
+		});
+
+		$("#buildingId").change(function(){
+			getAndPopulateMeetingRooms();
+		});
+
+		$("#meetingRoomId").change(function (){
+			meetingRoomCapacity = getRoomCapacity();
+		});
 
 		function getAndPopulateMeetingRooms(){
 			let buildingId = $("#buildingId").val();
@@ -228,79 +241,6 @@
 			});
 
 		}
-
-		$("#buildingId").change(function(){
-			getAndPopulateMeetingRooms();
-		});
-
-		$("#meetingRoomId").change(function (){
-			meetingRoomCapacity = getRoomCapacity();
-		});
-
-		$( document ).ready(function() {
-			getAndPopulateMeetingRooms();
-			meetingRoomCapacity = getRoomCapacity();
-		});
-
-
-
-		$(document).on('click','.addMember', function() {
-			let clickedMemberId = $(this).attr("value0");
-			let memberName = $(this).attr("value1");
-			let email = $(this).attr("value2");
-
-			transferParticipantInfo(clickedMemberId, memberName, email);
-			checkRoomCapacity();
-		});
-
-		$(document).on('click','#addGuest', function(){
-			let guestFullNameInput = $("#guestFullNameInput");
-			let guestEmailInput = $("#guestEmailInput");
-			let guestFullName = guestFullNameInput.val();
-			let guestEmail = guestEmailInput.val();
-
-
-			if ((guestFullName !== "") && (guestEmail !== "")) {
-				//Clear inputs in the add guest form.
-				guestFullNameInput.val('');
-				guestEmailInput.val('');
-
-				transferParticipantInfo("", guestFullName, guestEmail);
-			}
-			checkRoomCapacity();
-		});
-
-		$(document).on('click','.deleteParticipant', function(){
-			let addedMembersDataTable = $('#example2').DataTable();
-			let allMembersTable = $('#example').DataTable();
-
-			let clickedRow = $(this).parent().parent();
-			let memberId = $(this).attr('value0');
-			let fullName = $(this).attr('value1');
-			let email = $(this).attr('value2');
-
-			console.log(memberId + " " + fullName + " " + email);
-
-			if(memberId) {
-				let newMarkup = $($.parseHTML(
-						'<tr>' +
-						'<td>' + fullName + '</td>' +
-						'<td>' + email + '</td>' +
-						'<td class="text-center">' +
-						'<button type="button" value0="' + memberId + '" value1="' + fullName + '" value2="' + email + '" class="btn btn-sm btn-outline-info addMember" style="border-radius: 50%;">' +
-						'<span class="fas fa-plus"></span>' +
-						'</button>' +
-						'</td>' +
-						'</tr>'));
-
-				allMembersTable.row.add(newMarkup).draw();
-			}
-
-
-			addedMembersDataTable.rows(clickedRow).remove().draw();
-			removeParticipant(memberId, fullName, email);
-			checkRoomCapacity();
-		});
 
 		function addParticipant(memberId, fullName, email){
 			let addedMembers = $("#addedMembersMultipleSelect");
@@ -360,6 +300,65 @@
 			addedMembersDataTable.row.add(newMarkup).draw();			//update added members table
 		}
 
+		let meetingRoomCapacity;
+
+		$(document).on('click','.addMember', function() {
+			let clickedMemberId = $(this).attr("value0");
+			let memberName = $(this).attr("value1");
+			let email = $(this).attr("value2");
+
+			transferParticipantInfo(clickedMemberId, memberName, email);
+			checkRoomCapacity();
+		});
+
+		$(document).on('click','#addGuest', function(){
+			let guestFullNameInput = $("#guestFullNameInput");
+			let guestEmailInput = $("#guestEmailInput");
+			let guestFullName = guestFullNameInput.val();
+			let guestEmail = guestEmailInput.val();
+
+
+			if ((guestFullName !== "") && (guestEmail !== "")) {
+				//Clear inputs in the add guest form.
+				guestFullNameInput.val('');
+				guestEmailInput.val('');
+
+				transferParticipantInfo("", guestFullName, guestEmail);
+			}
+			checkRoomCapacity();
+		});
+
+		$(document).on('click','.deleteParticipant', function(){
+			let addedMembersDataTable = $('#example2').DataTable();
+			let allMembersTable = $('#example').DataTable();
+
+			let clickedRow = $(this).parent().parent();
+			let memberId = $(this).attr('value0');
+			let fullName = $(this).attr('value1');
+			let email = $(this).attr('value2');
+
+			console.log(memberId + " " + fullName + " " + email);
+
+			if(memberId) {
+				let newMarkup = $($.parseHTML(
+						'<tr>' +
+						'<td>' + fullName + '</td>' +
+						'<td>' + email + '</td>' +
+						'<td class="text-center">' +
+						'<button type="button" value0="' + memberId + '" value1="' + fullName + '" value2="' + email + '" class="btn btn-sm btn-outline-info addMember" style="border-radius: 50%;">' +
+						'<span class="fas fa-plus"></span>' +
+						'</button>' +
+						'</td>' +
+						'</tr>'));
+
+				allMembersTable.row.add(newMarkup).draw();
+			}
+
+
+			addedMembersDataTable.rows(clickedRow).remove().draw();
+			removeParticipant(memberId, fullName, email);
+			checkRoomCapacity();
+		});
 
 	</script>
 </body>

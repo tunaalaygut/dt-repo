@@ -77,6 +77,11 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	}
 
 	@Override
+	public Iterable<MeetingRequest> getAllMemberMeetingRequests(Member member) {
+		return meetingRequestRepository.findAllByMember(member);
+	}
+
+	@Override
 	public MeetingRequest getMeetingRequest(Long meetingRequestId) {
 		return meetingRequestRepository.findById(meetingRequestId).orElse(null);
 	}
@@ -140,6 +145,15 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		Iterable<MeetingRequest> requests = this.getAllPendingRequests();
 
 		meetingRequestDetailProvider.setMeetingParticipants(mapParticipants(requests));
+		return meetingRequestDetailProvider;
+	}
+
+	@Override
+	public MeetingRequestDetailProvider getMemberMeetingRequestDetailsProvider(Member member) {
+		MeetingRequestDetailProvider meetingRequestDetailProvider = new MeetingRequestDetailProvider();
+		Iterable<MeetingRequest> requests = this.getAllMemberMeetingRequests(member);
+
+		meetingRequestDetailProvider.setMeetingParticipants(this.mapParticipants(requests));
 		return meetingRequestDetailProvider;
 	}
 

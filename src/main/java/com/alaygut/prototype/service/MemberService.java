@@ -21,5 +21,5 @@ public interface MemberService extends UserDetailsService {
     void addErrors(AddMemberForm addMemberForm, BindingResult bindingResult);
     boolean usernameExists(String username);
     boolean emailExists(String email);
-
+    Member getMember(String username);
 }

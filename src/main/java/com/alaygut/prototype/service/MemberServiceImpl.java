@@ -171,6 +171,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public Member getMember(String username) {
+        return memberRepository.findByLoginUsername(username);
+    }
+
+    @Override
     public AddMemberForm getEditForm(Long memberId) {
         Member member = getMember(memberId);
         AddMemberForm addMemberForm = new AddMemberForm();
