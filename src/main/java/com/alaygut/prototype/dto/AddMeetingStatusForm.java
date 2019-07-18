@@ -5,7 +5,7 @@ import com.alaygut.prototype.domain.Reason;
 import javax.validation.constraints.Size;
 
 public class AddMeetingStatusForm extends FormBase  {
-	@Size(min = 5, max = 30, message ="Durum ismi [5-30] karakter uzunluğunda olmalıdır.")
+	@Size(min = 5, max = 30, message ="{meetingStatusName.size.not.valid}")
 	private String meetingStatusName;
 
 	private Long reasonId;

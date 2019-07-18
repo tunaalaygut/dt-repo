@@ -150,6 +150,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void fixForm(AddMemberForm addMemberForm) {
         addMemberForm.setAllRoles(roleService.getAllActiveRoles());
+        addMemberForm.setEmail(this.getMember(addMemberForm.getRecordId()).getEmail());
+        addMemberForm.setUsername(this.getMember(addMemberForm.getRecordId()).getUsername());
     }
 
     @Override

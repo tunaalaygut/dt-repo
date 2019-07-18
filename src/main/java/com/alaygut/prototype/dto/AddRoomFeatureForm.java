@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 
 public class AddRoomFeatureForm extends FormBase {
-    @Size(min=5, max= 50, message = "Özellik ismi 5-50 karakter uzunluğunda olmalıdır.")
+    @Size(min=5, max= 50, message = "{featureName.size.not.valid}")
     private String featureName;
 
     private  String description;

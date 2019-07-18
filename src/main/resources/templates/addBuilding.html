@@ -10,29 +10,29 @@
         <div class="content">
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Şirket Binası Ekleme Formu</h2>
+
+            <div th:replace="fragments/fragments :: successMessage"></div>
+
             <form th:action="@{/add/building}" th:object="${addBuildingForm}" th:method="post" autocomplete="off">
                 <div class="form-group">
                     <label for="firstNameInput">Bina Adı:</label>
                     <input th:field="*{buildingName}" type="text" class="form-control" id="firstNameInput" placeholder="Bina Adı">
                 </div>
-
+                <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('buildingName')}, field = 'buildingName')"></div>
                 <div class="form-group">
                     <label for="lastNameInput">Bina Adresi:</label>
                     <textarea th:field="*{buildingAddr}" type="text" class="form-control" id="lastNameInput" placeholder="Adres" rows="3" maxlength="250" style="resize: none;"/>
                 </div>
-
+                <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('buildingAddr')}, field = 'buildingAddr')"></div>
+                <!--<div th:if="${#fields.hasErrors('buildingAddr')}" th:errors="*{buildingAddr}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                </div>-->
                 <div th:replace="fragments/fragments :: creatorIdInput"></div>
 
-                <div th:replace="fragments/fragments :: successMessage"></div>
-
-                <div th:if="${#fields.hasErrors('buildingName')}" th:errors="*{buildingName}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
-                <div th:if="${#fields.hasErrors('buildingAddr')}" th:errors="*{buildingAddr}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
                 <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Bina Ekle</button>
             </form>
         </div>
     </div>
     <div th:replace="fragments/fragments :: scripts"></div>
+
 </body>
 </html>

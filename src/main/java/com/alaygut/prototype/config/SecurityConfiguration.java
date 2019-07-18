@@ -1,6 +1,6 @@
 package com.alaygut.prototype.config;
 
-import com.alaygut.prototype.service.MemberService; 
+import com.alaygut.prototype.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 @Configuration
 @ComponentScan(basePackages = { "com.alaygut.prototype" })
@@ -65,5 +66,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
 
 }

@@ -10,40 +10,40 @@ import javax.validation.constraints.*;
 
 
 public class AddMemberForm extends FormBase  {
-    @Size(min = 3, max = 20, message = "İsim [3-20] karakter uzunluğunda olmalıdır.")
+    @Size(min = 3, max = 20, message = "{firstName.size.not.valid}")
     private String firstName;
 
-    @Size(min = 3, max = 20, message = "Soyisim [3-20] karakter uzunluğunda olmalıdır.")
+    @Size(min = 3, max = 20, message = "{lastName.size.not.valid}")
     private String lastName;
 
 
-    @Email(message = "Girdiğiniz email adresi doğru değil.")
-    @Size(min = 5, max = 30, message = "E-mail adresi [5-30] karakter uzunluğunda olmalıdır.")
-    @UniqueEmail(message = "Email mevcut.")
+    @Email(message = "{email.not.valid}")
+    @Size(min = 5, max = 30, message = "{email.size.not.valid}")
+    @UniqueEmail(message = "{email.not.unique}")
     private String email;
 
-    @Email(message = "Girdiğiniz email adresi doğru değil.")
-    @Size(min = 5, max = 30, message = "E-mail adresi [5-30] karakter uzunluğunda olmalıdır.")
+    @Email(message = "{newEmail.not.valid}")
+    @Size(min = 5, max = 30, message = "{newEmail.size.not.valid}")
     private String newEmail;
 
-    @Size(min = 6, max = 20, message = "Kullanıcı adı [6-20] karakter uzunluğunda olmalıdır.")
+    @Size(min = 6, max = 20, message = "{newUsername.size.not.valid}")
     private String newUsername;
 
     private String originalEmail;
 
     private String originalUsername;
 
-    @Size(min = 3, max = 20, message = "Telefon numarasını kontrol edin.")
+    @Size(min = 3, max = 20, message = "{phone.size.not.valid}")
     private String phone;
 
-    @NotNull(message = "Kullanıcı bir rol'e sahip olmalıdır.")
+    @NotNull(message = "{roleId.not.null}")
     private Long roleId;
 
-    @Size(min = 6, max = 20, message = "Kullanıcı adı [6-20] karakter uzunluğunda olmalıdır.")
-    //@UniqueUsername(message = "Kullanıcı adı mevcut.")
+    @Size(min = 6, max = 20, message = "{username.size.not.valid}")
+    @UniqueUsername(message = "{username.not.unique}")
     private String username;
 
-    @Size(min = 3, max = 20, message = "Şifre [6-20] karakter uzunluğunda olmalıdır.")
+    @Size(min = 3, max = 20, message = "{password.size.not.valid}")
     private String password;
 
     private Iterable<Role> allRoles;

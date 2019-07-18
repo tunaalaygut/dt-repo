@@ -60,7 +60,7 @@ public class RoomFeatureController {
     }
 
     @PostMapping("/edit/roomFeature/{id}")
-	public String submitRoomFeatureEdit(@Valid @ModelAttribute("addRoomFeatureForm") AddRoomFeatureForm form, BindingResult bindingResult) {
+	public String submitRoomFeatureEdit(@Valid @ModelAttribute("addRoomFeatureForm") AddRoomFeatureForm form, BindingResult bindingResult,RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()){
             List<ObjectError> error = bindingResult.getAllErrors();
             for (ObjectError e : error){
@@ -74,6 +74,7 @@ public class RoomFeatureController {
         catch (Exception e){
             return "editRoomFeature";
         }
+        redirectAttributes.addFlashAttribute("successMessage", "Özellik başarıyla değiştirildi.");
         return "redirect:/list/roomFeature";
     }
 }

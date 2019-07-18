@@ -32,6 +32,7 @@ public class BuildingController  {
     public String handleAddBuilding(@Valid @ModelAttribute("addBuildingForm") AddBuildingForm addBuildingForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors())
             return "/addBuilding";
+
         buildingService.addBuilding(addBuildingForm);
         redirectAttributes.addFlashAttribute("successMessage", "Yeni bina başarıyla oluşturuldu.");
         return "redirect:/add/building";
@@ -58,18 +59,18 @@ public class BuildingController  {
     }
 
     @PostMapping("/edit/building/{id}")
-    public String submitBuildingEdit(@Valid @ModelAttribute("addBuildingForm") AddBuildingForm form, BindingResult bindingResult) {
+    public String submitBuildingEdit(@Valid @ModelAttribute("addBuildingForm") AddBuildingForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()){
             return "editBuilding";
         }
         try{
             buildingService.edit(form);
+            redirectAttributes.addFlashAttribute("successMessage", "Bina başarıyla değiştirildi.");
+            return "redirect:/list/building";
         }
         catch (Exception e){
-            bindingResult.addError(new FieldError("addBuildingForm", "buildingName", "Bina adı mevcut."));
+            bindingResult.addError(new FieldError("addBuildingForm", "buildingName", "{buildingName.not.unique}"));
             return "editBuilding";
         }
-
-        return "redirect:/list/building";
     }
 }

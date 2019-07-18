@@ -12,11 +12,16 @@
     <div class="content">
         <div th:replace="fragments/fragments :: navbar"></div>
         <h2 class="mb-4">Toplantı Odaları İçin Özellik Ekleme Formu </h2>
+
+        <div th:replace="fragments/fragments :: successMessage"></div>
+
         <form th:action="@{/add/roomFeature}" th:object="${addRoomFeatureForm}" th:method="post" autocomplete="off">
             <div class="form-group">
                 <label for="featureNameInput">Özellik:</label>
                 <input th:field="*{featureName}" type="text" class="form-control" id="featureNameInput" placeholder=" Özellik ">
             </div>
+            <div th:if="${#fields.hasErrors('featureName')}" th:errors="*{featureName}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        </div>
             <div class="form-group">
                 <label for="featureDescription">Özellik Açıklaması:</label>
                 <textarea th:field="*{description}" type="text" class="form-control" id="featureDescription" placeholder="Açıklama" rows="3" maxlength="250" style="resize: none;"/>
@@ -24,9 +29,7 @@
 
 
             <div th:replace="fragments/fragments :: creatorIdInput"></div>
-            <div th:if="${#fields.hasErrors('featureName')}" th:errors="*{featureName}" class="alert alert-danger alert-dismissible fade show" role="alert">
-            </div>
-            <div th:replace="fragments/fragments :: successMessage"></div>
+
             <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Özellik ekle </button>
 
         </form>

@@ -16,23 +16,23 @@
              <form th:action="@{__${#httpServletRequest.requestURL}__}" th:object="${addMeetingTypeForm}" th:method="post" id="meetingTypeEditForm" autocomplete="off">
                
                 <div class="form-group">
-                    <label for="firstNameInput">Sebep Adı:</label>
+                    <label for="firstNameInput">Toplantı Türü:</label>
                    <input th:field="*{meetingTypeName}" th:value="${addMeetingTypeForm.meetingTypeName}" type="text" class="form-control" id="firstNameInput" placeholder="Toplantı Türü">
                </div>
+                 <div th:if="${#fields.hasErrors('meetingTypeName')}" th:errors="*{meetingTypeName}" class="alert alert-danger alert-dismissible fade show" role="alert">
+             </div>
                         <div class="form-group">
 		                    <label for="lastNameInput">Açıklama:</label>
 		                    <textarea th:field="*{description}" th:value="${addMeetingTypeForm.description}" type="text" class="form-control" id="lastNameInput" placeholder="Açıklama" rows="3" maxlength="250" style="resize: none;"></textarea>
                		   </div>
-               		   
+                 <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                 </div>
+
                	 <input th:attr="name=recordId" type="hidden" th:value="${addMeetingTypeForm.recordId}">
                		   
                  <div th:replace="fragments/fragments :: updaterIdInput"></div>
                  <div th:replace="fragments/fragments :: successMessage"></div>
 
-                 <div th:if="${#fields.hasErrors('meetingTypeName')}" th:errors="*{meetingTypeName}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
-                 <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
                 <input th:attr="name=recordId" type="hidden" th:value="${addMeetingTypeForm.recordId}">
                 <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Toplantı Türünü Değiştir</button>
             </form>

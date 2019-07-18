@@ -66,16 +66,9 @@ public class MemberController {
     }
 
     @PostMapping("/edit/member/{id}")
-    public String submitMemberEdit(@Valid @ModelAttribute("addMemberForm")AddMemberForm form, BindingResult bindingResult) {
+    public String submitMemberEdit(@Valid @ModelAttribute("addMemberForm")AddMemberForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()){
-
-            List<ObjectError> error = bindingResult.getAllErrors();
-
-            for (ObjectError e : error){
-                System.out.println(e.toString());
-            }
-
-            form.setAllRoles(roleService.getAllActiveRoles());
+            memberService.fixForm(form);
             return "editMember";
         }
         try{
@@ -86,7 +79,7 @@ public class MemberController {
             memberService.fixForm(form);
             return "editMember";
         }
-
+        redirectAttributes.addFlashAttribute("successMessage", "Kullanıcı başarıyla değiştirildi.");
         return "redirect:/list/member";
 	}
 

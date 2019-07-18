@@ -10,25 +10,25 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class AddMeetingRequestForm extends FormBase  {
 	
-	//@NotNull(message = "Toplantı isteği için bir oda seçilmelidir.")
+	//@NotNull(message = "{meetingRoomId.not.null")
 	private Long meetingRoomId;
 	
-	//@NotNull(message = "Toplantı isteği bir üye tarafından ayarlanmalıdır.")
+	//@NotNull(message = "{memberId.not.null}")
 	private Long memberId;
 	
-	@NotNull(message = "Toplantı isteği bir türe sahip olmalıdır.")
+	@NotNull(message = "{meetingTypeId.not.null}")
 	private Long meetingTypeId;
 
 	private Long buildingId;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@NotEmpty(message = "Tarih seçilmedi.")
+	@NotEmpty(message = "{date.not.empty}")
 	private String date;
 
-	@NotEmpty(message = "Başlangıç zamanı seçilmedi.")
+	@NotEmpty(message = "{beginningTime.not.empty}")
 	private String beginningTime;
 
-	@NotEmpty(message = "Bitiş zamanı seçilmedi.")
+	@NotEmpty(message = "{endTime.not.empty}")
 	private String endTime;
 	
 	@Size(max = 250)

@@ -8,17 +8,17 @@ import java.util.List;
 
 public class AddMeetingRoomForm extends FormBase  {
 
-	@Size(min = 2, max = 5, message = "Toplantı odası ismi en az 2 karakter içermelidir.")
+	@Size(min = 2, max = 5, message = "{meetingRoomName.size.not.valid}")
 	private String meetingRoomName;
 
-	@NotNull(message = "Bir bina seçilmelidir.")
+	@NotNull(message = "{buildingId.not.null}")
 	private Long buildingId;
 
-	@NotNull(message = "Oda kapasitesi belirtilmelidir.")
-	@Min(value = 1L, message = "Oda kapasitesi en az 1 kişi olmalıdır.")
+	@NotNull(message = "{capacity.not.null}")
+	@Min(value = 1L, message = "{capacity.size.not.valid}")
 	private Integer capacity;
 
-	@NotEmpty(message = "En az bir oda özelliği seçilmelidir.")
+	@NotEmpty(message = "{roomFeatureIds.not.empty}")
 	private List<Long> roomFeatureIds;
 
 	private Iterable<Building> allBuildings;

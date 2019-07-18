@@ -16,16 +16,16 @@
                     <label for="featureNameInput">Özellik:</label>
                     <input th:attr="name=featureName" th:value="${addRoomFeatureForm.featureName}" type="text" class="form-control" id="featureNameInput" placeholder=" Özellik ">
                 </div>
+                <div th:if="${#fields.hasErrors('featureName')}" th:errors="*{featureName}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                </div>
                 <label for="featureDescription">Özellik Açıklaması:</label>
                 <textarea th:field="*{description}" type="text" class="form-control" id="featureDescription" placeholder="Açıklama" rows="3" maxlength="250" style="resize: none;"/>
+            </div>
+            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="alert alert-danger alert-dismissible fade show" role="alert">
             </div>
     <div th:replace="fragments/fragments :: updaterIdInput"></div>
     <div th:replace="fragments/fragments :: successMessage"></div>
 
-            <div th:if="${#fields.hasErrors('featureName')}" th:errors="*{featureName}" class="alert alert-danger alert-dismissible fade show" role="alert">
-            </div>
-            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="alert alert-danger alert-dismissible fade show" role="alert">
-            </div>
             <input th:attr="name=recordId" type="hidden" th:value="${addRoomFeatureForm.recordId}">
             <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Özelliği Değiştir</button>
         </form>

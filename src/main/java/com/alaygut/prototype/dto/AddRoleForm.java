@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 public class AddRoleForm extends FormBase  {
-    @Size(min = 3, max = 30, message = "Rol adı [3-30] karakter uzunluğunda olmalıdır.")
+    @Size(min = 3, max = 30, message = "{roleName.size.not.valid}")
     private String roleName;
 
     private String description;
