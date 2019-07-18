@@ -1,18 +1,15 @@
 package com.alaygut.prototype.service;
 
-import org.springframework.stereotype.Service; 
+import org.springframework.stereotype.Service;  
 
 import com.alaygut.prototype.domain.Login;
-<<<<<<< HEAD
-import com.alaygut.prototype.repository.LoginRepository;
 
-=======
 import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.repository.LoginRepository;
 import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.transaction.annotation.Transactional;
->>>>>>> 88a5f7e0967aa42ebeb02dd4a9dd65cb1bed5cf0
+
 
 @Service
 @Transactional(readOnly = true)

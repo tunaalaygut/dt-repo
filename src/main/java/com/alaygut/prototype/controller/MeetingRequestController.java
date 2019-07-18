@@ -3,14 +3,12 @@ package com.alaygut.prototype.controller;
 import javax.validation.Valid; 
 
 import com.alaygut.prototype.domain.MeetingRoom;
-<<<<<<< HEAD
 
-=======
 import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.dto.AddMeetingRoomForm;
 import com.alaygut.prototype.dto.MeetingRequestDetailProvider;
 import com.alaygut.prototype.service.*;
->>>>>>> 88a5f7e0967aa42ebeb02dd4a9dd65cb1bed5cf0
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;

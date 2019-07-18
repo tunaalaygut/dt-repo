@@ -1,6 +1,6 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.RecordState;
+import com.alaygut.prototype.domain.RecordState; 
 import com.alaygut.prototype.domain.Right;
 import com.alaygut.prototype.domain.Role;
 import com.alaygut.prototype.dto.AddRightForm;
@@ -62,14 +62,13 @@ public class RightServiceImpl implements RightService{
     public Right getRight(Long rightId) {
     	return rightRepository.findById(rightId).orElse(null); 	
     }
-<<<<<<< HEAD
+
     
     /**
      * State'i Aktiften(1) Deaktife(0) alır
      * @param idTransfer id transfer objesi
      */
-=======
->>>>>>> 88a5f7e0967aa42ebeb02dd4a9dd65cb1bed5cf0
+
 
     @Override
     @Transactional(readOnly = false)

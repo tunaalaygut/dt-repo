@@ -1,18 +1,17 @@
 package com.alaygut.prototype.dto;
 
-<<<<<<< HEAD
+
  
 
 
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-=======
-import java.util.*;
->>>>>>> 88a5f7e0967aa42ebeb02dd4a9dd65cb1bed5cf0
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
