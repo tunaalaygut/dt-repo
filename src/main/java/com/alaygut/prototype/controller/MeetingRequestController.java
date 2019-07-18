@@ -101,4 +101,10 @@ public class MeetingRequestController {
 		return new ModelAndView("listMeetingRequests", "meetingRequestDetailProvider", meetingRequestService.getMemberMeetingRequestDetailsProvider(member));
 	}
 
+	@GetMapping("/getGridData")
+	public @ResponseBody Map<String, String> getMeetingRoomCapacity(@RequestParam("date") String date, @RequestParam("meetingRoomId") String meetingRoomId){
+		Long roomId = Long.parseLong(meetingRoomId);
+		return meetingRequestService.getGridData(date, roomId);
+	}
+
 }

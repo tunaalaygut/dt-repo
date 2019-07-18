@@ -1,11 +1,15 @@
 package com.alaygut.prototype.service;
 
 import com.alaygut.prototype.domain.MeetingRequest;
+import com.alaygut.prototype.domain.MeetingRoom;
+import com.alaygut.prototype.domain.MeetingState;
 import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.dto.AddMeetingRequestForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.dto.MeetingRequestDetailProvider;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 public interface MeetingRequestService {
@@ -14,7 +18,9 @@ public interface MeetingRequestService {
 	Iterable<MeetingRequest> getAllActiveRequests();
 	Iterable<MeetingRequest> getAllPendingRequests();
 	Iterable<MeetingRequest> getAllMemberMeetingRequests(Member member);
+	Iterable<MeetingRequest> getAllByDateAndMeetingRoomAndMeetingRequestState(LocalDate date, MeetingRoom meetingRoom, MeetingState state);
 	MeetingRequest getMeetingRequest(Long meetingRequestId);
+	Map<String, String> getGridData(String date, Long meetingRoomId);
 	void deactivate(IDTransfer idTransfer);
 	void edit(AddMeetingRequestForm addMeetingRequestForm);
 	AddMeetingRequestForm getAddMeetingRequestForm();

@@ -82,6 +82,28 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	}
 
 	@Override
+	public Iterable<MeetingRequest> getAllByDateAndMeetingRoomAndMeetingRequestState(LocalDate date, MeetingRoom meetingRoom, MeetingState state) {
+		return meetingRequestRepository.getAllByDateAndMeetingRoomAndMeetingRequestState(date, meetingRoom, state);
+	}
+
+	@Override
+	public Map<String, String> getGridData(String date, Long meetingRoomId){
+		LocalDate meetingDate = LocalDate.parse(date);
+		MeetingRoom meetingRoom = meetingRoomService.getMeetingRoom(meetingRoomId);
+		Iterable<MeetingRequest> requests = this.getAllByDateAndMeetingRoomAndMeetingRequestState(meetingDate, meetingRoom, MeetingState.ONAYLANDI);
+		Iterator<MeetingRequest> requestIterator = requests.iterator();
+		MeetingRequest current;
+		Map<String, String> startEndTimes = new HashMap<>();
+
+		while(requestIterator.hasNext()){
+			current = requestIterator.next();
+			startEndTimes.put(current.getStartTime().toString(), current.getEndTime().toString());
+		}
+
+		return startEndTimes;
+	}
+
+	@Override
 	public MeetingRequest getMeetingRequest(Long meetingRequestId) {
 		return meetingRequestRepository.findById(meetingRequestId).orElse(null);
 	}
