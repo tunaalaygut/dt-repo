@@ -31,6 +31,51 @@ a:focus {
     cursor: pointer;
 }
 
+.timeHolderDisplay{
+    background: #E4E4E4;
+    color: #fff;
+    opacity: 0.5;
+}
+
+
+.pagination > li > a
+{
+    background-color: white;
+    color: #17a2b8;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: #5a5a5a;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.pagination > .active > a
+{
+    color: white;
+    background-color: #17a2b8 !Important;
+    border: solid 1px #17a2b8 !Important;
+}
+
+.pagination > .active > a:hover
+{
+    background-color: #17a2b8 !Important;
+    border: solid 1px #17a2b8;
+}
+
+#taken{
+    background: #F08080;
+
+}
+
+#selected{
+    background: #17a2b8;
+}
+
 .timeHolder:hover{
     color: #f2f2f2;
     transition-duration: 0.2s;

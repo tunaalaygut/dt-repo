@@ -30,6 +30,6 @@ public interface MeetingRequestService {
 	MeetingRequestDetailProvider getPendingMeetingRequestsDetailProvider();
 	MeetingRequestDetailProvider getMemberMeetingRequestDetailsProvider(Member member);
 	int getNumberOfPendingRequests();
-	void declineMeetingRequest(Long meetingRequestId);
-	void acceptMeetingRequest(Long meetingRequestId);
+	void declineMeetingRequest(Long meetingRequestId, Long supervisorId);
+	void acceptMeetingRequest(Long meetingRequestId, Long supervisorId);
 }

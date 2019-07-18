@@ -1,13 +1,8 @@
 package com.alaygut.prototype.controller;
 
-import javax.validation.Valid; 
-
-import com.alaygut.prototype.domain.MeetingRoom;
+import javax.validation.Valid;
 
 import com.alaygut.prototype.domain.Member;
-import com.alaygut.prototype.dto.AddMeetingRoomForm;
-import com.alaygut.prototype.dto.MeetingRequestDetailProvider;
-import com.alaygut.prototype.service.*;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,7 +14,6 @@ import com.alaygut.prototype.dto.AddMeetingRequestForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.BuildingService;
 import com.alaygut.prototype.service.MeetingRequestService;
-import com.alaygut.prototype.service.MeetingRequestTimeGenerator;
 import com.alaygut.prototype.service.MeetingRoomService;
 import com.alaygut.prototype.service.MeetingTypeService;
 import com.alaygut.prototype.service.MemberService;
@@ -33,15 +27,13 @@ public class MeetingRequestController {
 	private MeetingRoomService meetingRoomService;
 	private MemberService memberService;
 	private MeetingTypeService meetingTypeService;
-	private MeetingRequestTimeGenerator meetingRequestTimeGenerator;
 	private BuildingService buildingService;
 
-	public MeetingRequestController(MeetingRequestService meetingRequestService, MeetingRoomService meetingRoomService, MemberService memberService, MeetingTypeService meetingTypeService, MeetingRequestTimeGenerator meetingRequestTimeGenerator, BuildingService buildingService) {
+	public MeetingRequestController(MeetingRequestService meetingRequestService, MeetingRoomService meetingRoomService, MemberService memberService, MeetingTypeService meetingTypeService, BuildingService buildingService) {
 		this.meetingRequestService = meetingRequestService;
 		this.meetingRoomService = meetingRoomService;
 		this.memberService = memberService;
 		this.meetingTypeService = meetingTypeService;
-		this.meetingRequestTimeGenerator = meetingRequestTimeGenerator;
 		this.buildingService = buildingService;
 	}
 
@@ -92,14 +84,16 @@ public class MeetingRequestController {
 	}
 
 	@PostMapping("/accept/meetingRequest/{meetingRequestId}")
-	public String acceptMeetingRequest(@PathVariable Long meetingRequestId){
-		meetingRequestService.acceptMeetingRequest(meetingRequestId);
+	public String acceptMeetingRequest(@PathVariable Long meetingRequestId, Principal principal){
+		Member supervisor = memberService.getMember(principal.getName());
+		meetingRequestService.acceptMeetingRequest(meetingRequestId, supervisor.getMemberId());
 		return "redirect:/list/pendingRequest";
 	}
 
 	@PostMapping("/decline/meetingRequest/{meetingRequestId}")
-	public String declineMeetingRequest(@PathVariable Long meetingRequestId){
-		meetingRequestService.declineMeetingRequest(meetingRequestId);
+	public String declineMeetingRequest(@PathVariable Long meetingRequestId, Principal principal){
+		Member supervisor = memberService.getMember(principal.getName());
+		meetingRequestService.declineMeetingRequest(meetingRequestId, supervisor.getMemberId());
 		return "redirect:/list/pendingRequest";
 	}
 

@@ -100,8 +100,8 @@ public class MeetingRoomController {
 			return "editMeetingRoom";
 		}
 
-		meetingRoomService.edit(form);
-		redirectAttributes.addFlashAttribute("successMessage", "Toplantı odası başarıyla değiştirildi.");
+		if(meetingRoomService.edit(form))
+			redirectAttributes.addFlashAttribute("successMessage", "Toplantı odası başarıyla değiştirildi.");
 		return "redirect:/list/meetingRoom";
 	}
 }

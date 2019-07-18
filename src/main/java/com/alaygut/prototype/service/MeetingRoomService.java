@@ -11,7 +11,7 @@ public interface MeetingRoomService {
 	Iterable<MeetingRoom> getAllActiveRooms();
 	MeetingRoom getMeetingRoom(Long meetingRoomId);
 	void deactivate(IDTransfer idTransfer);
-	void edit(AddMeetingRoomForm addMeetingRoomForm);
+	boolean edit(AddMeetingRoomForm addMeetingRoomForm);
 	AddMeetingRoomForm getEditPage(Long meetingRoomId);
 	Iterable<RoomFeature> getAllRoomFeatures(MeetingRoom meetingRoom);
 	Iterable<MeetingRoom> getAllInBuilding(Long buildingId);
