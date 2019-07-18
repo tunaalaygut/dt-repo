@@ -19,8 +19,7 @@
                    <input th:field="*{meetingRoomName}" th:value="${addMeetingRoomForm.meetingRoomName}" type="text" class="form-control" id="firstNameInput" placeholder="Sebep">
 
                </div>
-                <div th:if="${#fields.hasErrors('meetingRoomName')}" th:errors="${addMeetingRoomForm.meetingRoomName}" class="alert alert-danger alert-dismissible fade show" role="alert">
-            </div>
+                <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('meetingRoomName')}, field = 'meetingRoomName')"></div>
                <div class="form-group">
                     <label for="buildingSelectMenu">Bina Adı:</label>
                     <select class="custom-select" id="buildingSelectMenu" th:field="*{buildingId}">
@@ -29,14 +28,12 @@
                         </div>
                     </select>
                </div>
-                <div th:if="${#fields.hasErrors('buildingId')}" th:errors="*{buildingId}" class="alert alert-danger alert-dismissible fade show" role="alert">
-            </div>
+                <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('buildingId')}, field = 'buildingId')"></div>
                 <div class="form-group">
                     <label for="capacityInput">Kapasite:</label>
                     <input th:field="*{capacity}" type="number" class="form-control" id="capacityInput" placeholder="Kapasite">
                 </div>
-                <div th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}" class="alert alert-danger alert-dismissible fade show" role="alert">
-            </div>
+                <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('capacity')}, field = 'capacity')"></div>
 
                 <div class="form-group">
                     <label for="rightSelectMenu">Özellikler: <span class="small text-muted">(CTRL ile toplu seçim yapılabilir.)</span></label>
@@ -44,8 +41,7 @@
                         <option th:each="feature : *{allFeatures}" th:value = "${feature?.roomFeatureId}"  th:text="${feature?.featureName}" th:selected="${addMeetingRoomForm.hasFeature(__${feature.roomFeatureId}__)}"></option>
                     </select>
                 </div>
-                <div th:if="${#fields.hasErrors('roomFeatureIds')}" th:errors="*{roomFeatureIds}" class="alert alert-danger alert-dismissible fade show" role="alert">
-            </div>
+                <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('roomFeatureIds')}, field = 'roomFeatureIds')"></div>
                 <div th:replace="fragments/fragments :: updaterIdInput"></div>
 
                 <input th:attr="name=recordId" type="hidden" th:value="${addMeetingRoomForm.recordId}">
