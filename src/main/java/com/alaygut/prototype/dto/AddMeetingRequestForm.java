@@ -1,5 +1,6 @@
 package com.alaygut.prototype.dto;
 
+<<<<<<< HEAD
  
 
 
@@ -9,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
+=======
+import java.util.*;
+>>>>>>> 88a5f7e0967aa42ebeb02dd4a9dd65cb1bed5cf0
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -18,25 +22,25 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class AddMeetingRequestForm extends FormBase  {
 	
-	//@NotNull(message = "Toplantı isteği için bir oda seçilmelidir.")
+	//@NotNull(message = "{meetingRoomId.not.null")
 	private Long meetingRoomId;
 	
-	//@NotNull(message = "Toplantı isteği bir üye tarafından ayarlanmalıdır.")
+	//@NotNull(message = "{memberId.not.null}")
 	private Long memberId;
 	
-	@NotNull(message = "Toplantı isteği bir türe sahip olmalıdır.")
+	@NotNull(message = "{meetingTypeId.not.null}")
 	private Long meetingTypeId;
 
 	private Long buildingId;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@NotEmpty(message = "Tarih seçilmedi.")
+	@NotEmpty(message = "{date.not.empty}")
 	private String date;
 
-	@NotEmpty(message = "Başlangıç zamanı seçilmedi.")
+	@NotEmpty(message = "{beginningTime.not.empty}")
 	private String beginningTime;
 
-	@NotEmpty(message = "Bitiş zamanı seçilmedi.")
+	@NotEmpty(message = "{endTime.not.empty}")
 	private String endTime;
 	
 	@Size(max = 250)
@@ -46,11 +50,13 @@ public class AddMeetingRequestForm extends FormBase  {
 	
 	private Iterable<Member> allMembers;
 
-	private ArrayList<Long> addedMembers;
+	private List<Long> addedMemberIds;
 
 	private Iterable<MeetingType> allMeetingTypes;
 
 	private Iterable<MeetingRoom> allMeetingRooms;
+
+	private List<String> participantDetails;
 
 	private ArrayList<String> times;
 
@@ -160,11 +166,19 @@ public class AddMeetingRequestForm extends FormBase  {
 		this.buildingId = buildingId;
 	}
 
-	public ArrayList<Long> getAddedMembers() {
-		return addedMembers;
+	public List<Long> getAddedMemberIds() {
+		return addedMemberIds;
 	}
 
-	public void setAddedMembers(ArrayList<Long> addedMembers) {
-		this.addedMembers = addedMembers;
+	public void setAddedMemberIds(List<Long> addedMemberIds) {
+		this.addedMemberIds = addedMemberIds;
+	}
+
+	public List<String> getParticipantDetails() {
+		return participantDetails;
+	}
+
+	public void setParticipantDetails(List<String> participantDetails) {
+		this.participantDetails = participantDetails;
 	}
 }

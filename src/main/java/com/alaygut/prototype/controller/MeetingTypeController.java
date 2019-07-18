@@ -97,7 +97,7 @@ public class MeetingTypeController {
 	 */
 
 	@PostMapping("/edit/meetingType/{id}")
-	public String submitMeetingTypeEdit(@Valid @ModelAttribute("addMeetingTypeForm") AddMeetingTypeForm form, BindingResult bindingResult) {
+	public String submitMeetingTypeEdit(@Valid @ModelAttribute("addMeetingTypeForm") AddMeetingTypeForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()){
             List<ObjectError> error = bindingResult.getAllErrors();
 
@@ -108,7 +108,7 @@ public class MeetingTypeController {
             return "editMeetingType";
         }
 		meetingTypeService.edit(form);
-		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
+		redirectAttributes.addFlashAttribute("successMessage", "Toplantı türü başarıyla değiştirildi.");
 		return "redirect:/list/meetingType";
 	}
 }

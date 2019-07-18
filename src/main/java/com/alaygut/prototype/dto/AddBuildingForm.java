@@ -6,13 +6,14 @@ import javax.validation.constraints.Size;
 
 
 public class AddBuildingForm extends FormBase {
-    @Size(min = 3, max = 50, message = "Bina ismi 3-50 karakter uzunluğunda olmalıdır.")
-    @UniqueBuildingName(message = "Bina ismi mevcut.")
+    @Size(min = 3, max = 50, message = "{buildingName.size.not.valid}")
+    @UniqueBuildingName(message = "{buildingName.not.unique}")
     private String buildingName;
 
+    @Size(min=3, max=20, message = "Adres en az 3.")
     private String buildingAddr;
 
-    @Size(min = 3, max = 50, message = "Bina ismi 3-50 karakter uzunluğunda olmalıdır.")
+    @Size(min = 3, max = 50, message = "{newBuildingName.size.not.valid}")
     private String newBuildingName;
 
     private String originalName;

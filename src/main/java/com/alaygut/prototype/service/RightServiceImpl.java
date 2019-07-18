@@ -2,20 +2,25 @@ package com.alaygut.prototype.service;
 
 import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.domain.Right;
+import com.alaygut.prototype.domain.Role;
 import com.alaygut.prototype.dto.AddRightForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.repository.RightRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class RightServiceImpl implements RightService{
     private RightRepository rightRepository;
-    private MemberRepository memberRepository;
+    private MemberService memberService;
 
-    public RightServiceImpl(RightRepository rightRepository, MemberRepository memberRepository) {
+    public RightServiceImpl(RightRepository rightRepository, MemberService memberService) {
         this.rightRepository = rightRepository;
-        this.memberRepository = memberRepository;
+        this.memberService = memberService;
     }
 
     /**
@@ -24,12 +29,13 @@ public class RightServiceImpl implements RightService{
      */
 
     @Override
+    @Transactional(readOnly = false)
     public void addRight(AddRightForm form) {
         Right right = new Right(
                 form.getRightName(),
                 form.getDescription()
         );
-        right.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
+        right.setCreator(memberService.getMember(form.getCreatorId()));
         rightRepository.save(right);
     }
 
@@ -56,13 +62,17 @@ public class RightServiceImpl implements RightService{
     public Right getRight(Long rightId) {
     	return rightRepository.findById(rightId).orElse(null); 	
     }
+<<<<<<< HEAD
     
     /**
      * State'i Aktiften(1) Deaktife(0) alır
      * @param idTransfer id transfer objesi
      */
+=======
+>>>>>>> 88a5f7e0967aa42ebeb02dd4a9dd65cb1bed5cf0
 
     @Override
+    @Transactional(readOnly = false)
     public void deactivate(IDTransfer idTransfer) {
     	Right right = rightRepository.findById(idTransfer.getRecordId()).orElse(null);
     	right.setState(RecordState.NONACTIVE);
@@ -70,11 +80,12 @@ public class RightServiceImpl implements RightService{
     }
     
     @Override
+    @Transactional(readOnly = false)
     public void edit(AddRightForm addRightForm) {
     	Right right = rightRepository.findById(addRightForm.getRecordId()).orElse(null);
     	right.setRightName(addRightForm.getRightName());
     	right.setDescription(addRightForm.getDescription());
-        right.setUpdater(memberRepository.findById(addRightForm.getUpdaterId()).orElse(null));
+        right.setUpdater(memberService.getMember(addRightForm.getUpdaterId()));
     	
     	rightRepository.save(right);
     }
@@ -95,5 +106,15 @@ public class RightServiceImpl implements RightService{
         addRightForm.setDescription(right.getDescription());
 
         return addRightForm;
+    }
+
+    @Override
+    public Iterable<Right> getRights(List<Long> rightIds) {
+        return rightRepository.findAllById(rightIds);
+    }
+
+    @Override
+    public Iterable<Right> getAllByRoles(Role role) {
+        return rightRepository.findAllByRoles(role);
     }
 }

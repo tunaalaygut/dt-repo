@@ -1,6 +1,6 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.MeetingStatus; 
+import com.alaygut.prototype.domain.MeetingStatus;
 import com.alaygut.prototype.dto.AddMeetingStatusForm;
 import com.alaygut.prototype.dto.IDTransfer;
 
@@ -12,5 +12,8 @@ public interface MeetingStatusService {
 	void deactivate(IDTransfer idTransfer);
 	void edit(AddMeetingStatusForm addMeetingStatusForm);
 	AddMeetingStatusForm getEditForm(Long meetingStatusId);
+	void fixForm(AddMeetingStatusForm addMeetingStatusForm);
+
+
 
 }

@@ -4,7 +4,7 @@ import javax.validation.constraints.Size;
 
 public class AddReasonForm extends FormBase{
 	
-	@Size(min = 3, max = 30, message = "Sebep adı [3-30] karakter uzunluğunda olmalıdır.")
+	@Size(min = 3, max = 30, message = "{reasonName.size.not.valid}")
 	private String reasonName;
 	
 	@Size(min = 0, max = 400)

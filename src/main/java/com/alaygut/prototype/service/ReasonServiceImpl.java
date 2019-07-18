@@ -1,6 +1,7 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.repository.MemberRepository;
+
+import com.alaygut.prototype.dto.AddMeetingStatusForm;
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.Reason;
 import com.alaygut.prototype.domain.RecordState;
@@ -9,16 +10,17 @@ import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.ReasonRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class ReasonServiceImpl implements ReasonService {
 	
 	private ReasonRepository reasonRepository;
-	private MemberRepository memberRepository;
+	private MemberService memberService;
 
-	public ReasonServiceImpl(ReasonRepository reasonRepository, MemberRepository memberRepository) {
+	public ReasonServiceImpl(ReasonRepository reasonRepository, MemberService memberService) {
 		this.reasonRepository = reasonRepository;
-		this.memberRepository = memberRepository;
+		this.memberService = memberService;
 	}
 
 	/**
@@ -27,12 +29,13 @@ public class ReasonServiceImpl implements ReasonService {
 	 */
 
 	@Override
+	@Transactional(readOnly = false)
 	public void addReason(AddReasonForm addReasonForm) {
 		Reason reason = new Reason(
 				addReasonForm.getReasonName(),
 				addReasonForm.getDescription()
 		);
-		reason.setCreator(memberRepository.findById(addReasonForm.getCreatorId()).orElse(null));
+		reason.setCreator(memberService.getMember(addReasonForm.getCreatorId()));
 		reasonRepository.save(reason);
 	}
 
@@ -66,6 +69,7 @@ public class ReasonServiceImpl implements ReasonService {
 	 */
 
 	@Override
+	@Transactional(readOnly = false)
 	public void deactivate(IDTransfer idTransfer) {
 		Reason reason = reasonRepository.findById(idTransfer.getRecordId()).orElse(null);
 		reason.setState(RecordState.NONACTIVE);
@@ -73,11 +77,12 @@ public class ReasonServiceImpl implements ReasonService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void edit(AddReasonForm addReasonForm) {
 		Reason reason = reasonRepository.findById(addReasonForm.getRecordId()).orElse(null);
 		reason.setReasonName(addReasonForm.getReasonName());
 		reason.setDescription(addReasonForm.getDescription());
-		reason.setUpdater(memberRepository.findById(addReasonForm.getUpdaterId()).orElse(null));
+		reason.setUpdater(memberService.getMember(addReasonForm.getUpdaterId()));
 
 			reasonRepository.save(reason);
 	}
@@ -99,6 +104,12 @@ public class ReasonServiceImpl implements ReasonService {
 
 		return addReasonForm;
 	}
+
+	@Override
+	public Reason getById(AddMeetingStatusForm addMeetingStatusForm) {
+		return reasonRepository.findById(addMeetingStatusForm.getReasonId()).orElse(null);
+	}
+
 
 
 }

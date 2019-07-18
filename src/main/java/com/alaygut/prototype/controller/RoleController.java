@@ -96,18 +96,19 @@ public class RoleController {
 	 */
 
 	@PostMapping("/edit/role/{id}")
-	public String submitRoleEdit(@Valid @ModelAttribute("addRoleForm") AddRoleForm form, BindingResult bindingResult) {
+	public String submitRoleEdit(@Valid @ModelAttribute("addRoleForm") AddRoleForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()){
             roleService.fixForm(form);
             return "editRole";
         }
         try{
             roleService.edit(form);
+
         }
         catch (Exception e){
             return "editRole";
         }
-
+        redirectAttributes.addFlashAttribute("successMessage", "Rol başarıyla değiştirildi.");
         return "redirect:/list/role";
 	}
 

@@ -17,17 +17,19 @@
                     <label for="rightNameInput">Yetki Adı:</label>
                    <input th:attr="name=rightName" th:value="${addRightForm.rightName}" type="text" class="form-control" id="rightNameInput" placeholder="Yetki">
                </div>
+                <div th:if="${#fields.hasErrors('rightName')}" th:errors="*{rightName}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            </div>
                         <div class="form-group">
 		                    <label for="descriptionInput">Açıklama:</label>
 		                    <textarea th:field="*{description}" th:value="${addRightForm.description}" type="text" class="form-control" id="descriptionInput" placeholder="Açıklama" rows="3" maxlength="250" style="resize: none;"></textarea>
                		   </div>
+                <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            </div>
                  <div th:replace="fragments/fragments :: updaterIdInput"></div>
                  <div th:replace="fragments/fragments :: successMessage"></div>
 
-                 <div th:if="${#fields.hasErrors('rightName')}" th:errors="*{rightName}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
-                 <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
+
+
                 <input th:attr="name=recordId" type="hidden" th:value="${addRightForm.recordId}">
                 <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Yetkiyi Değiştir</button>
             </form>

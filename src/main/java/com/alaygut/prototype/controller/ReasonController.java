@@ -96,7 +96,7 @@ public class ReasonController {
 	 */
 
 	@PostMapping("/edit/reason/{id}")
-	public String submitReasonEdit(@Valid @ModelAttribute("addReasonForm") AddReasonForm form, BindingResult bindingResult) {
+	public String submitReasonEdit(@Valid @ModelAttribute("addReasonForm") AddReasonForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()){
             List<ObjectError> error = bindingResult.getAllErrors();
 
@@ -107,7 +107,7 @@ public class ReasonController {
             return "editReason";
         }
 		reasonService.edit(form);
-		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
+		redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
 		return "redirect:/list/reason";
 	}
 }

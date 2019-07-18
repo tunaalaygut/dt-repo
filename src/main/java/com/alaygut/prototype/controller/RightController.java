@@ -90,7 +90,7 @@ public class RightController {
 	 */
 
     @PostMapping("/edit/right/{id}")
-	public String submitRightEdit(@Valid @ModelAttribute("addRightForm") AddRightForm form, BindingResult bindingResult) {
+	public String submitRightEdit(@Valid @ModelAttribute("addRightForm") AddRightForm form, BindingResult bindingResult,  RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()){
 
             return "editRight";
@@ -101,7 +101,7 @@ public class RightController {
         catch (Exception e){
             return "editRight";
         }
-
+        redirectAttributes.addFlashAttribute("successMessage", "Yetki başarıyla değiştirildi.");
         return "redirect:/list/right";
     }
     

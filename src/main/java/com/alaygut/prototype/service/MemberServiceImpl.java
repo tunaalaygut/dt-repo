@@ -2,6 +2,7 @@ package com.alaygut.prototype.service;
 
 import com.alaygut.prototype.domain.Login; 
 import com.alaygut.prototype.domain.Role;
+import com.alaygut.prototype.dto.AddBuildingForm;
 import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.domain.Member;
@@ -19,28 +20,25 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService {
 
     private MemberRepository memberRepository;
-    private RoleRepository roleRepository;
-    private LoginRepository loginRepository;
-    private LoginService loginService;
     private RoleService roleService;
-
+    private LoginService loginService;
 
     private PasswordEncoder passwordEncoder;
 
-    public MemberServiceImpl(MemberRepository memberRepository, RoleRepository roleRepository, LoginService loginService, RoleService roleService) {
+    public MemberServiceImpl(MemberRepository memberRepository, LoginService loginService) {
         this.memberRepository = memberRepository;
-        this.roleRepository = roleRepository;
         this.loginService = loginService;
-        this.roleService = roleService;
     }
 
     /**
@@ -49,8 +47,9 @@ public class MemberServiceImpl implements MemberService {
      */
 
     @Override
+    @Transactional(readOnly = false)
     public void addMember(AddMemberForm form) {
-        Optional<Role> role = roleRepository.findById(form.getRoleId());
+        Role role = roleService.getRole(form.getRoleId());
         Login login = new Login(
                 form.getUsername(),
                 passwordEncoder.encode(form.getPassword())
@@ -60,7 +59,7 @@ public class MemberServiceImpl implements MemberService {
                 form.getLastName(),
                 form.getEmail(),
                 form.getPhone(),
-                role.orElse(null),
+                role,
                 login
         );
         loginService.addLogin(login);
@@ -104,6 +103,7 @@ public class MemberServiceImpl implements MemberService {
      */
 
     @Override
+    @Transactional(readOnly = false)
     public void deactivate(IDTransfer idTransfer) {
     	Member member = memberRepository.findById(idTransfer.getRecordId()).orElse(null);
     	member.setState(RecordState.NONACTIVE);
@@ -111,10 +111,11 @@ public class MemberServiceImpl implements MemberService {
     }
     
     @Override
+    @Transactional(readOnly = false)
     public void edit(AddMemberForm addMemberForm) {
 
     	Member member = memberRepository.findById(addMemberForm.getRecordId()).orElse(null);
-    	Role role = roleRepository.findById(addMemberForm.getRoleId()).orElse(null);
+    	Role role = roleService.getRole(addMemberForm.getRoleId());
     	Login login = member.getLogin();
     	member.setFirstName(addMemberForm.getFirstName());
     	member.setLastName(addMemberForm.getLastName());
@@ -145,6 +146,7 @@ public class MemberServiceImpl implements MemberService {
      * @param addMemberForm üye DTO'su
      */
     @Override
+    @Transactional(readOnly = false)
     public void profileEdit(AddMemberForm addMemberForm) {
     	Member member = memberRepository.findById(addMemberForm.getRecordId()).orElse(null);
     	Login login = member.getLogin();
@@ -180,6 +182,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void fixForm(AddMemberForm addMemberForm) {
         addMemberForm.setAllRoles(roleService.getAllActiveRoles());
+        addMemberForm.setEmail(this.getMember(addMemberForm.getRecordId()).getEmail());
+        addMemberForm.setUsername(this.getMember(addMemberForm.getRecordId()).getUsername());
     }
 
     /**
@@ -216,6 +220,11 @@ public class MemberServiceImpl implements MemberService {
      * @param memberId editlenen üyenin Id'si
      * @return dolu member DTO'su
      */
+    @Override
+    public Member getMember(String username) {
+        return memberRepository.findByLoginUsername(username);
+    }
+
     @Override
     public AddMemberForm getEditForm(Long memberId) {
         Member member = getMember(memberId);
@@ -260,5 +269,12 @@ public class MemberServiceImpl implements MemberService {
         return member;
     }
 
+    public RoleService getRoleService() {
+        return roleService;
+    }
 
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
 }

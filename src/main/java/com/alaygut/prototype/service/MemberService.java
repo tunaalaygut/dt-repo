@@ -1,5 +1,6 @@
 package com.alaygut.prototype.service;
 
+import com.alaygut.prototype.dto.AddBuildingForm;
 import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.domain.Member;
@@ -20,4 +21,5 @@ public interface MemberService extends UserDetailsService {
     void addErrors(AddMemberForm addMemberForm, BindingResult bindingResult);
     boolean usernameExists(String username);
     boolean emailExists(String email);
+    Member getMember(String username);
 }

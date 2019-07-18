@@ -21,21 +21,20 @@
                     <label for="newName">Bina Adı:</label>
                     <input th:attr="name=newBuildingName"  th:value="${addBuildingForm.buildingName}" type="text" class="form-control" id="newName" placeholder="Bina Adı">
                 </div>
-
+                <div th:if="${#fields.hasErrors('buildingName')}" th:errors="*{buildingName}" class="alert alert-danger alert-dismissible fade show" role="alert"></div>
+                <div th:if="${#fields.hasErrors('newBuildingName')}" th:errors="*{newBuildingName}" class="alert alert-danger alert-dismissible fade show" role="alert"></div>
 
                 <div class="form-group">
                     <label for="lastNameInput">Adres:</label>
                     <textarea th:field="*{buildingAddr}" th:value="${addBuildingForm.buildingAddr}" type="text" class="form-control" id="lastNameInput" placeholder="Açıklama" rows="3" maxlength="250" style="resize: none;"></textarea>
                 </div>
+                <div th:if="${#fields.hasErrors('buildingAddr')}" th:errors="*{buildingAddr}" class="alert alert-danger alert-dismissible fade show" role="alert"></div>
 
                 <input th:attr="name=recordId" type="hidden" th:value="${addBuildingForm.recordId}">
 
                 <div th:replace="fragments/fragments :: updaterIdInput"></div>
-                <div th:replace="fragments/fragments :: successMessage"></div>
 
-                <div th:if="${#fields.hasErrors('buildingName')}" th:errors="*{buildingName}" class="alert alert-danger alert-dismissible fade show" role="alert"></div>
-                <div th:if="${#fields.hasErrors('newBuildingName')}" th:errors="*{newBuildingName}" class="alert alert-danger alert-dismissible fade show" role="alert"></div>
-                <div th:if="${#fields.hasErrors('buildingAddr')}" th:errors="*{buildingAddr}" class="alert alert-danger alert-dismissible fade show" role="alert"></div>
+                <div th:replace="fragments/fragments :: successMessage"></div>
 
                 <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Bina Değiştir</button>
             </form>

@@ -12,11 +12,15 @@
         <div class="content">
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Toplantı Durumu Ekleme Formu</h2>
+
+            <div th:replace="fragments/fragments :: successMessage"></div>
+
             <form th:action="@{/add/meetingStatus}" th:object="${addMeetingStatusForm}" th:method="post" autocomplete="off">
                 <div class="form-group">
                     <label for="firstNameInput">Toplantı Durumu:</label>
                     <input th:field="*{meetingStatusName}" type="text" class="form-control" id="firstNameInput" placeholder="Toplantı Durumu">
                 </div>
+                <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('meetingStatusName')}, field = 'meetingStatusName')"></div>
                        <div class="mb-4">
                           <div class="form-group">
                             <label for="reasonSelectMenu">Sebep:</label>
@@ -26,9 +30,7 @@
                         </div>
                     </div>
                     <div th:replace="fragments/fragments :: creatorIdInput"></div>
-                    <div th:replace="fragments/fragments :: successMessage"></div>
-                    <div th:if="${#fields.hasErrors('meetingStatusName')}" th:errors="*{meetingStatusName}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
+
                 <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Toplantı Durumu Ekle</button>
             </form>
         </div>

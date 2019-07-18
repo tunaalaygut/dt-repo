@@ -17,12 +17,16 @@
                             <label for="firstNameInput">İsim:</label>
                             <input th:attr="name=firstName" th:value="${addMemberForm.firstName}" type="text" class="form-control" id="firstNameInput" placeholder="İsim">
                         </div>
+                        <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="lastNameInput">Soyisim:</label>
                             <input th:field="*{lastName}" th:value="${addMemberForm.lastName}" type="text" class="form-control" id="lastNameInput" placeholder="Soyisim">
                         </div>
+                        <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    </div>
                     </div>
                 </div>
                 <input th:attr="name=originalEmail" type="hidden" th:value="${addMemberForm.email}">
@@ -30,12 +34,17 @@
                     <label for="newEmail">E-mail:</label>
                     <input th:attr="name=newEmail" th:value="${addMemberForm.email}" type="text" class="form-control" id="newEmail" placeholder="Email">
                 </div>
+                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            </div>
+                <div th:if="${#fields.hasErrors('newEmail')}" th:errors="*{newEmail}" class="alert alert-danger alert-dismissible fade show" role="alert"></div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="phoneInput">Telefon:</label>
                             <input th:field="*{phone}" th:value="${addMemberForm.phone}" type="text" class="form-control" id="phoneInput" placeholder="Telefon #">
                         </div>
+                        <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
@@ -44,6 +53,8 @@
                                 <option th:each="r : *{allRoles}" th:text="${r.roleName}" th:value="${r.roleId}" th:selected="(*{roleId} == ${r.roleId})"></option>
                             </select>
                         </div>
+                        <div th:if="${#fields.hasErrors('roleId')}" th:errors="*{roleId}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    </div>
                     </div>
 
                 </div>
@@ -53,26 +64,16 @@
                     <label for="newUsername">Kullanıcı Adı:</label>
                     <input th:attr="name=newUsername" th:value="${addMemberForm.username}" type="text" class="form-control" id="newUsername" placeholder="Kullanıcı Adı">
                 </div>
+                <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            </div>
+                <div th:if="${#fields.hasErrors('newUsername')}" th:errors="*{newUsername}" class="alert alert-danger alert-dismissible fade show" role="alert"></div>
 
                 <div th:replace="fragments/fragments :: updaterIdInput"></div>
                 <div th:replace="fragments/fragments :: successMessage"></div>
 
-                <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
-                <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
-                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
-                <div th:if="${#fields.hasErrors('newEmail')}" th:errors="*{newEmail}" class="alert alert-danger alert-dismissible fade show" role="alert"></div>
-                <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
-                <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
-                <div th:if="${#fields.hasErrors('newUsername')}" th:errors="*{newUsername}" class="alert alert-danger alert-dismissible fade show" role="alert"></div>
-                <div th:if="${#fields.hasErrors('roleId')}" th:errors="*{roleId}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
                 <input th:attr="name=recordId" type="hidden" th:value="${addMemberForm.recordId}">
                 <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Kullanıcıyı Değiştir</button>
+
             </form>
         </div>
     </div>

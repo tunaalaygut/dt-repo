@@ -10,23 +10,23 @@ import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.repository.RightRepository;
 import com.alaygut.prototype.repository.RoleRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Service
+@Transactional(readOnly = true)
 public class RoleServiceImpl implements RoleService{
 
     private RoleRepository roleRepository;
-    private RightRepository rightRepository;
-    private MemberRepository memberRepository;
     private RightService rightService;
+    private MemberService memberService;
 
-    public RoleServiceImpl(RoleRepository roleRepository, RightRepository rightRepository, MemberRepository memberRepository, RightService rightService) {
-        this.roleRepository = roleRepository;
-        this.rightRepository = rightRepository;
-        this.memberRepository = memberRepository;
+    public RoleServiceImpl(RoleRepository roleRepository, RightService rightService, MemberService memberService) {
+        this.roleRepository=roleRepository;
         this.rightService = rightService;
+        this.memberService = memberService;
     }
 
     /**
@@ -35,12 +35,13 @@ public class RoleServiceImpl implements RoleService{
      */
 
     @Override
+    @Transactional(readOnly = false)
     public void addRole(AddRoleForm form) {
-        Iterable<Right> selectedRights = rightRepository.findAllById(form.getRightIds());
+        Iterable<Right> selectedRights = rightService.getRights(form.getRightIds());
         Set<Right> rights = new HashSet<>();
 
         for (Right right:selectedRights){
-            rights.add((rightRepository.findById(right.getRightId())).orElse(null) );
+            rights.add((rightService.getRight(right.getRightId())));
         }
 
         Role role = new Role(
@@ -49,7 +50,7 @@ public class RoleServiceImpl implements RoleService{
                 rights
         );
         if (form.getCreatorId() != null)
-            role.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
+            role.setCreator(memberService.getMember(form.getCreatorId()));
 
         roleRepository.save(role);
     }
@@ -84,6 +85,7 @@ public class RoleServiceImpl implements RoleService{
      */
 
     @Override
+    @Transactional(readOnly = false)
     public void deactivate(IDTransfer idTransfer) {
         Role role = roleRepository.findById(idTransfer.getRecordId()).orElse(null);
         role.setState(RecordState.NONACTIVE);
@@ -91,20 +93,21 @@ public class RoleServiceImpl implements RoleService{
     }
     
     @Override
+    @Transactional(readOnly = false)
     public void edit(AddRoleForm addRoleForm) {
     	Role role = roleRepository.findById(addRoleForm.getRecordId()).orElse(null);	
     	role.setRoleName(addRoleForm.getRoleName());
     	role.setDescription(addRoleForm.getDescription());
 
-        Iterable<Right> selectedRights = rightRepository.findAllById(addRoleForm.getRightIds());
+        Iterable<Right> selectedRights = rightService.getRights(addRoleForm.getRightIds());
         Set<Right> rights = new HashSet<>();
 
         for (Right right:selectedRights){
-            rights.add((rightRepository.findById(right.getRightId())).orElse(null) );
+            rights.add((rightService.getRight(right.getRightId())));
         }
 
     	role.setRights(rights);
-        role.setUpdater(memberRepository.findById(addRoleForm.getUpdaterId()).orElse(null));
+        role.setUpdater(memberService.getMember(addRoleForm.getUpdaterId()));
     	
     	roleRepository.save(role);
     }
@@ -135,7 +138,7 @@ public class RoleServiceImpl implements RoleService{
      */
     public Iterable<Right> getAllRights(Long roleId){
         Role role = getRole(roleId);
-        return rightRepository.findAllByRoles(role);
+        return rightService.getAllByRoles(role);
     }
 
     @Override

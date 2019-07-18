@@ -1,20 +1,25 @@
 package com.alaygut.prototype.service;
 
+import com.alaygut.prototype.domain.MeetingRoom;
 import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.domain.RoomFeature;
 import com.alaygut.prototype.dto.*;
 import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.repository.RoomFeatureRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class RoomFeatureServiceImpl implements RoomFeatureService {
     private RoomFeatureRepository roomFeatureRepository;
-    private MemberRepository memberRepository;
+    private MemberService memberService;
 
-    public RoomFeatureServiceImpl(RoomFeatureRepository roomFeatureRepository, MemberRepository memberRepository) {
+    public RoomFeatureServiceImpl(RoomFeatureRepository roomFeatureRepository, MemberService memberService) {
         this.roomFeatureRepository = roomFeatureRepository;
-        this.memberRepository = memberRepository;
+        this.memberService= memberService;
     }
 
     /**
@@ -23,10 +28,11 @@ public class RoomFeatureServiceImpl implements RoomFeatureService {
      */
 
     @Override
+    @Transactional(readOnly = false)
     public void addRoomFeature(AddRoomFeatureForm form) {
         RoomFeature roomFeature =
                 new RoomFeature(form.getFeatureName(), form.getDescription());
-        roomFeature.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
+        roomFeature.setCreator(memberService.getMember(form.getCreatorId()));
         roomFeatureRepository.save(roomFeature);
     }
 
@@ -60,6 +66,7 @@ public class RoomFeatureServiceImpl implements RoomFeatureService {
     */
 
     @Override
+    @Transactional(readOnly = false)
     public void deactivate(IDTransfer idTransfer) {
         RoomFeature roomFeature = roomFeatureRepository.findById(idTransfer.getRecordId()).orElse(null);
         roomFeature.setState(RecordState.NONACTIVE);
@@ -67,11 +74,12 @@ public class RoomFeatureServiceImpl implements RoomFeatureService {
     }
     
     @Override
+    @Transactional(readOnly = false)
     public void edit(AddRoomFeatureForm addRoomFeatureForm) {
     	RoomFeature roomFeature = roomFeatureRepository.findById(addRoomFeatureForm.getRecordId()).orElse(null);  	
     	roomFeature.setFeatureName(addRoomFeatureForm.getFeatureName());
     	roomFeature.setDescription(addRoomFeatureForm.getDescription());
-        roomFeature.setUpdater(memberRepository.findById(addRoomFeatureForm.getUpdaterId()).orElse(null));
+        roomFeature.setUpdater(memberService.getMember(addRoomFeatureForm.getUpdaterId()));
     	
     	roomFeatureRepository.save(roomFeature);
     }
@@ -93,4 +101,19 @@ public class RoomFeatureServiceImpl implements RoomFeatureService {
 
         return addRoomFeatureForm;
     }
+
+    @Override
+    public Iterable<RoomFeature> getAllById(List<Long> roomFeatureIds) {
+        return roomFeatureRepository.findAllById(roomFeatureIds);
+    }
+
+    @Override
+    public RoomFeature getById(Long roomFeatureId) {
+        return roomFeatureRepository.findById(roomFeatureId).orElse(null);
+    }
+
+    public Iterable <RoomFeature> getAllByMeetingRoomSet(MeetingRoom meetingRoom) {
+        return roomFeatureRepository.findAllByMeetingRoomSet(meetingRoom);
+    }
+
 }

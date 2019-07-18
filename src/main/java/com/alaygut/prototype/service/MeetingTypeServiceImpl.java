@@ -7,16 +7,18 @@ import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.dto.AddMeetingTypeForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.MeetingTypeRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 public class MeetingTypeServiceImpl implements MeetingTypeService {
 	
 	private MeetingTypeRepository meetingTypeRepository;
-	private MemberRepository memberRepository;
+	private MemberService memberService;
 
-	public MeetingTypeServiceImpl(MeetingTypeRepository meetingTypeRepository, MemberRepository memberRepository) {
+	public MeetingTypeServiceImpl(MeetingTypeRepository meetingTypeRepository, MemberService memberService) {
 		this.meetingTypeRepository = meetingTypeRepository;
-		this.memberRepository = memberRepository;
+		this.memberService = memberService;
 	}
 
 	/**
@@ -25,12 +27,13 @@ public class MeetingTypeServiceImpl implements MeetingTypeService {
 	 */
 
 	@Override
+	@Transactional(readOnly = false)
 	public void addType(AddMeetingTypeForm form) {
 		MeetingType meetingType = new MeetingType(
 				form.getMeetingTypeName(),
 				form.getDescription()
 		);
-		meetingType.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
+		meetingType.setCreator(memberService.getMember(form.getCreatorId()));
 		meetingTypeRepository.save(meetingType);
 	}
 
@@ -64,6 +67,7 @@ public class MeetingTypeServiceImpl implements MeetingTypeService {
 	 */
 
 	@Override
+	@Transactional(readOnly = false)
 	public void deactivate(IDTransfer idTransfer) {
 		MeetingType meetingType = meetingTypeRepository.findById(idTransfer.getRecordId()).orElse(null);
 		meetingType.setState(RecordState.NONACTIVE);
@@ -71,11 +75,12 @@ public class MeetingTypeServiceImpl implements MeetingTypeService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void edit(AddMeetingTypeForm addMeetingTypeForm) {
 		MeetingType meetingType = meetingTypeRepository.findById(addMeetingTypeForm.getRecordId()).orElse(null);
 		meetingType.setMeetingTypeName(addMeetingTypeForm.getMeetingTypeName());
 		meetingType.setDescription(addMeetingTypeForm.getDescription());
-		meetingType.setUpdater(memberRepository.findById(addMeetingTypeForm.getUpdaterId()).orElse(null));
+		meetingType.setUpdater(memberService.getMember(addMeetingTypeForm.getUpdaterId()));
 
 		meetingTypeRepository.save(meetingType);	
 	}

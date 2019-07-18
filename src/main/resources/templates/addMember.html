@@ -11,6 +11,9 @@
             <div th:replace="fragments/fragments :: navbar"></div>
 
             <h2 class="mb-4">Kullanıcı Ekleme Formu</h2>
+
+            <div th:replace="fragments/fragments :: successMessage"></div>
+
             <form th:action="@{/add/member}" th:object="${addMemberForm}" th:method="post" autocomplete="off">
                 <div class="row">
                     <div class="col-md-6">
@@ -18,24 +21,28 @@
                             <label for="firstNameInput">İsim:</label>
                             <input th:field="*{firstName}" type="text" class="form-control" id="firstNameInput" placeholder="İsim">
                         </div>
+                        <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('firstName')}, field = 'firstName')"></div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="lastNameInput">Soyisim:</label>
                             <input th:field="*{lastName}" type="text" class="form-control" id="lastNameInput" placeholder="Soyisim">
                         </div>
+                        <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('lastName')}, field = 'lastName')"></div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="emailInput">E-mail:</label>
                     <input th:field="*{email}" type="text" class="form-control" id="emailInput" placeholder="isim@ornek.com">
                 </div>
+                <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('email')}, field = 'email')"></div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="phoneInput">Telefon:</label>
                             <input th:field="*{phone}" type="text" class="form-control" id="phoneInput" placeholder="Telefon #">
                         </div>
+                        <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('phone')}, field = 'phone')"></div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
@@ -44,36 +51,55 @@
                                 <option th:each="r : *{allRoles}" th:text="${r?.roleName}" th:value = "${r?.roleId}"></option>
                             </select>
                         </div>
+                        <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('roleId')}, field = 'roleId')"></div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="usernameInput">Kullanıcı Adı:</label>
                     <input th:field="*{username}" type="text" class="form-control" id="usernameInput" placeholder="Kullanıcı Adı">
                 </div>
+                <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('username')}, field = 'username')"></div>
                 <div class="form-group">
                     <label for="passwordInput">Şifre:</label>
-                    <input th:field="*{password}" type="password" class="form-control" id="passwordInput" placeholder="******">
+                    <div class="row">
+                        <div class="col-sm-10 mb-2">
+                            <!--<input th:field="*{password}" type="password" class="form-control" id="passwordInput" placeholder="******">
+                             </div>-->
+                            <input type="text" class="form-control input-lg" id="passwordInput" placeholder="******">
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-default btn-info btn-block getNewPass"><span class="fa fa-cogs"></span> Oluştur</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div th:replace="fragments/fragments :: creatorIdInput"></div>
 
-                <div th:replace="fragments/fragments :: successMessage"></div>
-                <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
-                <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
-                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger alert-dismissible fade show" role="alert">
-            </div>
-                <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger alert-dismissible fade show" role="alert">
-            </div>
-                <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
-                <div th:if="${#fields.hasErrors('roleId')}" th:errors="*{roleId}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                </div>
                 <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Kullanıcı Ekle</button>
             </form>
         </div>
     </div>
     <div th:replace="fragments/fragments :: scripts"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-chained/1.0.1/jquery.chained.remote.min.js" integrity="sha256-s4fvhjtBM8Qdr848fG5m3T6LjoJl799Qax4fr/24r30=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+function generatePassword() {
+    var length = 10,
+        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789*#+$&?>!<",
+        retVal = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
+}
+
+
+// Create a new password
+$(".getNewPass").click(function(){
+  var passwordInput = $('#passwordInput');
+  passwordInput.val(generatePassword());
+});
+
+    </script>
 </body>
 </html>
