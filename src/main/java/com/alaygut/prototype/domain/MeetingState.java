@@ -1,7 +1,7 @@
 package com.alaygut.prototype.domain;
 
 public enum MeetingState {
-    PENDING,
-    ACCEPTED,
-    REJECTED
+    ONAY_BEKLIYOR,
+    ONAYLANDI,
+    REDDEDILDI
 }

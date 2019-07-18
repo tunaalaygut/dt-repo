@@ -28,3 +28,36 @@ jQuery('a').click( function(e) {
 });
 
 $(".alert").alert();
+
+$('.acceptMeetingRequest').on('submit', function(e) {
+    var form = this;
+    e.preventDefault();
+    swal({
+        title: "Talebi Onaylamak İstediğinize Emin Misiniz?",
+        text: "Toplantı talebi onayı sonradan değiştirilemez.",
+        icon: "success",
+        buttons: true,
+        buttons: ["Vazgeç", "Evet"],
+        dangerMode: true,
+    }).then((willDelete) => {
+        if (willDelete) {
+            form.submit()
+        }
+    });
+});
+
+$('.declineMeetingRequest').on('submit', function(e) {
+    var form = this;
+    e.preventDefault();
+    swal({
+        title: "Talebi Reddetmek İstediğinize Emin Misiniz?",
+        icon: "info",
+        buttons: true,
+        buttons: ["Vazgeç", "Evet"],
+        dangerMode: true,
+    }).then((willDelete) => {
+        if (willDelete) {
+            form.submit()
+        }
+    });
+});

@@ -51,4 +51,9 @@ public class ParticipantServiceImpl implements ParticipantService {
 			participantRepository.save(participant);
 		}
 	}
+
+	@Override
+	public List<Participant> getAllParticipantsInMeetingRequest(MeetingRequest meetingRequest) {
+		return participantRepository.getAllByMeetingRequest(meetingRequest);
+	}
 }
