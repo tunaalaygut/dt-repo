@@ -31,16 +31,14 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	private BuildingService buildingService;
 	private MeetingRoomService meetingRoomService;
 	private MeetingTypeService meetingTypeService;
-	private MeetingRequestTimeGenerator meetingRequestTimeGenerator;
 	private ParticipantService participantService;
 
-	public MeetingRequestServiceImpl(MeetingRequestRepository meetingRequestRepository, MemberService memberService, BuildingService buildingService, MeetingRoomService meetingRoomService, MeetingTypeService meetingTypeService, MeetingRequestTimeGenerator meetingRequestTimeGenerator, ParticipantService participantService) {
+	public MeetingRequestServiceImpl(MeetingRequestRepository meetingRequestRepository, MemberService memberService, BuildingService buildingService, MeetingRoomService meetingRoomService, MeetingTypeService meetingTypeService, ParticipantService participantService) {
 		this.meetingRequestRepository = meetingRequestRepository;
 		this.memberService = memberService;
 		this.buildingService = buildingService;
 		this.meetingRoomService = meetingRoomService;
 		this.meetingTypeService = meetingTypeService;
-		this.meetingRequestTimeGenerator = meetingRequestTimeGenerator;
 		this.participantService = participantService;
 	}
 
@@ -60,6 +58,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 				endTime,
 				form.getDescription()
 		);
+		meetingRequest.setCreator(memberService.getMember(form.getCreatorId()));
 
 		participantService.generateParticipants(form.getParticipantDetails(), meetingRequest);
 		meetingRequestRepository.save(meetingRequest);
@@ -140,7 +139,6 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		form.setAllMeetingRooms(meetingRoomService.getAllActiveRooms());
 		form.setAllMembers(memberService.getAllActiveMembers());
 		form.setAllMeetingTypes(meetingTypeService.getAllActiveTypes());
-		form.setTimes(meetingRequestTimeGenerator.generateTimes(8, 18, 5));
 		form.setParticipantDetails(new ArrayList<>());
 	}
 
@@ -202,15 +200,17 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void declineMeetingRequest(Long meetingRequestId) {
+	public void declineMeetingRequest(Long meetingRequestId, Long supervisorId) {
 		MeetingRequest request = this.getMeetingRequest(meetingRequestId);
+		request.setUpdater(memberService.getMember(supervisorId));
 		request.setMeetingRequestState(MeetingState.REDDEDILDI);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void acceptMeetingRequest(Long meetingRequestId) {
+	public void acceptMeetingRequest(Long meetingRequestId, Long supervisorId) {
 		MeetingRequest request = this.getMeetingRequest(meetingRequestId);
+		request.setUpdater(memberService.getMember(supervisorId));
 		request.setMeetingRequestState(MeetingState.ONAYLANDI);
 	}
 

@@ -31,6 +31,21 @@ a:focus {
     cursor: pointer;
 }
 
+.timeHolderDisplay{
+    background: #E4E4E4;
+    color: #fff;
+    opacity: 0.5;
+}
+
+#taken{
+    background: #F08080;
+
+}
+
+#selected{
+    background: #17a2b8;
+}
+
 .timeHolder:hover{
     color: #f2f2f2;
     transition-duration: 0.2s;

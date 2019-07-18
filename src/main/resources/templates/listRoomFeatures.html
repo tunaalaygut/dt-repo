@@ -12,29 +12,29 @@
         <h2 class="mb-4">Oda Özellikleri</h2>
         <div th:replace="fragments/fragments :: successMessage"></div>
         <div class="table-responsive">
-            <table class="table table-hover table-striped">
+            <table class="table table-hover">
                 <thead>
-                <tr>
-                    <th scope="col">Özellik</th>
-                    <th scope="col">Açıklama</th>
-
-                </tr>
+                    <tr>
+                        <th scope="col">Özellik</th>
+                        <th scope="col">Açıklama</th>
+                        <th scope="col">İşlemler</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr th:each="roomFeature : ${listRoomFeatures}">
-                    <td th:text="${roomFeature.featureName}"></td>
-                    <td th:text="${roomFeature.description}"></td>
-                    <td>
-                        <form th:action="@{/list/roomFeature}" th:object="${idTransfer}" th:method="post" class="deactivateForm float-left mr-2">
-                            <div th:replace="fragments/fragments :: listDeleteButton"></div>
-                            <input th:attr="name=recordId" type="hidden" th:value="${roomFeature.roomFeatureId}">
-                        </form>
-                        <form th:action="@{/edit/roomFeature/__${roomFeature.roomFeatureId}__}" th:object="${idTransfer}" th:method="get" class="editForm">
-			                <button th:replace="fragments/fragments :: listEditButton"></button>
-			               <!-- <input th:attr="name=recordId" type="hidden" th:value="${roomFeature.roomFeatureId}">-->
-	            		 </form>
-                    </td>
-                </tr>
+                    <tr th:each="roomFeature : ${listRoomFeatures}">
+                        <td th:text="${roomFeature.featureName}"></td>
+                        <td th:text="${roomFeature.description}"></td>
+                        <td>
+                            <form th:action="@{/list/roomFeature}" th:object="${idTransfer}" th:method="post" class="deactivateForm float-left mr-2">
+                                <div th:replace="fragments/fragments :: listDeleteButton"></div>
+                                <input th:attr="name=recordId" type="hidden" th:value="${roomFeature.roomFeatureId}">
+                            </form>
+                            <form th:action="@{/edit/roomFeature/__${roomFeature.roomFeatureId}__}" th:object="${idTransfer}" th:method="get" class="editForm">
+                                <button th:replace="fragments/fragments :: listEditButton"></button>
+                               <!-- <input th:attr="name=recordId" type="hidden" th:value="${roomFeature.roomFeatureId}">-->
+                             </form>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
