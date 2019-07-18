@@ -21,6 +21,11 @@ public class MeetingTypeServiceImpl implements MeetingTypeService {
 		this.memberService = memberService;
 	}
 
+	/**
+	 * Database'e toplantı türü ekleme
+	 * @param form building DTO
+	 */
+
 	@Override
 	@Transactional(readOnly = false)
 	public void addType(AddMeetingTypeForm form) {
@@ -37,16 +42,30 @@ public class MeetingTypeServiceImpl implements MeetingTypeService {
 		return meetingTypeRepository.findAll();
 	}
 	
+	/**
+	 * Stateleri Aktif(1) olan toplantı türlerini döndürür
+	 */
+
 	@Override
 	public Iterable<MeetingType> getAllActiveTypes() {
 		return meetingTypeRepository.findAllByStateEquals(RecordState.ACTIVE);
 	}
 	
+	/**
+	 * Spesifik bir toplantı türü döndürür
+	 * @param meetingTypeId toplantı türünün unique id'si    
+	 */
+
 	@Override
 	public MeetingType getMeetingType(Long meetingTypeId) {
 		return meetingTypeRepository.findById(meetingTypeId).orElse(null);
 	}
 	
+	/**
+	 * State'i Aktiften(1) Deaktife(0) alır
+	 * @param idTransfer id transfer objesi
+	 */
+
 	@Override
 	@Transactional(readOnly = false)
 	public void deactivate(IDTransfer idTransfer) {
@@ -65,6 +84,12 @@ public class MeetingTypeServiceImpl implements MeetingTypeService {
 
 		meetingTypeRepository.save(meetingType);	
 	}
+
+	/**
+	 * Editlenecek toplantı türünün formunu dolu halde getirir
+	 * @param meetingTypeId editlenecek toplantı türünün Id'si
+	 * @return dolu meetingType DTO'su
+	 */
 
 	@Override
 	public AddMeetingTypeForm getEditForm(Long meetingTypeId) {

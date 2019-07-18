@@ -35,6 +35,10 @@ public class MeetingStatusController {
 		this.reasonService = reasonService;
 	}
 	
+	/**
+     * Toplantı durumu ekleme sayfasını ekrana getirir
+     */
+
 	@GetMapping("/add/meetingStatus")
 	public ModelAndView addMeetingStatusPage() {
 		AddMeetingStatusForm addMeetingStatusForm = new AddMeetingStatusForm();
@@ -47,6 +51,14 @@ public class MeetingStatusController {
 		return modelAndView;
 	}
 	
+	/**
+     * Toplantı durumu ekleme butonun fonksiyonel olmasını sağlar
+     * @param addMeetingStatusForm Toplantı durumu DTO'su
+     * @param bindingResult
+     * @param redirectAttributes Başarılı submit mesajı
+     * @return Yeniden toplantı durumu ekleme formunu boş olarak döndürür
+     */
+
 	@PostMapping("/add/meetingStatus")
 	public String handleAddMeetingStatus(@Valid @ModelAttribute("addMeetingStatusForm") AddMeetingStatusForm addMeetingStatusForm, BindingResult bindingResult,RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
@@ -58,22 +70,46 @@ public class MeetingStatusController {
 		return "redirect:/add/meetingStatus";
 	}
 	
+	/**
+     * Eklenen ve state'i aktif olan toplantı durumlarının bir listesini gösterir
+     */
+
 	@GetMapping("/list/meetingStatus")
 	public ModelAndView listMeetingStatusPage() {
 		return new ModelAndView("listMeetingStatus", "listMeetingStatus", meetingStatusService.getAllActiveStatus());
 	}
 	
+	/**
+     * Listedeki her toplantı türünün yanındaki deactivate butonunun fonksiyonel olmasını sağlar
+     * @param idTransfer Id DTO'su
+     * @param bindingResult
+     * @return Listeyi deaktive edilen toplantı türü eksik şekilde döndürür
+     */
+
 	@PostMapping("/list/meetingStatus")
 	public String handleMeetingStatusDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
 		meetingStatusService.deactivate(idTransfer);
 		return "redirect:/list/meetingStatus";
 	}
 	
+	/**
+     * Toplantı durumunun yanındaki edit butonunun aktif olmasını sağlar
+     * @param id Editlenecek durumun unique Id'si
+     * @return Id sahibi toplantı durumunun edit sayfasını ekrana veriri
+     */
+
 	@GetMapping("/edit/meetingStatus/{id}")
 	public ModelAndView editMeetingStatusPage(@PathVariable Long id) {
 		return new ModelAndView("editMeetingStatus", "addMeetingStatusForm", meetingStatusService.getEditForm(id));
 	}
 	
+	/**
+	 * Edit sayfasındaki submit butonunun aktif olmasını sağlar
+	 * @param form
+	 * @param bindingResult
+	 * @return Başarılı bir editten sonra yeni hali ile listeyi döndürür
+	 */
+
 	@PostMapping("/edit/meetingStatus/{id}")
 	public String submitReasonEdit(@Valid @ModelAttribute("addMeetingStatusForm") AddMeetingStatusForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()){

@@ -22,6 +22,11 @@ public class RoomFeatureServiceImpl implements RoomFeatureService {
         this.memberService= memberService;
     }
 
+    /**
+     * Database'e toplantı odası özelliği ekleme
+     * @param form roomFeature DTO
+     */
+
     @Override
     @Transactional(readOnly = false)
     public void addRoomFeature(AddRoomFeatureForm form) {
@@ -36,16 +41,30 @@ public class RoomFeatureServiceImpl implements RoomFeatureService {
         return roomFeatureRepository.findAll();
     }
 
+    /**
+     * Stateleri Aktif(1) olan toplantı odası özelliklerini döndürür
+     */
+
    @Override
     public Iterable<RoomFeature> getAllActiveRoomFeatures() {
         return roomFeatureRepository.findAllByStateEquals(RecordState.ACTIVE);
     }
+
+   /**
+    * Spesifik bir toplantı odası özelliği döndürür
+    * @param featureId özelliğin unique id'si    
+    */
 
    @Override
    public RoomFeature getRoomFeature(Long featureId) {
 	   return roomFeatureRepository.findById(featureId).orElse(null);
    }
    
+   /**
+    * State'i Aktiften(1) Deaktife(0) alır
+    * @param idTransfer id transfer objesi
+    */
+
     @Override
     @Transactional(readOnly = false)
     public void deactivate(IDTransfer idTransfer) {
@@ -64,6 +83,12 @@ public class RoomFeatureServiceImpl implements RoomFeatureService {
     	
     	roomFeatureRepository.save(roomFeature);
     }
+
+    /**
+     * Editlenecek özelliğin formunu dolu halde getirir
+     * @param roomFeatureId editlenen özelliğin Id'si
+     * @return dolu roomFeature DTO'su
+     */
 
     @Override
     public AddRoomFeatureForm getEditForm(Long roomFeatureId) {

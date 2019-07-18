@@ -1,11 +1,13 @@
 package com.alaygut.prototype.dto;
 
+import javax.validation.constraints.Email; 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import com.alaygut.prototype.annotation.UniqueEmail;
 import com.alaygut.prototype.annotation.UniqueUsername;
 import com.alaygut.prototype.domain.Role;
-import org.hibernate.validator.constraints.ParameterScriptAssert;
 
-import javax.validation.constraints.*;
 
 
 

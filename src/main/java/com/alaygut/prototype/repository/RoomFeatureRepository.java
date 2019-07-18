@@ -1,6 +1,5 @@
 package com.alaygut.prototype.repository;
-
-import com.alaygut.prototype.domain.Building;
+ 
 import com.alaygut.prototype.domain.MeetingRoom;
 import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.domain.RoomFeature;

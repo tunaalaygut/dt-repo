@@ -29,6 +29,11 @@ public class RoleServiceImpl implements RoleService{
         this.memberService = memberService;
     }
 
+    /**
+     * Database'e rol ekleme
+     * @param form role DTO
+     */
+
     @Override
     @Transactional(readOnly = false)
     public void addRole(AddRoleForm form) {
@@ -55,16 +60,30 @@ public class RoleServiceImpl implements RoleService{
         return roleRepository.findAll();
     }
     
+    /**
+     * Stateleri Aktif(1) olan rolleri döndürür
+     */
+
     @Override
     public Iterable<Role> getAllActiveRoles() {
     	return roleRepository.findAllByStateEquals(RecordState.ACTIVE);
     }
     
+    /**
+     * Spesifik bir rol döndürür
+     * @param roleId rolün unique id'si    
+     */
+
     @Override
     public Role getRole(Long roleId) {
     	return roleRepository.findById(roleId).orElse(null);
     }
     
+    /**
+     * State'i Aktiften(1) Deaktife(0) alır
+     * @param idTransfer id transfer objesi
+     */
+
     @Override
     @Transactional(readOnly = false)
     public void deactivate(IDTransfer idTransfer) {
@@ -93,6 +112,12 @@ public class RoleServiceImpl implements RoleService{
     	roleRepository.save(role);
     }
 
+    /**
+     * Editlenecek rolün formunu dolu halde getirir
+     * @param roleId editlenen rolün Id'si
+     * @return dolu role DTO'su
+     */
+
     @Override
     public AddRoleForm getEditPage(Long roleId) {
         AddRoleForm addRoleForm = new AddRoleForm();
@@ -107,6 +132,10 @@ public class RoleServiceImpl implements RoleService{
         return addRoleForm;
     }
 
+    /**
+     * Bir rolün sahip olduğu tüm hakları döndürü
+     * @param roleId aranan rolün unique Id'si
+     */
     public Iterable<Right> getAllRights(Long roleId){
         Role role = getRole(roleId);
         return rightService.getAllByRoles(role);

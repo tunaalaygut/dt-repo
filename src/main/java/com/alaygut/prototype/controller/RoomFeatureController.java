@@ -25,6 +25,10 @@ public class RoomFeatureController {
         this.meetingRoomService = meetingRoomService;
     }
 
+    /**
+     * Oda özelliği ekleme sayfasını ekrana getirir
+     */
+
     @GetMapping("/add/roomFeature")
     public ModelAndView addRoomFeaturePage() {
         return new ModelAndView(
@@ -33,6 +37,14 @@ public class RoomFeatureController {
                 new AddRoomFeatureForm()
         );
     }
+
+    /**
+     * Oda özelliği ekleme butonun fonksiyonel olmasını sağlar
+     * @param addRoomFeatureForm Oda özelliği DTO'su
+     * @param bindingResult
+     * @param redirectAttributes Başarılı submit mesajı
+     * @return Yeniden oda özelliği ekleme formunu boş olarak döndürür
+     */
 
     @PostMapping("/add/roomFeature")
     public String handleAddRoomFeature(@Valid @ModelAttribute("addRoomFeatureForm") AddRoomFeatureForm addRoomFeatureForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
@@ -43,21 +55,45 @@ public class RoomFeatureController {
         return "redirect:/add/roomFeature";
     }
 
+    /**
+     * Eklenen ve state'i aktif olan oda özelliklerinin bir listesini gösterir
+     */
+
     @GetMapping("/list/roomFeature")
     public ModelAndView listRoomFeaturesPage(){
         return new ModelAndView("listRoomFeatures", "listRoomFeatures", roomFeatureService.getAllActiveRoomFeatures());
     }
 
+    /**
+     * Listedeki her özelliğin yanındaki deactivate butonunun fonksiyonel olmasını sağlar
+     * @param idTransfer Id DTO'su
+     * @param bindingResult
+     * @return Listeyi deaktive edilen özellik eksik şekilde döndürür
+     */
 
     @PostMapping("/list/roomFeature")
     public String handleRoomFeatureDeactivate(@Valid @ModelAttribute("idTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
         roomFeatureService.deactivate(idTransfer);
         return "redirect:/list/roomFeature";
     }
+    
+    /**
+     * Özelliğin yanındaki edit butonunun aktif olmasını sağlar
+     * @param id Editlenecek oda özelliğinin unique Id'si
+     * @return Id sahibi özelliğin edit sayfasını ekrana veriri
+     */
+
     @GetMapping("/edit/roomFeature/{id}")
     public ModelAndView editRoomFeaturePage(@PathVariable Long id) {
         return new ModelAndView("editRoomFeature", "addRoomFeatureForm",roomFeatureService.getEditForm(id));
     }
+
+    /**
+	 * Edit sayfasındaki submit butonunun aktif olmasını sağlar
+	 * @param form Oda özelliği DTO'su
+	 * @param bindingResult
+	 * @return Başarılı bir editten sonra yeni hali ile listeyi döndürür
+	 */
 
     @PostMapping("/edit/roomFeature/{id}")
 	public String submitRoomFeatureEdit(@Valid @ModelAttribute("addRoomFeatureForm") AddRoomFeatureForm form, BindingResult bindingResult,RedirectAttributes redirectAttributes) {

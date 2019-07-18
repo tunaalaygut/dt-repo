@@ -1,6 +1,6 @@
 package com.alaygut.prototype.controller;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Controller; 
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MemberService;
-import com.alaygut.prototype.service.RoleService;
+
 
 import java.security.Principal;
 
@@ -21,11 +21,10 @@ import javax.validation.Valid;
 public class ProfileController {
 	
 	private MemberService memberService;
-    private RoleService roleService;
 
-    public ProfileController(MemberService memberService, RoleService roleService) {
+
+    public ProfileController(MemberService memberService) {
         this.memberService = memberService;
-        this.roleService = roleService;
     }
 
 	

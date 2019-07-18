@@ -1,9 +1,7 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.*;
-import com.alaygut.prototype.dto.AddMemberForm;
-import com.alaygut.prototype.repository.BuildingRepository;
-import com.alaygut.prototype.repository.MemberRepository;
+import com.alaygut.prototype.domain.*; 
+
 import com.alaygut.prototype.repository.RoomFeatureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +11,7 @@ import com.alaygut.prototype.repository.MeetingRoomRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
-import java.util.Optional;
+
 import java.util.Set;
 
 @Service
@@ -33,7 +31,11 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 		this.roomFeatureService = roomFeatureService;
 		this.memberService = memberService;
 	}
-
+	
+	/**
+	 * Database'e toplantı odası ekleme
+	 * @param addMeetingRoomForm meetingRoom DTO
+	 */
 	@Override
 	@Transactional(readOnly = false)
 	public void addRoom(AddMeetingRoomForm addMeetingRoomForm) {
@@ -61,18 +63,28 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	public Iterable<MeetingRoom> getAllRooms() {
 		return meetingRoomRepository.findAll();
 	}
-
+	
+	/**
+	 * Stateleri Aktif(1) olan toplantı odalarını döndürür
+	 */
 	@Override
 	public Iterable<MeetingRoom> getAllActiveRooms() {
 		
 		return meetingRoomRepository.findAllByStateEquals(RecordState.ACTIVE);
 	}
-	
+	/**
+	 * Spesifik bir toplantı odasını döndürür
+	 * @param meetingRoomId odanın unique id'si    
+	 */
 	@Override
 	public MeetingRoom getMeetingRoom(Long meetingRoomId) {
 		return meetingRoomRepository.findById(meetingRoomId).orElse(null);
 	}
-
+	
+	/**
+	 * State'i Aktiften(1) Deaktife(0) alır
+	 * @param idTransfer id transfer objesi
+	 */
 	@Override
 	@Transactional(readOnly = false)
 	public void deactivate(IDTransfer idTransfer) {
@@ -104,7 +116,12 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 		
 		meetingRoomRepository.save(meetingRoom);
 	}
-
+	
+	/**
+	 * Editlenecek toplantı odası formunu dolu halde getirir
+	 * @param meetingRoomId editlenen toplantı odası Id'si
+	 * @return dolu meetingRoom DTO'su
+	 */
 	@Override
 	public AddMeetingRoomForm getEditPage(Long meetingRoomId) { //returns a dto that is pre-filled with a record's details.
 		AddMeetingRoomForm addMeetingRoomForm = new AddMeetingRoomForm();
@@ -122,11 +139,19 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 		return addMeetingRoomForm;
 	}
 
+	/**
+	 * Belli bir odadaki tüm oda özelliklerini dödürür
+	 * @param meetingRoom toplantı odası entitysi 
+	 */
 	@Override
 	public Iterable<RoomFeature> getAllRoomFeatures(MeetingRoom meetingRoom) {
 		return roomFeatureService.getAllByMeetingRoomSet(this.getMeetingRoom(meetingRoom.getMeetingRoomId()));
 	}
 
+	/**
+	 * Belli bir binadaki tüm toplantı odalarını döndürür
+	 * @param buildingId aranan binanın unique Id'si
+	 */
 	@Override
 	public Iterable<MeetingRoom> getAllInBuilding(Long buildingId) {
 		return meetingRoomRepository.findByBuilding(buildingService.getBuilding(buildingId));

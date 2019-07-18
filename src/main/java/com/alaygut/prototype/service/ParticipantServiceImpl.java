@@ -22,12 +22,19 @@ public class ParticipantServiceImpl implements ParticipantService {
 		this.memberService = memberService;
 	}
 	
+	/**
+	 * Katılımcı tablosuna katılımcı ekler
+	 * @param participant katılımcı entitysi
+	 */
 	@Override
 	@Transactional(readOnly = false)
 	public void addParticipant(Participant participant) {
 		participantRepository.save(participant);
 	}
 
+	/**
+	 * Bütün katılımcıları sırayla döndürür
+	 */
 	@Override
 	public Iterable<Participant> getAllParticipants() {
 		return participantRepository.findAll();

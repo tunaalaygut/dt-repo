@@ -29,11 +29,23 @@ public class MeetingTypeController {
 		this.meetingTypeService = meetingTypeService;
 	}
 	
+	/**
+     * Toplantı türü ekleme sayfasını ekrana getirir
+     */
+
 	@GetMapping("/add/meetingType")
 	public ModelAndView addMeetingTypePage() {
 		return new ModelAndView("addMeetingType", "addMeetingTypeForm", new AddMeetingTypeForm());
 	}
 	
+	/**
+     * Toplantı türü ekleme butonun fonksiyonel olmasını sağlar
+     * @param addMeetingTypeForm Toplantı türü DTO'su
+     * @param bindingResult
+     * @param redirectAttributes Başarılı submit mesajı
+     * @return Yeniden toplantı türü ekleme formunu boş olarak döndürür
+     */
+
 	@PostMapping("/add/meetingType")
 	public String handleAddMeetingType(@Valid @ModelAttribute("addMeetingTypeForm") AddMeetingTypeForm addMeetingTypeForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors())
@@ -43,11 +55,22 @@ public class MeetingTypeController {
 		return "redirect:/add/meetingType";
 	}
 	
+	/**
+     * Eklenen ve state'i aktif olan toplantı türlerinin bir listesini gösterir
+     */
+
 	@GetMapping("/list/meetingType")
 	public ModelAndView listMeetingTypesPage() {
 		return new ModelAndView("listMeetingTypes", "listMeetingTypes", meetingTypeService.getAllActiveTypes());
 	}
 	
+	/**
+     * Listedeki her toplantı türünün yanındaki deactivate butonunun fonksiyonel olmasını sağlar
+     * @param idTransfer Id DTO'su
+     * @param bindingResult
+     * @return Listeyi deaktive edilen toplantı türü eksik şekilde döndürür
+     */
+
 	@PostMapping("/list/meetingType")
 	public String handleMeetingTypeDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
 		meetingTypeService.deactivate(idTransfer);
@@ -55,11 +78,24 @@ public class MeetingTypeController {
 		
 	}
 	
+	/**
+     * Toplantı türünün yanındaki edit butonunun aktif olmasını sağlar
+     * @param id Editlenecek toplantı türünün unique Id'si
+     * @return Id sahibi toplantı türünün edit sayfasını ekrana veriri
+     */
+
 	@GetMapping("/edit/meetingType/{id}")
 	public ModelAndView editMeetingTypePage(@PathVariable Long id) {
 		return new ModelAndView("editMeetingType", "addMeetingTypeForm", meetingTypeService.getEditForm(id));
 }
 	
+	/**
+	 * Edit sayfasındaki submit butonunun aktif olmasını sağlar
+	 * @param form Toplantı türü DTO'su
+	 * @param bindingResult
+	 * @return Başarılı bir editten sonra yeni hali ile listeyi döndürür
+	 */
+
 	@PostMapping("/edit/meetingType/{id}")
 	public String submitMeetingTypeEdit(@Valid @ModelAttribute("addMeetingTypeForm") AddMeetingTypeForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()){

@@ -20,7 +20,11 @@ public class BuildingServiceImpl implements BuildingService {
         this.buildingRepository = buildingRepository;
         this.memberService = memberService;
     }
-
+    
+/**
+ * Database'e bina ekleme
+ * @param form building DTO
+ */
     @Override
     @Transactional(readOnly = false)
     public void addBuilding(AddBuildingForm form) {
@@ -36,17 +40,28 @@ public class BuildingServiceImpl implements BuildingService {
     public Iterable<Building> getAllBuildings() {
         return buildingRepository.findAll();
     }
-
+    
+/**
+ * Stateleri Aktif(1) olan binaları döndürür
+ */
     @Override
     public Iterable<Building> getAllActiveBuildings() {
         return buildingRepository.findAllByStateEquals(RecordState.ACTIVE);
     }
     
+/**
+ * Spesifik bir bina döndürür
+ * @param buildingId binanın unique id'si    
+ */
     @Override
     public Building getBuilding(Long buildingId) {
     	return buildingRepository.findById(buildingId).orElse(null);
     }
-
+    
+/**
+ * State'i Aktiften(1) Deaktife(0) alır
+ * @param idTransfer id transfer objesi
+ */
     @Override
     @Transactional(readOnly = false)
     public void deactivate(IDTransfer idTransfer) {
@@ -67,7 +82,12 @@ public class BuildingServiceImpl implements BuildingService {
         building.setUpdater(memberService.getMember(addBuildingForm.getUpdaterId()));
 
     }
-
+    
+/**
+ * Editlenecek bina formunu dolu halde getirir
+ * @param buildingId editlenen bina Id'si
+ * @return dolu building DTO'su
+ */
     @Override
     public AddBuildingForm getEditForm(Long buildingId) {
         Building building = getBuilding(buildingId);
@@ -80,7 +100,7 @@ public class BuildingServiceImpl implements BuildingService {
         return addBuildingForm;
     }
 
-    public Building LoadBuildingName(String buildingName) {
+    public Building LoadBuildingName(String buildingName) { //private?
         Building building = this.buildingRepository.findByBuildingName(buildingName);
         return building;
     }
