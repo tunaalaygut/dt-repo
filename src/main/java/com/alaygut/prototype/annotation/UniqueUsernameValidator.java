@@ -1,6 +1,6 @@
 package com.alaygut.prototype.annotation;
 
-import com.alaygut.prototype.domain.Member;
+
 import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 

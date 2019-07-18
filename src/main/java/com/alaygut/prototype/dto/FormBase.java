@@ -1,5 +1,10 @@
 package com.alaygut.prototype.dto;
 
+/**
+ * Tüm DTO'ların kullandığı Base DTO, BaseClass domaininde saklanan bilgileri taşıyor
+ * @author adincer
+ *
+ */
 public class FormBase extends IDTransfer{
     private Long creatorId;
     private Long updaterId;

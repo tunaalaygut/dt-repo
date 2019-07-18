@@ -11,11 +11,18 @@ public class ParticipantServiceImpl implements ParticipantService {
 		this.participantRepository = participantRepository;
 	}
 	
+	/**
+	 * Katılımcı tablosuna katılımcı ekler
+	 * @param participant katılımcı entitysi
+	 */
 	@Override
 	public void addParticipant(Participant participant) {
 		participantRepository.save(participant);
 	}
 
+	/**
+	 * Bütün katılımcıları sırayla döndürür
+	 */
 	@Override
 	public Iterable<Participant> getAllParticipants() {
 		return participantRepository.findAll();

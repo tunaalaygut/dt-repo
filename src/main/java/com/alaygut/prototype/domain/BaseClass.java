@@ -1,10 +1,23 @@
 package com.alaygut.prototype.domain;
 
-import javax.persistence.*;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+
+/**
+ * BaseClass butun entitylerin paylastigi ortak ozellikleri tutar
+ * Creation,update timestampleri, creator ve updaterlar, enum state gibi
+ * @author adincer
+ *
+ */
 @MappedSuperclass
 public class BaseClass {
 

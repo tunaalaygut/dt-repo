@@ -1,17 +1,9 @@
 package com.alaygut.prototype.service;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalDate; 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.MeetingRequest;
-import com.alaygut.prototype.domain.MeetingRoom;
-import com.alaygut.prototype.domain.MeetingStatus;
-import com.alaygut.prototype.domain.MeetingType;
-import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.dto.AddMeetingRequestForm;
 import com.alaygut.prototype.dto.IDTransfer;
@@ -19,7 +11,6 @@ import com.alaygut.prototype.repository.MeetingRequestRepository;
 import com.alaygut.prototype.repository.MeetingRoomRepository;
 import com.alaygut.prototype.repository.MeetingStatusRepository;
 import com.alaygut.prototype.repository.MeetingTypeRepository;
-import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service

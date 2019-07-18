@@ -1,5 +1,10 @@
 package com.alaygut.prototype.dto;
 
+/**
+ * Id için transfer objesi, Base DTO tarafından extendleniyor
+ * @author adincer
+ *
+ */
 public class IDTransfer {
 
     private Long recordId;

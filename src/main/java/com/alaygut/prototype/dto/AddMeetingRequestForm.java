@@ -1,11 +1,14 @@
 package com.alaygut.prototype.dto;
 
  
-import java.time.LocalTime;
-import java.util.*;
 
 
-import javax.validation.constraints.FutureOrPresent;
+
+
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

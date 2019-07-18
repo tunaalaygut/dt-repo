@@ -21,6 +21,11 @@ public class ReasonServiceImpl implements ReasonService {
 		this.memberRepository = memberRepository;
 	}
 
+	/**
+	 * Database'e sebep ekleme
+	 * @param addReasonForm reason DTO
+	 */
+
 	@Override
 	public void addReason(AddReasonForm addReasonForm) {
 		Reason reason = new Reason(
@@ -36,16 +41,30 @@ public class ReasonServiceImpl implements ReasonService {
 		return reasonRepository.findAll();
 	}
 	
+	/**
+	 * Stateleri Aktif(1) olan sebepleri döndürür
+	 */
+
 	@Override
 	public Iterable<Reason> getAllActiveReasons() {
 		return reasonRepository.findAllByStateEquals(RecordState.ACTIVE);
 	}
 	
+	/**
+	 * Spesifik bir sebep döndürür
+	 * @param reasonId sebebin unique id'si    
+	 */
+
 	@Override
 	public Reason getReason(Long reasonId) {
 		return reasonRepository.findById(reasonId).orElse(null);
 	}
 	
+	/**
+	 * State'i Aktiften(1) Deaktife(0) alır
+	 * @param idTransfer id transfer objesi
+	 */
+
 	@Override
 	public void deactivate(IDTransfer idTransfer) {
 		Reason reason = reasonRepository.findById(idTransfer.getRecordId()).orElse(null);
@@ -62,6 +81,12 @@ public class ReasonServiceImpl implements ReasonService {
 
 			reasonRepository.save(reason);
 	}
+
+	/**
+	 * Editlenecek sebebin formunu dolu halde getirir
+	 * @param reasonId editlenen sebebin Id'si
+	 * @return dolu reason DTO'su
+	 */
 
 	@Override
 	public AddReasonForm getEditForm(Long reasonId) {

@@ -18,6 +18,11 @@ public class RightServiceImpl implements RightService{
         this.memberRepository = memberRepository;
     }
 
+    /**
+     * Database'e yetki ekleme
+     * @param form right DTO
+     */
+
     @Override
     public void addRight(AddRightForm form) {
         Right right = new Right(
@@ -33,16 +38,30 @@ public class RightServiceImpl implements RightService{
         return rightRepository.findAll();
     }
     
+    /**
+     * Stateleri Aktif(1) olan yetkileri döndürür
+     */
+
     @Override
     public Iterable<Right> getAllActiveRights() {
         return rightRepository.findAllByStateEquals(RecordState.ACTIVE);
     }
     
+    /**
+     * Spesifik bir yetki döndürür
+     * @param rightId yetkinin unique id'si    
+     */
+
     @Override
     public Right getRight(Long rightId) {
     	return rightRepository.findById(rightId).orElse(null); 	
     }
     
+    /**
+     * State'i Aktiften(1) Deaktife(0) alır
+     * @param idTransfer id transfer objesi
+     */
+
     @Override
     public void deactivate(IDTransfer idTransfer) {
     	Right right = rightRepository.findById(idTransfer.getRecordId()).orElse(null);
@@ -59,6 +78,12 @@ public class RightServiceImpl implements RightService{
     	
     	rightRepository.save(right);
     }
+
+    /**
+     * Editlenecek yetkinin formunu dolu halde getirir
+     * @param rightId editlenen yetkinin Id'si
+     * @return dolu right DTO'su
+     */
 
     @Override
     public AddRightForm getEditForm(Long rightId) {

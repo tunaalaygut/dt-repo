@@ -1,9 +1,8 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.MeetingRoom;
+import com.alaygut.prototype.domain.MeetingRoom; 
 import com.alaygut.prototype.domain.RoomFeature;
 import com.alaygut.prototype.dto.AddMeetingRoomForm;
-import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.dto.IDTransfer;
 
 public interface MeetingRoomService {

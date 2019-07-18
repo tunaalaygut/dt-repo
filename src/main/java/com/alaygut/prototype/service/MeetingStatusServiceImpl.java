@@ -27,6 +27,11 @@ public class MeetingStatusServiceImpl implements MeetingStatusService {
 		this.reasonService = reasonService;
 	}
 
+	/**
+	 * Database'e toplantı durumu ekleme
+	 * @param form meetingStatus DTO
+	 */
+
 	@Override
 	public void addStatus(AddMeetingStatusForm form) {
 		Optional<Reason> reason = reasonRepository.findById(form.getReasonId());
@@ -43,16 +48,30 @@ public class MeetingStatusServiceImpl implements MeetingStatusService {
 		return meetingStatusRepository.findAll();
 	}
 	
+	/**
+	 * Stateleri Aktif(1) olan toplantı durumlarını döndürür
+	 */
+
 	@Override
 	public Iterable<MeetingStatus> getAllActiveStatus() {
 		return meetingStatusRepository.findAllByStateEquals(RecordState.ACTIVE);
 	}
 	
+	/**
+	 * Spesifik bir toplantı durumu döndürür
+	 * @param meetingStatusId binanın unique id'si    
+	 */
+
 	@Override
 	public MeetingStatus getMeetingStatus(Long meetingStatusId) {
 		return meetingStatusRepository.findById(meetingStatusId).orElse(null);
 	}
 	
+	/**
+	 * State'i Aktiften(1) Deaktife(0) alır
+	 * @param idTransfer id transfer objesi
+	 */
+
 	@Override
 	public void deactivate(IDTransfer idTransfer) {
 		MeetingStatus meetingStatus = meetingStatusRepository.findById(idTransfer.getRecordId()).orElse(null);
@@ -70,6 +89,12 @@ public class MeetingStatusServiceImpl implements MeetingStatusService {
 
 		meetingStatusRepository.save(meetingStatus)
 ;	}
+
+	/**
+	 * Editlenecek toplantı durumunun formunu dolu halde getirir
+	 * @param meetingStatusId editlenecek toplantı durumunun Id'si
+	 * @return dolu meetingStatus DTO'su
+	 */
 
 	@Override
 	public AddMeetingStatusForm getEditForm(Long meetingStatusId) {
