@@ -65,14 +65,14 @@
                         <div class="col-sm-10 mb-2">
                             <!--<input th:field="*{password}" type="password" class="form-control" id="passwordInput" placeholder="******">
                              </div>-->
-                            <input type="text" class="form-control input-lg" id="passwordInput" placeholder="******">
+                            <input th:field="*{password}" type="text" class="form-control input-lg" id="passwordInput" placeholder="******">
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-default btn-info btn-block getNewPass"><span class="fa fa-cogs"></span> Oluştur</button>
                         </div>
                     </div>
                 </div>
-
+                <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('password')}, field = 'password')"></div>
                 <div th:replace="fragments/fragments :: creatorIdInput"></div>
 
                 <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Kullanıcı Ekle</button>
@@ -98,6 +98,7 @@ function generatePassword() {
 $(".getNewPass").click(function(){
   var passwordInput = $('#passwordInput');
   passwordInput.val(generatePassword());
+
 });
 
     </script>

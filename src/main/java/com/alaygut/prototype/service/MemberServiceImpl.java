@@ -50,6 +50,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional(readOnly = false)
     public void addMember(AddMemberForm form) {
         Role role = roleService.getRole(form.getRoleId());
+        System.out.println(form.getPassword());
         Login login = new Login(
                 form.getUsername(),
                 passwordEncoder.encode(form.getPassword())

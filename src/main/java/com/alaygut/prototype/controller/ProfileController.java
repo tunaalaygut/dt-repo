@@ -39,12 +39,11 @@ public class ProfileController {
     }
     
     @PostMapping("/profile/edit")
-    public String submitProfileEdit(@Valid @ModelAttribute("AddMemberForm") AddMemberForm form, BindingResult bindingResult) {
+    public String submitProfileEdit(@Valid @ModelAttribute("addMemberForm") AddMemberForm form, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()) {
-			return null;
+			return "editProfile";
 		}
-			
-		
+
 		memberService.profileEdit(form);
 		//redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
 		return "redirect:/profile";
