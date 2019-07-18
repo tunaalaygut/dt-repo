@@ -1,7 +1,8 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.*; 
+import com.alaygut.prototype.domain.*;
 
+import com.alaygut.prototype.dto.AddMeetingRequestForm;
 import com.alaygut.prototype.repository.RoomFeatureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -37,7 +39,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	 * @param addMeetingRoomForm meetingRoom DTO
 	 */
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional
 	public void addRoom(AddMeetingRoomForm addMeetingRoomForm) {
 		Building building = buildingService.getBuilding(addMeetingRoomForm.getBuildingId());
 
@@ -95,26 +97,51 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	}
 	
 	@Override
-	@Transactional(readOnly = false)
-	public void edit(AddMeetingRoomForm addMeetingRoomForm) {
-		MeetingRoom meetingRoom = meetingRoomRepository.findById(addMeetingRoomForm.getRecordId()).orElse(null);
-		Building building = buildingService.getBuilding(addMeetingRoomForm.getBuildingId());
+	@Transactional
+	public boolean edit(AddMeetingRoomForm addMeetingRoomForm) {
+		MeetingRoom meetingRoom = this.getMeetingRoom(addMeetingRoomForm.getRecordId());
 
-		meetingRoom.setMeetingRoomName(addMeetingRoomForm.getMeetingRoomName());
-		meetingRoom.setBuilding(building);
-		meetingRoom.setCapacity(addMeetingRoomForm.getCapacity());
+		if(isUpdated(addMeetingRoomForm, meetingRoom)){
+			meetingRoom.setMeetingRoomName(addMeetingRoomForm.getMeetingRoomName());
+			meetingRoom.setBuilding(buildingService.getBuilding(addMeetingRoomForm.getBuildingId()));
+			meetingRoom.setCapacity(addMeetingRoomForm.getCapacity());
+			meetingRoom.setRoomFeatureSet(this.getRoomFeatures(addMeetingRoomForm.getRoomFeatureIds()));
+			meetingRoom.setUpdater(memberService.getMember(addMeetingRoomForm.getUpdaterId()));
+			return true;
+		}
+		else
+			return false;
+	}
 
-		Iterable<RoomFeature> selectedFeatures = roomFeatureService.getAllById(addMeetingRoomForm.getRoomFeatureIds());
+	private boolean isUpdated(AddMeetingRoomForm form, MeetingRoom meetingRoom){
+		if(! meetingRoom.getMeetingRoomName().equals(form.getMeetingRoomName()))
+			return true;
+		if(! meetingRoom.getBuilding().equals(buildingService.getBuilding(form.getBuildingId())))
+			return true;
+		if(!meetingRoom.getCapacity().equals(form.getCapacity()))
+			return true;
+		if(!meetingRoom.getRoomFeatureSet().equals(this.getRoomFeatures(form.getRoomFeatureIds())))
+			return true;
+
+		return false;
+	}
+
+	/**
+	 * Verilen bir roomFeatureId list'i ile
+	 * o listedeki tüm featureları getiren ve
+	 * bir set içinde return eden fonksiyon.
+	 * @param roomFeatureIds idlerin listesi
+	 * @return roomFeatures return edilen set.
+	 */
+
+	private Set<RoomFeature> getRoomFeatures(List<Long> roomFeatureIds){
+		Iterable<RoomFeature> selectedFeatures = roomFeatureService.getAllById(roomFeatureIds);
 		Set<RoomFeature> roomFeatures = new HashSet<>();
 
-		for (RoomFeature roomFeature : selectedFeatures) {
+		for (RoomFeature roomFeature : selectedFeatures)
 			roomFeatures.add(roomFeatureService.getById(roomFeature.getRoomFeatureId()));
-		}
 
-		meetingRoom.setRoomFeatureSet(roomFeatures);
-		meetingRoom.setUpdater(memberService.getMember(addMeetingRoomForm.getUpdaterId()));
-		
-		meetingRoomRepository.save(meetingRoom);
+		return roomFeatures;
 	}
 	
 	/**
