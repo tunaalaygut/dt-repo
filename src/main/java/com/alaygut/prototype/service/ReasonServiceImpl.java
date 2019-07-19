@@ -1,8 +1,11 @@
 package com.alaygut.prototype.service;
 
 
+import com.alaygut.prototype.dto.AddMeetingRoomForm;
 import com.alaygut.prototype.dto.AddMeetingStatusForm;
 import org.springframework.stereotype.Service;
+
+import com.alaygut.prototype.domain.MeetingRoom;
 import com.alaygut.prototype.domain.Reason;
 import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.dto.AddReasonForm;
@@ -78,13 +81,26 @@ public class ReasonServiceImpl implements ReasonService {
 	
 	@Override
 	@Transactional(readOnly = false)
-	public void edit(AddReasonForm addReasonForm) {
+	public boolean edit(AddReasonForm addReasonForm) {
 		Reason reason = reasonRepository.findById(addReasonForm.getRecordId()).orElse(null);
-		reason.setReasonName(addReasonForm.getReasonName());
-		reason.setDescription(addReasonForm.getDescription());
-		reason.setUpdater(memberService.getMember(addReasonForm.getUpdaterId()));
-
-			reasonRepository.save(reason);
+		
+		if(isUpdated(addReasonForm, reason)){
+			reason.setReasonName(addReasonForm.getReasonName());
+			reason.setDescription(addReasonForm.getDescription());
+			reason.setUpdater(memberService.getMember(addReasonForm.getUpdaterId()));
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	private boolean isUpdated(AddReasonForm form, Reason reason){
+		if(! reason.getReasonName().equals(form.getReasonName()))
+			return true;
+		if(! reason.getDescription().equals(form.getDescription()))
+			return true;
+		
+		return false;
 	}
 
 	/**
@@ -110,6 +126,9 @@ public class ReasonServiceImpl implements ReasonService {
 		return reasonRepository.findById(addMeetingStatusForm.getReasonId()).orElse(null);
 	}
 
-
+	//@Override
+	//public void fixAddForm(AddReasonForm addReasonForm) {
+	//	
+	//}
 
 }
