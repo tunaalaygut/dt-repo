@@ -43,8 +43,9 @@
                 <div th:replace="fragments/fragments :: successMessage"></div>
 
                 <input th:attr="name=recordId" type="hidden" th:value="${addMemberForm.recordId}">
-                <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Profili Güncelle</button>
-
+                <input th:attr="name=roleId" type="hidden" th:value="${addMemberForm.roleId}">
+                <button type="submit" class="btn btn-info btn-block mt-5">Profili Güncelle</button>
+                <a th:href="@{/profile}" class="btn btn-outline-danger btn-block mt-3 float-right">Vazgeç <span class="fas fa-undo"></span></a>
             </form>
         </div>
     </div>

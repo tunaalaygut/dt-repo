@@ -195,7 +195,8 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 	public void fixAddForm(AddMeetingRoomForm addMeetingRoomForm) {
 		addMeetingRoomForm.setAllBuildings(buildingService.getAllActiveBuildings());
 		addMeetingRoomForm.setAllFeatures(roomFeatureService.getAllActiveRoomFeatures());
-		addMeetingRoomForm.setMeetingRoomFeatures(this.getAllRoomFeatures(this.getMeetingRoom(addMeetingRoomForm.getRecordId())));
+		if(addMeetingRoomForm.getRecordId() != null)
+			addMeetingRoomForm.setMeetingRoomFeatures(this.getAllRoomFeatures(this.getMeetingRoom(addMeetingRoomForm.getRecordId())));
 	}
 
 }
