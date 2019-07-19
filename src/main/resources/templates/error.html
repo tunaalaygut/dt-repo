@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<div th:replace="fragments/fragments :: head(content = 'Hata Ekranı')"></div>
+<body>
+<div class="wrapper">
+    <div th:replace="fragments/fragments :: sidebar"></div>
+    <div class="content">
+        <div th:replace="fragments/fragments :: navbar"></div>
+        <h2 class="mb-4">Bir Hata Oluştu :(</h2>
+    </div>
+</div>
+<div th:replace="fragments/fragments :: scripts"></div>
+</body>
+</html>
+
