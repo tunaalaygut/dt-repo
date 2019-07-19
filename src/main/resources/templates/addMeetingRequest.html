@@ -12,6 +12,14 @@
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Toplantı Talep Formu</h2>
 
+			<!--CURRENT USER INFO STARTS HERE-->
+			<div>
+				<input id="currentUserId" th:value="${#authentication.principal.memberId}" type="hidden"/>
+				<input id="currentUserFullName" th:value="${#authentication.principal.firstName} + ' ' + ${#authentication.principal.lastName}" type="hidden"/>
+				<input id="currentUserEmail" th:value="${#authentication.principal.email}" type="hidden"/>
+			</div>
+			<!--CURRENT USER INFO ENDS HERE-->
+
 
 			<div th:replace="fragments/fragments :: successMessage"></div>
 			<!--MEETING_REQUEST_FORM BEGINS-->
@@ -40,12 +48,45 @@
 						<div class="form-group">
 							<label for="meetingRoomId">Toplantı Odası:</label>
 							<select th:field="*{meetingRoomId}" class="custom-select dateLocationInfo" id="meetingRoomId">
-								<!--<option th:each="meetingRoom : *{allMeetingRooms}" th:value="${meetingRoom.meetingRoomId}" th:text="${meetingRoom.meetingRoomName}">
-                                </option>-->
-								<option value="">-</option>
+								<option value=""></option>
 							</select>
 						</div>
 						<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('meetingRoomId')}, field = 'meetingRoomId')"></div>
+
+						<!--MEETING ROOM FILTER SECTION STARTS-->
+
+						<div class="collapse" id="filterMeetingRoomCollapse">
+							<div class="form-group">
+								<label for="filterCapacityInput">Kapasite:</label>
+								<input type="number" class="form-control" id="filterCapacityInput" placeholder="Kapasite">
+							</div>
+							<div class="form-group">
+								<label for="filterRoomFeatureSelectMenu">Özellikler: <span class="small text-muted">(CTRL ile toplu seçim yapılabilir.)</span></label>
+								<select multiple class="custom-select" id="filterRoomFeatureSelectMenu">
+									<option>Özellik 1</option>
+									<option>Özellik 2</option>
+									<option>Özellik 3</option>
+									<option>Özellik 4</option>
+									<option>Özellik 5</option>
+								</select>
+							</div>
+							<button type="button" class="btn btn-block btn-info">Filtre Uygula <span class="fas fa-filter"></span></button>
+						</div>
+
+						<button
+								type="button"
+								class="btn btn-outline-info btn-block mt-2"
+								id="meetingRoomFilterDivButton"
+								data-toggle="collapse"
+								data-target="#filterMeetingRoomCollapse"
+								aria-expanded="false"
+								aria-controls="collapseExample">
+							Toplantı Odası Filtrele
+							<span id="filterArrowIcon" class="fas fa-sort-down"></span>
+						</button>
+						<!--MEETING ROOM FILTER SECTION ENDS-->
+
+
 					</div>
 				</div>
 				<!--DATE & LOCATION INFO ENDS-->
@@ -97,7 +138,7 @@
                                                 <td th:text="${member.firstName + ' ' + member.lastName}"></td>
                                                 <td th:text="${member.email}"></td>
                                                 <td class="text-center">
-                                                    <button type="button" th:attr="value0=${member.memberId}, value1=${member.firstName + ' ' + member.lastName}, value2=${member.email}" class="btn btn-outline-info btn-sm addMember" style="border-radius:50%;">
+                                                    <button type="button" th:attr="value0=${member.memberId}, value1=${member.firstName + ' ' + member.lastName}, value2=${member.email}" class="btn btn-info btn-sm addMember">
                                                         <span class="fas fa-plus"></span>
                                                     </button>
                                                 </td>
@@ -109,7 +150,7 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col">
+							<div class="col mt-5">
 								<div class="form-group">
 									<label for="guestFullNameInput">Misafir Adı Soyadı:</label>
 									<input type="text" class="form-control" id="guestFullNameInput" aria-describedby="emailHelp" placeholder="Ad Soyad">

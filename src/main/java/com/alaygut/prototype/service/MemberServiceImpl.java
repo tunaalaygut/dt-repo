@@ -129,15 +129,10 @@ public class MemberServiceImpl implements MemberService {
         if (!addMemberForm.getNewEmail().equals(member.getEmail()) )
             member.setEmail(addMemberForm.getNewEmail());
 
-    	//login.setPassword(addMemberForm.getPassword());
-    	//login.setPassword(passwordEncoder.encode(addMemberForm.getPassword()));
         member.setUpdater(memberRepository.findById(addMemberForm.getUpdaterId()).orElse(null));
-
-
         if (addMemberForm.getCreatorId() != null)
             member.setCreator(memberRepository.findById(addMemberForm.getCreatorId()).orElse(null));
-    	
-    	//member.setLogin(login); 	
+    	 	
     	loginService.addLogin(login);
     	memberRepository.save(member);
     }
@@ -153,11 +148,11 @@ public class MemberServiceImpl implements MemberService {
     	Login login = member.getLogin();
     	member.setFirstName(addMemberForm.getFirstName());
     	member.setLastName(addMemberForm.getLastName());
-    	member.setEmail(addMemberForm.getEmail());
     	member.setPhone(addMemberForm.getPhone());
     	
-        login.setUsername(addMemberForm.getUsername());
-        login.setPassword(passwordEncoder.encode(addMemberForm.getPassword()));
+        if (!addMemberForm.getNewEmail().equals(member.getEmail()) )
+            member.setEmail(addMemberForm.getNewEmail());
+    	
         member.setUpdater(memberRepository.findById(addMemberForm.getUpdaterId()).orElse(null));
         if (addMemberForm.getCreatorId() != null)
             member.setCreator(memberRepository.findById(addMemberForm.getCreatorId()).orElse(null));
@@ -237,10 +232,8 @@ public class MemberServiceImpl implements MemberService {
         addMemberForm.setEmail(member.getEmail());
         addMemberForm.setPhone(member.getPhone());
         addMemberForm.setUsername(member.getUsername());
-        addMemberForm.setPassword(member.getPassword());
         addMemberForm.setRoleId(member.getRole().getRoleId());
-        addMemberForm.setUsername(login.getUsername());
-        addMemberForm.setPassword(login.getPassword()); //olmuyor
+       
         addMemberForm.setAllRoles(roleService.getAllActiveRoles());
         
         return addMemberForm;
@@ -263,7 +256,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * E-mailı baz alarak üye aratır
      * @param email Üyenin e-mai adresi
-     * @return
+     * @return member Email ile bulunan kullanici
      */
     public Member LoadUserEmail(String email) {
         Member member = this.memberRepository.findByEmail(email);

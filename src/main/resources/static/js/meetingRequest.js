@@ -2,6 +2,7 @@
 $( document ).ready(function() {
     getAndPopulateMeetingRooms();
     meetingRoomCapacity = getRoomCapacity();
+    addMember($("#currentUserId").val(), $("#currentUserFullName").val(), $("#currentUserEmail").val());
     document.querySelector("#datePicker").valueAsDate = new Date();
     drawTheGrid();
 });
@@ -99,7 +100,7 @@ function transferParticipantInfo(memberId, fullName, email){
             '<td>' + fullName + '</td>' +
             '<td>' + email + '</td>' +
             '<td class="text-center">' +
-            '<button type="button" value0="'+ memberId +'" value1="'+ fullName +'" value2="'+ email +'" class="btn btn-sm btn-outline-danger deleteParticipant" style="border-radius: 50%;">' +
+            '<button type="button" value0="'+ memberId +'" value1="'+ fullName +'" value2="'+ email +'" class="btn btn-sm btn-danger deleteParticipant">' +
             '<span class="fas fa-minus"></span>' +
             '</button>' +
             '</td>' +
@@ -119,7 +120,6 @@ function transferParticipantInfo(memberId, fullName, email){
             '</td>' +
             '</tr>'));
 
-
     addParticipant(memberId, fullName, email);
     addedMembersDataTable.row.add(newMarkup).draw();			//update added members table
 }
@@ -131,9 +131,13 @@ $(document).on('click','.addMember', function() {
     let memberName = $(this).attr("value1");
     let email = $(this).attr("value2");
 
-    transferParticipantInfo(clickedMemberId, memberName, email);
-    checkRoomCapacity();
+    addMember(clickedMemberId, memberName, email);
 });
+
+function addMember(memberId, memberName, email){
+    transferParticipantInfo(memberId, memberName, email);
+    checkRoomCapacity();
+}
 
 $(document).on('click','#addGuest', function(){
     let guestFullNameInput = $("#guestFullNameInput");
@@ -150,6 +154,15 @@ $(document).on('click','#addGuest', function(){
         transferParticipantInfo("", guestFullName, guestEmail);
     }
     checkRoomCapacity();
+});
+
+$(document).on('click', '#meetingRoomFilterDivButton', function(){
+   let icon = $("#meetingRoomFilterDivButton svg");
+
+   if(icon.hasClass("fa-sort-down"))
+       icon.removeClass("fa-sort-down").addClass("fa-sort-up");
+   else
+       icon.removeClass("fa-sort-up").addClass("fa-sort-down");
 });
 
 $(document).on('click','.deleteParticipant', function(){

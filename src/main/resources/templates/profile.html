@@ -17,24 +17,24 @@
 
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <span class="text-muted">İsim: </span><span sec:authentication="principal.firstName"/> <span sec:authentication="principal.lastName"/>
+                        <span class="text-muted">İsim: </span><span th:text="${member.firstName}"/> <span th:text="${member.lastName}"/>
                     </li>
                     <li class="list-group-item">
-                        <span class="text-muted">Kullanıcı Adı: </span><span sec:authentication="principal.username"/>
+                        <span class="text-muted">Kullanıcı Adı: </span><span th:text="${member.username}"/>
                     </li>
                     <li class="list-group-item">
-                        <span class="text-muted">E-mail: </span><span sec:authentication="principal.email"/>
+                        <span class="text-muted">E-mail: </span><span th:text="${member.email}"/>
                     </li>
                     <li class="list-group-item">
-                        <span class="text-muted">Telefon: </span><span sec:authentication="principal.phone"/>
+                        <span class="text-muted">Telefon: </span><span th:text="${member.phone}"/>
                     </li>
                     <li class="list-group-item">
-                        <span class="text-muted">Rol: </span><span sec:authentication="principal.role.roleName"/>
+                        <span class="text-muted">Rol: </span><span th:text="${member.role.roleName}"/>
                     </li>
                      
                 </ul>
         </div>
-        <form th:action="@{/profile}" th:object="${idTransfer}" th:method="put" >
+        <form th:action="@{/profile/edit}" th:object="${idTransfer}" th:method="get" >
                  		<input th:attr="name=recordId" type="hidden" th:value="${#authentication.principal.memberId}">
                  		<button class="btn btn-primary btn-info mt-3 float-right"> Kullanıcı Bilgilerini Güncelle</button>
                  	</form>

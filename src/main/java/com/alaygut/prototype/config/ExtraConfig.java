@@ -14,8 +14,8 @@ public class ExtraConfig {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("alpotomail@gmail.com");
-        mailSender.setPassword("Alpp1996");
+        mailSender.setUsername("dijital.toplanti@gmail.com");
+        mailSender.setPassword("dijital1258");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
