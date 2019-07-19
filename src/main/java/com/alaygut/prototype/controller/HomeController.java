@@ -1,11 +1,15 @@
 package com.alaygut.prototype.controller;
 
 
-import com.alaygut.prototype.service.MeetingRequestService; 
+import com.alaygut.prototype.service.MeetingRequestService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.security.Principal;
 
 @Controller
 public class HomeController {
@@ -17,12 +21,19 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public ModelAndView getIndex(){
-        return new ModelAndView("index", "numOfPendingRequests", meetingRequestService.getNumberOfPendingRequests());
+    public String getIndex(){
+        return "index";
+    }
+
+    @GetMapping("/getNumOfPendingRequets")
+    public @ResponseBody int numOfPendingRequets(){
+        return meetingRequestService.getNumberOfPendingRequests();
     }
 
     @GetMapping("/login")
-    public String getLoginPage(){
+    public String getLoginPage(Authentication authentication){
+        if(authentication != null)
+            return "index";
         return "login";
     }
 

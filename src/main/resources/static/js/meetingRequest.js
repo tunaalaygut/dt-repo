@@ -46,7 +46,7 @@ function checkRoomCapacity(){
 
     if (addedMemberCount > meetingRoomCapacity){
         $("#capacityWarning").css("display", "block");
-        $("#capacityWarning").text("Toplantı odasının kapasitesi " + meetingRoomCapacity + " kişi olarak belirlenmiştir.(" + addedMemberCount + " kişi eklendi.)");
+        $("#capacityWarning").text("Toplantı odasının kapasitesi " + meetingRoomCapacity + " kişi olarak belirlenmiştir. (" + addedMemberCount + " kişi eklendi)");
     }
     else
         $("#capacityWarning").css("display", "none");

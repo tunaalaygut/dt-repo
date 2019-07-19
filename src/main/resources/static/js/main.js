@@ -54,7 +54,21 @@ $(document).ready(function () {
         }
     } );
 
+    updatePendingBadge();
+
 });
+
+function updatePendingBadge(){
+    let badge = $("#numOfPendingRequets");
+
+    $.ajax({
+        url: "/getNumOfPendingRequets"
+    }).done(function(num) {
+        if (num !== 0)
+            badge.text(num);
+        console.log("sdaddsasad " + num);
+    });
+}
 
 jQuery('a').click( function(e) {
     jQuery('.collapse').collapse('hide');
