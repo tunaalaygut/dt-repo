@@ -12,16 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-<<<<<<< HEAD
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-=======
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
->>>>>>> 95418232de62e8d82c5dc9709d9381993015a7ba
+import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import javax.validation.Valid;
 
 @Controller
 public class MemberAccountController {
