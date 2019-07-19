@@ -14,10 +14,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -49,17 +46,16 @@ public class MemberAccountController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @RequestMapping(value="/forgot-password", method= RequestMethod.GET)
-    public ModelAndView displayResetPassword(ModelAndView modelAndView, Member member) {
-        modelAndView.addObject("member", member);
-        modelAndView.setViewName("forgotPassword");
-        return modelAndView;
+    @GetMapping("/forgot-password")
+    public ModelAndView displayResetPassword(Member member) {
+        return new ModelAndView("forgotPassword", "member", member);
     }
 
     // Receive the address and send an email
-    @RequestMapping(value="/forgot-password", method=RequestMethod.POST)
+    @PostMapping("/forgot-password")
     public ModelAndView forgotUserPassword(ModelAndView modelAndView, Member member, RedirectAttributes redirectAttributes) {
         Member existingMember = memberRepository.findByEmail(member.getEmail());
+
         if (existingMember != null) {
             // Create token
             ConfirmationToken confirmationToken = new ConfirmationToken(existingMember);
@@ -106,7 +102,10 @@ public class MemberAccountController {
 
     // Endpoint to update a user's password
     @RequestMapping(value = "/reset-password", method = RequestMethod.POST)
-    public ModelAndView resetUserPassword(ModelAndView modelAndView, ResetPasswordDTO resetPasswordDTO) {
+    public ModelAndView resetUserPassword(ModelAndView modelAndView, ResetPasswordDTO resetPasswordDTO, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            modelAndView.setViewName("resetPassword");
+        }
         if (resetPasswordDTO.getEmail() != null) {
             Member tokenMember = memberRepository.findByEmail(resetPasswordDTO.getEmail());
             Login login = tokenMember.getLogin();
