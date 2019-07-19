@@ -1,6 +1,6 @@
 package com.alaygut.prototype.controller;
 
-import java.util.List; 
+import java.util.List;  
 import javax.validation.Valid;  
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -93,16 +93,12 @@ public class ReasonController {
 	@PostMapping("/edit/reason/{id}")
 	public String submitReasonEdit(@Valid @ModelAttribute("addReasonForm") AddReasonForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()){
-            List<ObjectError> error = bindingResult.getAllErrors();
+			//reasonService.fixAddForm(form);
+			return "editReason";
+		}
 
-            for (ObjectError e : error){
-                System.out.println(e.toString());
-            }
-
-            return "editReason";
-        }
-		reasonService.edit(form);
-		redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
-		return "redirect:/list/reason";
+			if(reasonService.edit(form))
+				redirectAttributes.addFlashAttribute("successMessage", "Sebep başarıyla değiştirildi.");
+			return "redirect:/list/reason";
 	}
 }

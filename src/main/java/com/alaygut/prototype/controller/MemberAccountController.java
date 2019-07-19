@@ -1,6 +1,6 @@
 package com.alaygut.prototype.controller;
 
-import com.alaygut.prototype.domain.ConfirmationToken; 
+import com.alaygut.prototype.domain.ConfirmationToken;  
 import com.alaygut.prototype.domain.Login;
 import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.dto.ResetPasswordDTO;
@@ -70,7 +70,7 @@ public class MemberAccountController {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setTo(existingMember.getEmail());
             mailMessage.setSubject("Complete Password Reset!");
-            mailMessage.setFrom("alpotomail@gmail.com");
+            mailMessage.setFrom("dijital.toplanti@gmail.com");
             mailMessage.setText("To complete the password reset process, please click here: "
                     + "http://localhost:8080/confirm-reset?token="+confirmationToken.getConfirmationToken());
 
@@ -87,7 +87,7 @@ public class MemberAccountController {
         return modelAndView;
     }
 
-    // Endpoint to confirm the token
+    
     @RequestMapping(value="/confirm-reset", method= {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token")String confirmationToken, BindingResult bindingResult) {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
@@ -103,11 +103,11 @@ public class MemberAccountController {
         return modelAndView;
     }
 
-    // Endpoint to update a user's password
+    
     @PostMapping("/reset-password")
     public String resetUserPassword(@Valid @ModelAttribute("resetPasswordDTO") ResetPasswordDTO resetPasswordDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()){
-            //email giderse burda koyalım
+            
             return "resetPassword";
         }
 

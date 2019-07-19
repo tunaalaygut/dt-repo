@@ -9,8 +9,8 @@ public interface ReasonService {
 	Iterable<Reason> getAllActiveReasons();
 	Reason getReason(Long reasonId);
 	void deactivate(IDTransfer idTransfer);
-	void edit(AddReasonForm addReasonForm);
+	boolean edit(AddReasonForm addReasonForm);
 	AddReasonForm getEditForm(Long reasonId);
 	Reason getById(AddMeetingStatusForm addMeetingStatusForm);
-	
+	//void fixAddForm(AddMeetingRoomForm addMeetingRoomForm);
 }
