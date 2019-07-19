@@ -1,28 +1,28 @@
 package com.alaygut.prototype.controller;
 
-import com.alaygut.prototype.dto.AddRoomFeatureForm;
+import com.alaygut.prototype.dto.AddRoomFeatureForm; 
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MeetingRoomService;
 import com.alaygut.prototype.service.RoomFeatureService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.validation.Valid;
 import java.util.List;
 
 @Controller
 public class RoomFeatureController {
     private RoomFeatureService roomFeatureService;
-    private MeetingRoomService meetingRoomService;
 
 
-    public RoomFeatureController(RoomFeatureService roomFeatureService, MeetingRoomService meetingRoomService) {
+    public RoomFeatureController(RoomFeatureService roomFeatureService) {
         this.roomFeatureService = roomFeatureService;
-        this.meetingRoomService = meetingRoomService;
     }
 
     /**

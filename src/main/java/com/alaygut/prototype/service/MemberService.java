@@ -1,6 +1,5 @@
 package com.alaygut.prototype.service;
-
-import com.alaygut.prototype.dto.AddBuildingForm;
+ 
 import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.domain.Member;

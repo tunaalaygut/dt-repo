@@ -1,13 +1,11 @@
 package com.alaygut.prototype.service;
 
 
-import com.alaygut.prototype.domain.RecordState; 
+import com.alaygut.prototype.domain.RecordState;  
 import com.alaygut.prototype.domain.Right;
 import com.alaygut.prototype.domain.Role;
 import com.alaygut.prototype.dto.AddRoleForm;
 import com.alaygut.prototype.dto.IDTransfer;
-import com.alaygut.prototype.repository.MemberRepository;
-import com.alaygut.prototype.repository.RightRepository;
 import com.alaygut.prototype.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

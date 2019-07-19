@@ -1,23 +1,15 @@
 package com.alaygut.prototype.dto;
 
-
- 
-
-
-
-
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.alaygut.prototype.domain.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import com.alaygut.prototype.domain.Building;
+import com.alaygut.prototype.domain.MeetingRoom;
+import com.alaygut.prototype.domain.MeetingType;
+import com.alaygut.prototype.domain.Member;
 
 public class AddMeetingRequestForm extends FormBase  {
 	
@@ -59,7 +51,6 @@ public class AddMeetingRequestForm extends FormBase  {
 
 	private ArrayList<String> times;
 
-	private Map<String, Set<String>> buildingMeetingRooms;
 
 	public Long getMeetingRoomId() {
 		return meetingRoomId;

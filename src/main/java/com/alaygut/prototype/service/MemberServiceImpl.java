@@ -1,30 +1,21 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.Login; 
+import com.alaygut.prototype.domain.Login;  
 import com.alaygut.prototype.domain.Role;
-import com.alaygut.prototype.dto.AddBuildingForm;
 import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.domain.RecordState;
-import com.alaygut.prototype.repository.LoginRepository;
 import com.alaygut.prototype.repository.MemberRepository;
-
-import com.alaygut.prototype.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -227,7 +218,6 @@ public class MemberServiceImpl implements MemberService {
     public AddMemberForm getEditForm(Long memberId) {
         Member member = getMember(memberId);
         AddMemberForm addMemberForm = new AddMemberForm();
-        Login login = member.getLogin();
         addMemberForm.setRecordId(member.getMemberId());
         addMemberForm.setFirstName(member.getFirstName());
         addMemberForm.setLastName(member.getLastName());
