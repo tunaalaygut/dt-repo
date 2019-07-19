@@ -46,7 +46,7 @@ function checkRoomCapacity(){
 
     if (addedMemberCount > meetingRoomCapacity){
         $("#capacityWarning").css("display", "block");
-        $("#capacityWarning").text("Toplantı odasının kapasitesi " + meetingRoomCapacity + " kişi olarak belirlenmiştir.(" + addedMemberCount + " kişi eklendi.)");
+        $("#capacityWarning").text("Toplantı odasının kapasitesi " + meetingRoomCapacity + " kişi olarak belirlenmiştir. (" + addedMemberCount + " kişi eklendi)");
     }
     else
         $("#capacityWarning").css("display", "none");
@@ -114,7 +114,7 @@ function transferParticipantInfo(memberId, fullName, email){
             '<td>' + fullName + '<small class="text-muted"> (Misafir)</small></td>' +
             '<td>' + email + '</td>' +
             '<td class="text-center">' +
-            '<button type="button" value0="" value1="'+ fullName +'" value2="'+ email +'" class="btn btn-sm btn-outline-danger deleteParticipant" style="border-radius: 50%;">' +
+            '<button type="button" value0="" value1="'+ fullName +'" value2="'+ email +'" class="btn btn-sm btn-danger deleteParticipant">' +
             '<span class="fas fa-minus"></span>' +
             '</button>' +
             '</td>' +
@@ -182,7 +182,7 @@ $(document).on('click','.deleteParticipant', function(){
             '<td>' + fullName + '</td>' +
             '<td>' + email + '</td>' +
             '<td class="text-center">' +
-            '<button type="button" value0="' + memberId + '" value1="' + fullName + '" value2="' + email + '" class="btn btn-sm btn-outline-info addMember" style="border-radius: 50%;">' +
+            '<button type="button" value0="' + memberId + '" value1="' + fullName + '" value2="' + email + '" class="btn btn-sm btn-info addMember">' +
             '<span class="fas fa-plus"></span>' +
             '</button>' +
             '</td>' +

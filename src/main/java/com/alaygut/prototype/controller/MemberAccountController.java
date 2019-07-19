@@ -14,12 +14,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import javax.validation.Valid;
+
 
 @Controller
 public class MemberAccountController {
@@ -67,7 +70,7 @@ public class MemberAccountController {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setTo(existingMember.getEmail());
             mailMessage.setSubject("Complete Password Reset!");
-            mailMessage.setFrom("alpotomail@gmail.com");
+            mailMessage.setFrom("dijital.toplanti@gmail.com");
             mailMessage.setText("To complete the password reset process, please click here: "
                     + "http://localhost:8080/confirm-reset?token="+confirmationToken.getConfirmationToken());
 
@@ -84,9 +87,9 @@ public class MemberAccountController {
         return modelAndView;
     }
 
-    // Endpoint to confirm the token
+    
     @RequestMapping(value="/confirm-reset", method= {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token")String confirmationToken) {
+    public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token")String confirmationToken, BindingResult bindingResult) {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
         if (token != null) {
@@ -94,31 +97,26 @@ public class MemberAccountController {
             resetPasswordDTO.setEmail(token.getMember().getEmail());
             modelAndView.addObject("resetPasswordDTO", resetPasswordDTO);
             modelAndView.setViewName("resetPassword");
-        } else {
-            modelAndView.addObject("errorMessage", "The link is invalid or broken!");
-            modelAndView.setViewName("error");
-        }
+        } else
+            modelAndView.setViewName("login");
+
         return modelAndView;
     }
 
-    // Endpoint to update a user's password
-    @RequestMapping(value = "/reset-password", method = RequestMethod.POST)
-    public ModelAndView resetUserPassword(ModelAndView modelAndView, ResetPasswordDTO resetPasswordDTO, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
-            modelAndView.setViewName("resetPassword");
+    
+    @PostMapping("/reset-password")
+    public String resetUserPassword(@Valid @ModelAttribute("resetPasswordDTO") ResetPasswordDTO resetPasswordDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()){
+            
+            return "resetPassword";
         }
-        if (resetPasswordDTO.getEmail() != null) {
-            Member tokenMember = memberRepository.findByEmail(resetPasswordDTO.getEmail());
-            Login login = tokenMember.getLogin();
-            login.setPassword(passwordEncoder.encode(resetPasswordDTO.getPassword()));
-            loginRepository.save(login);
-            modelAndView.addObject("successMessage", "Şifreniz başarıyla yenilendi.Yeni şifrenizle giriş yapabilirsiniz.");
-            modelAndView.setViewName("login");
-        } else {
-            modelAndView.addObject("errorMessage","The link is invalid or broken!");
-            modelAndView.setViewName("error");
-        }
-        return modelAndView;
+
+        Member tokenMember = memberRepository.findByEmail(resetPasswordDTO.getEmail());
+        Login login = tokenMember.getLogin();
+        login.setPassword(passwordEncoder.encode(resetPasswordDTO.getPassword()));
+        loginRepository.save(login);
+        redirectAttributes.addFlashAttribute("successMessage", "Şifreniz başarıyla yenilendi. Yeni şifrenizle giriş yapabilirsiniz.");
+        return "redirect:login";
     }
 
 
