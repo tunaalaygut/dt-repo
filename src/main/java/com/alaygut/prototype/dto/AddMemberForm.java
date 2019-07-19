@@ -45,7 +45,7 @@ public class AddMemberForm extends FormBase  {
     @UniqueUsername(message = "{username.not.unique}")
     private String username;
 
-    @Size(min =10 , max = 10, message = "{password.size.not.valid}")
+    @Size(min =6 , max = 20, message = "{password.size.not.valid}")
     private String password;
 
     private Iterable<Role> allRoles;

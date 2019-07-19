@@ -2,15 +2,15 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
-<div th:replace="fragments/fragments :: head(content = 'Kullanıcı Bilgi Düzenleme Formu')"></div>
+<div th:replace="fragments/fragments :: head(content = 'Profil Güncelleme Formu')"></div>
 
 <body>
     <div class="wrapper">
         <div th:replace="fragments/fragments :: sidebar"></div>
         <div class="content">
             <div th:replace="fragments/fragments :: navbar"></div>
-            <h2 class="mb-4">Kullanıcı Bilgi Düzenleme Formu</h2>
-            <form th:action="@{/profile/edit}" th:object="${addMemberForm}" th:method="post" autocomplete="off">
+            <h2 class="mb-4">Profil Güncelleme Formu</h2>
+            <form th:action="@{/profile/edit}" th:object="${addMemberForm}" th:method="post"  id="memberEditForm" autocomplete="off">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -27,11 +27,13 @@
                         <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('lastName')}, field = 'lastName')"></div>
                     </div>
                 </div>
-                  <div class="form-group">
-                    <label for="emailInput">E-mail:</label>
-                    <input th:field="*{email}" th:value="${addMemberForm.email}" type="text" class="form-control" id="emailInput" placeholder="isim@ornek.com">
-                    </div>
+                <input th:attr="name=originalEmail" type="hidden" th:value="${addMemberForm.email}">
+                        <div class="form-group">
+                            <label for="newEmail">E-mail:</label>
+                            <input th:attr="name=newEmail" th:value="${addMemberForm.email}" type="text" class="form-control" id="newEmail" placeholder="Email">
+                        </div>
                     <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('email')}, field = 'email')"></div>
+                    <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('newEmail')}, field = 'newEmail')"></div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -40,24 +42,22 @@
                         </div>
                         <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('phone')}, field = 'phone')"></div>
                     </div>
-                </div>  
-               <div class="form-group">
-                    <label for="usernameInput">Kullanıcı Adı:</label>
-                    <input th:field="*{username}" type="text" class="form-control" id="usernameInput" placeholder="Kullanıcı Adı">
-                </div>
-                <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('username')}, field = 'username')"></div>
-                <div class="form-group">
-                    <label for="passwordInput">Şifre:</label>
-                    <input th:field="*{password}" type="password" class="form-control" id="passwordInput" placeholder="******">
-                </div>
-                 <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('password')}, field = 'password')"></div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="roleSelectMenu">Rol:</label>
+                            <select class="custom-select" id="roleSelectMenu" th:attr="name=roleId">
+                                <option th:each="r : *{allRoles}" th:text="${r.roleName}" th:value="${r.roleId}" th:selected="(*{roleId} == ${r.roleId})"></option>
+                            </select>
+                        </div>
+                        <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('roleId')}, field = 'roleId')"></div>
+                    </div>
+                </div>               
                 <div th:replace="fragments/fragments :: updaterIdInput"></div>
                 <div th:replace="fragments/fragments :: successMessage"></div>
 
-                <div>
-	                <input th:attr="name=recordId" type="hidden" th:value="${addMemberForm.recordId}">
-	                <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Bilgileri Düzenle</button> 
-                </div>      
+                <input th:attr="name=recordId" type="hidden" th:value="${addMemberForm.recordId}">
+                <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Profili Güncelle</button>
+
             </form>
         </div>
     </div>
