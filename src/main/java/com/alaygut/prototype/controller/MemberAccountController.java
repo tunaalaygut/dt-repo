@@ -1,6 +1,6 @@
 package com.alaygut.prototype.controller;
 
-import com.alaygut.prototype.domain.ConfirmationToken;
+import com.alaygut.prototype.domain.ConfirmationToken; 
 import com.alaygut.prototype.domain.Login;
 import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.dto.ResetPasswordDTO;
@@ -8,20 +8,20 @@ import com.alaygut.prototype.repository.ConfirmationTokenRepository;
 import com.alaygut.prototype.repository.LoginRepository;
 import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.service.EmailSenderService;
-import com.alaygut.prototype.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
+<<<<<<< HEAD
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+=======
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+>>>>>>> 95418232de62e8d82c5dc9709d9381993015a7ba
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.validation.Valid;
 
 @Controller
 public class MemberAccountController {
@@ -49,17 +49,16 @@ public class MemberAccountController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @RequestMapping(value="/forgot-password", method= RequestMethod.GET)
-    public ModelAndView displayResetPassword(ModelAndView modelAndView, Member member) {
-        modelAndView.addObject("member", member);
-        modelAndView.setViewName("forgotPassword");
-        return modelAndView;
+    @GetMapping("/forgot-password")
+    public ModelAndView displayResetPassword(Member member) {
+        return new ModelAndView("forgotPassword", "member", member);
     }
 
     // Receive the address and send an email
-    @RequestMapping(value="/forgot-password", method=RequestMethod.POST)
+    @PostMapping("/forgot-password")
     public ModelAndView forgotUserPassword(ModelAndView modelAndView, Member member, RedirectAttributes redirectAttributes) {
         Member existingMember = memberRepository.findByEmail(member.getEmail());
+
         if (existingMember != null) {
             // Create token
             ConfirmationToken confirmationToken = new ConfirmationToken(existingMember);
@@ -89,7 +88,7 @@ public class MemberAccountController {
 
     // Endpoint to confirm the token
     @RequestMapping(value="/confirm-reset", method= {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token")String confirmationToken) {
+    public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token")String confirmationToken, BindingResult bindingResult) {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
         if (token != null) {
@@ -97,28 +96,26 @@ public class MemberAccountController {
             resetPasswordDTO.setEmail(token.getMember().getEmail());
             modelAndView.addObject("resetPasswordDTO", resetPasswordDTO);
             modelAndView.setViewName("resetPassword");
-        } else {
-            modelAndView.addObject("errorMessage", "The link is invalid or broken!");
-            modelAndView.setViewName("error");
-        }
+        } else
+            modelAndView.setViewName("login");
+
         return modelAndView;
     }
 
     // Endpoint to update a user's password
-    @RequestMapping(value = "/reset-password", method = RequestMethod.POST)
-    public ModelAndView resetUserPassword(ModelAndView modelAndView, ResetPasswordDTO resetPasswordDTO) {
-        if (resetPasswordDTO.getEmail() != null) {
-            Member tokenMember = memberRepository.findByEmail(resetPasswordDTO.getEmail());
-            Login login = tokenMember.getLogin();
-            login.setPassword(passwordEncoder.encode(resetPasswordDTO.getPassword()));
-            loginRepository.save(login);
-            modelAndView.addObject("successMessage", "Şifreniz başarıyla yenilendi.Yeni şifrenizle giriş yapabilirsiniz.");
-            modelAndView.setViewName("login");
-        } else {
-            modelAndView.addObject("errorMessage","The link is invalid or broken!");
-            modelAndView.setViewName("error");
+    @PostMapping("/reset-password")
+    public String resetUserPassword(@Valid @ModelAttribute("resetPasswordDTO") ResetPasswordDTO resetPasswordDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()){
+            //email giderse burda koyalım
+            return "resetPassword";
         }
-        return modelAndView;
+
+        Member tokenMember = memberRepository.findByEmail(resetPasswordDTO.getEmail());
+        Login login = tokenMember.getLogin();
+        login.setPassword(passwordEncoder.encode(resetPasswordDTO.getPassword()));
+        loginRepository.save(login);
+        redirectAttributes.addFlashAttribute("successMessage", "Şifreniz başarıyla yenilendi. Yeni şifrenizle giriş yapabilirsiniz.");
+        return "redirect:login";
     }
 
 

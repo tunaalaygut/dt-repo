@@ -1,7 +1,12 @@
 package com.alaygut.prototype.dto;
 
+import javax.validation.constraints.Size;
+
 public class ResetPasswordDTO {
+
     private String email;
+    
+    @Size(min=3, max=10, message = "{resetPassword.size.not.valid}" )
     private String password;
 
     public String getEmail() {

@@ -1,11 +1,10 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.*;
-
-import com.alaygut.prototype.dto.AddMeetingRequestForm;
-import com.alaygut.prototype.repository.RoomFeatureRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.alaygut.prototype.domain.Building;
+import com.alaygut.prototype.domain.MeetingRoom;
+import com.alaygut.prototype.domain.RecordState;
+import com.alaygut.prototype.domain.RoomFeature;
 import com.alaygut.prototype.dto.AddMeetingRoomForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.MeetingRoomRepository;

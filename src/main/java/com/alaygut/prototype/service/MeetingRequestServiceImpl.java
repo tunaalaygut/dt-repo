@@ -1,25 +1,23 @@
 package com.alaygut.prototype.service;
-import java.time.LocalDate; 
+
+import java.time.LocalDate;  
 import java.time.LocalTime;
-
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-
-
-import com.alaygut.prototype.domain.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import com.alaygut.prototype.dto.MeetingRequestDetailProvider;
-import com.alaygut.prototype.dto.ParticipantDetails;
 import org.springframework.stereotype.Service;
-
 import com.alaygut.prototype.domain.MeetingRequest;
+import com.alaygut.prototype.domain.MeetingRoom;
+import com.alaygut.prototype.domain.MeetingState;
+import com.alaygut.prototype.domain.Member;
+import com.alaygut.prototype.domain.Participant;
 import com.alaygut.prototype.domain.RecordState;
-
 import com.alaygut.prototype.dto.AddMeetingRequestForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.MeetingRequestRepository;
-import com.alaygut.prototype.repository.MeetingRoomRepository;
-import com.alaygut.prototype.repository.MeetingStatusRepository;
-import com.alaygut.prototype.repository.MeetingTypeRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -121,8 +119,6 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	
 	@Override
 	public void edit(AddMeetingRequestForm addMeetingRequestForm) {
-		//MeetingRequest meetingRequest = meetingRequestRepository.findById(addMeetingRequestForm.getRecordId()).orElse(null);
-		//meetingRequest.setMeetingRoom(meetingRoom);
 	}
 
 	@Override

@@ -1,10 +1,9 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.MeetingRoom;
+import com.alaygut.prototype.domain.MeetingRoom; 
 import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.domain.RoomFeature;
 import com.alaygut.prototype.dto.*;
-import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.repository.RoomFeatureRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

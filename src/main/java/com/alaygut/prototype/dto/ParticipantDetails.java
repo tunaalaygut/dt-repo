@@ -1,6 +1,5 @@
 package com.alaygut.prototype.dto;
 
-import javax.validation.constraints.NotEmpty;
 
 public class ParticipantDetails {
     private Long memberId;  //This is optional. Only members will have this field filled. Guests will have it null.

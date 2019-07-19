@@ -1,6 +1,6 @@
 package com.alaygut.prototype.dto;
 
-import com.alaygut.prototype.annotation.UniqueBuildingName;
+import com.alaygut.prototype.annotation.UniqueBuildingName; 
 
 import javax.validation.constraints.Size;
 
@@ -10,7 +10,7 @@ public class AddBuildingForm extends FormBase {
     @UniqueBuildingName(message = "{buildingName.not.unique}")
     private String buildingName;
 
-    @Size(min=3, max=20, message = "Adres en az 3.")
+    @Size(min=3, message = "{buildingAddr.size.not.valid}")
     private String buildingAddr;
 
     @Size(min = 3, max = 50, message = "{newBuildingName.size.not.valid}")

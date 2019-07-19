@@ -1,6 +1,6 @@
 package com.alaygut.prototype.config;
 
-import com.alaygut.prototype.service.MemberService;
+import com.alaygut.prototype.service.MemberService; 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

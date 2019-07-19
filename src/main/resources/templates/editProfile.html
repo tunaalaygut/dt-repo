@@ -34,24 +34,11 @@
                         </div>
                     <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('email')}, field = 'email')"></div>
                     <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('newEmail')}, field = 'newEmail')"></div>
-                <div class="row">
-                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="phoneInput">Telefon:</label>
                             <input th:field="*{phone}" th:value="${addMemberForm.phone}" type="text" class="form-control" id="phoneInput" placeholder="Telefon #">
                         </div>
-                        <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('phone')}, field = 'phone')"></div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="roleSelectMenu">Rol:</label>
-                            <select class="custom-select" id="roleSelectMenu" th:attr="name=roleId">
-                                <option th:each="r : *{allRoles}" th:text="${r.roleName}" th:value="${r.roleId}" th:selected="(*{roleId} == ${r.roleId})"></option>
-                            </select>
-                        </div>
-                        <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('roleId')}, field = 'roleId')"></div>
-                    </div>
-                </div>               
+                        <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('phone')}, field = 'phone')"></div>            
                 <div th:replace="fragments/fragments :: updaterIdInput"></div>
                 <div th:replace="fragments/fragments :: successMessage"></div>
 
