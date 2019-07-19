@@ -61,6 +61,10 @@ a:focus {
     border: solid 1px #17a2b8 !Important;
 }
 
+.btn:focus {
+    outline: none;
+}
+
 .pagination > .active > a:hover
 {
     background-color: #17a2b8 !Important;
