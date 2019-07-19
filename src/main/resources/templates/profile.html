@@ -15,6 +15,8 @@
                 <h4 class="card-title">Kullanıcı Bilgileri</h4>
             </div>
 
+            <div th:replace="fragments/fragments :: successMessage"></div>
+
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
                         <span class="text-muted">İsim: </span><span th:text="${member.firstName}"/> <span th:text="${member.lastName}"/>
@@ -34,9 +36,9 @@
                 </ul>
         </div>
         <form th:action="@{/profile/edit}" th:object="${idTransfer}" th:method="get" >
-                 		<input th:attr="name=recordId" type="hidden" th:value="${#authentication.principal.memberId}">
-                 		<button class="btn btn-primary btn-info mt-3 float-right"> Kullanıcı Bilgilerini Güncelle</button>
-                 	</form>
+            <input th:attr="name=recordId" type="hidden" th:value="${#authentication.principal.memberId}">
+            <button class="btn btn-info mt-3 float-right">Kullanıcı Bilgilerini Güncelle</button>
+        </form>
     </div>
 </div>
 <div th:replace="fragments/fragments :: scripts"></div>
