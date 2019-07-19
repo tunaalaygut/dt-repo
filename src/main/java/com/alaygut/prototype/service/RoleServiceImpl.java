@@ -144,7 +144,8 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public void fixForm(AddRoleForm form) {
         form.setAllRights(rightService.getAllActiveRights());
-        form.setRoleRights(this.getAllRights(form.getRecordId()));
+        if(form.getRecordId() != null)
+            form.setRoleRights(this.getAllRights(form.getRecordId()));
     }
 
     @Override

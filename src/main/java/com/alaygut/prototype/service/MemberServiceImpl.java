@@ -178,8 +178,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void fixForm(AddMemberForm addMemberForm) {
         addMemberForm.setAllRoles(roleService.getAllActiveRoles());
-        addMemberForm.setEmail(this.getMember(addMemberForm.getRecordId()).getEmail());
-        addMemberForm.setUsername(this.getMember(addMemberForm.getRecordId()).getUsername());
+        if(addMemberForm.getRecordId() != null){
+            addMemberForm.setEmail(this.getMember(addMemberForm.getRecordId()).getEmail());
+            addMemberForm.setUsername(this.getMember(addMemberForm.getRecordId()).getUsername());
+        }
     }
 
     /**
@@ -213,7 +215,7 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * Editlenecek üyenin formunu dolu halde getirir
-     * @param memberId editlenen üyenin Id'si
+     * @param username editlenen üyenin Id'si
      * @return dolu member DTO'su
      */
     @Override
