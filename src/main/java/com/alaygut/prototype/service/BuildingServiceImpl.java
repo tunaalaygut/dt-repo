@@ -1,11 +1,10 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.Building; 
+import com.alaygut.prototype.domain.Building;  
 import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.dto.AddBuildingForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.BuildingRepository;
-import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -100,7 +99,7 @@ public class BuildingServiceImpl implements BuildingService {
         return addBuildingForm;
     }
 
-    public Building LoadBuildingName(String buildingName) { //private?
+    public Building LoadBuildingName(String buildingName) { 
         Building building = this.buildingRepository.findByBuildingName(buildingName);
         return building;
     }

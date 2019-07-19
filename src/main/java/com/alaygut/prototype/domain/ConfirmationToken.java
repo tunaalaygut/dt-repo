@@ -1,6 +1,6 @@
 package com.alaygut.prototype.domain;
 
-import java.util.Date;
+import java.util.Date; 
 import java.util.UUID;
 
 import javax.persistence.Column;

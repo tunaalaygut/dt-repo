@@ -1,6 +1,6 @@
 package com.alaygut.prototype.controller;
 
-import com.alaygut.prototype.domain.ConfirmationToken;
+import com.alaygut.prototype.domain.ConfirmationToken; 
 import com.alaygut.prototype.domain.Login;
 import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.dto.ResetPasswordDTO;
@@ -8,20 +8,15 @@ import com.alaygut.prototype.repository.ConfirmationTokenRepository;
 import com.alaygut.prototype.repository.LoginRepository;
 import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.service.EmailSenderService;
-import com.alaygut.prototype.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.validation.Valid;
 
 @Controller
 public class MemberAccountController {

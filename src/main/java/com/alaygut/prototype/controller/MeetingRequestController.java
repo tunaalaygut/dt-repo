@@ -1,40 +1,32 @@
 package com.alaygut.prototype.controller;
 
-import javax.validation.Valid;
+import javax.validation.Valid; 
 
 import com.alaygut.prototype.domain.Member;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.alaygut.prototype.dto.AddMeetingRequestForm;
 import com.alaygut.prototype.dto.IDTransfer;
-import com.alaygut.prototype.service.BuildingService;
 import com.alaygut.prototype.service.MeetingRequestService;
 import com.alaygut.prototype.service.MeetingRoomService;
-import com.alaygut.prototype.service.MeetingTypeService;
 import com.alaygut.prototype.service.MemberService;
-
 import java.security.Principal;
-import java.util.*;
+import java.util.Map;
+
 
 @Controller
 public class MeetingRequestController {
 	private MeetingRequestService meetingRequestService;
 	private MeetingRoomService meetingRoomService;
 	private MemberService memberService;
-	private MeetingTypeService meetingTypeService;
-	private BuildingService buildingService;
 
-	public MeetingRequestController(MeetingRequestService meetingRequestService, MeetingRoomService meetingRoomService, MemberService memberService, MeetingTypeService meetingTypeService, BuildingService buildingService) {
+	public MeetingRequestController(MeetingRequestService meetingRequestService, MeetingRoomService meetingRoomService, MemberService memberService) {
 		this.meetingRequestService = meetingRequestService;
 		this.meetingRoomService = meetingRoomService;
-		this.memberService = memberService;
-		this.meetingTypeService = meetingTypeService;
-		this.buildingService = buildingService;
+		this.memberService = memberService;;
 	}
 
 	@GetMapping("/add/meetingRequest")

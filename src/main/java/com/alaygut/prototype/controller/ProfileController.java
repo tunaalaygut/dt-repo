@@ -5,10 +5,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.dto.IDTransfer;
@@ -51,7 +49,7 @@ public class ProfileController {
 			memberService.profileEdit(form);
 		}
 		catch(Exception e){
-			memberService.addErrors(form, bindingResult); //unique checki yapmiyor
+			memberService.addErrors(form, bindingResult);
             memberService.fixForm(form);
             return "editProfile";
 		}

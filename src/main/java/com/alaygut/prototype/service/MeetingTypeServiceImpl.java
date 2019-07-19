@@ -1,6 +1,5 @@
 package com.alaygut.prototype.service;
-
-import com.alaygut.prototype.repository.MemberRepository;
+ 
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.MeetingType;
 import com.alaygut.prototype.domain.RecordState;

@@ -30,8 +30,7 @@
                     </li>
                     <li class="list-group-item">
                         <span class="text-muted">Rol: </span><span th:text="${member.role.roleName}"/>
-                    </li>
-                     
+                    </li>                    
                 </ul>
         </div>
         <form th:action="@{/profile/edit}" th:object="${idTransfer}" th:method="get" >

@@ -1,6 +1,6 @@
 package com.alaygut.prototype.dto;
 
-import com.alaygut.prototype.annotation.UniqueBuildingName;
+import com.alaygut.prototype.annotation.UniqueBuildingName; 
 
 import javax.validation.constraints.Size;
 

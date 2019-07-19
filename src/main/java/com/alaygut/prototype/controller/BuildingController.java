@@ -1,11 +1,9 @@
 package com.alaygut.prototype.controller;
 
 
-import com.alaygut.prototype.dto.AddBuildingForm;
+import com.alaygut.prototype.dto.AddBuildingForm; 
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.BuildingService;
-
-
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
