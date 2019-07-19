@@ -2,7 +2,6 @@ package com.alaygut.prototype.controller;
 
 import com.alaygut.prototype.dto.AddRoomFeatureForm; 
 import com.alaygut.prototype.dto.IDTransfer;
-import com.alaygut.prototype.service.MeetingRoomService;
 import com.alaygut.prototype.service.RoomFeatureService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
