@@ -13,10 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 @Controller
 public class MemberAccountController {
@@ -53,7 +58,7 @@ public class MemberAccountController {
 
     // Receive the address and send an email
     @RequestMapping(value="/forgot-password", method=RequestMethod.POST)
-    public ModelAndView forgotUserPassword(ModelAndView modelAndView, Member member) {
+    public ModelAndView forgotUserPassword(ModelAndView modelAndView, Member member, RedirectAttributes redirectAttributes) {
         Member existingMember = memberRepository.findByEmail(member.getEmail());
         if (existingMember != null) {
             // Create token
@@ -72,12 +77,12 @@ public class MemberAccountController {
             // Send the email
             emailSenderService.sendEmail(mailMessage);
 
-            modelAndView.addObject("message", "Request to reset password received. Check your inbox for the reset link.");
-            modelAndView.setViewName("successForgotPassword");
+            modelAndView.addObject("successMessage", "Şifre değiştirme talebiniz alındı.Şifre yenileme linki için e-mail adresinizi kontrol edin.");
+            modelAndView.setViewName("login");
 
         } else {
-            modelAndView.addObject("message", "This email address does not exist!");
-            modelAndView.setViewName("error");
+            modelAndView.addObject("passwordErrorMessage", "E-mail adresi bulunamadı.");
+            modelAndView.setViewName("forgotPassword");
         }
         return modelAndView;
     }
@@ -93,7 +98,7 @@ public class MemberAccountController {
             modelAndView.addObject("resetPasswordDTO", resetPasswordDTO);
             modelAndView.setViewName("resetPassword");
         } else {
-            modelAndView.addObject("message", "The link is invalid or broken!");
+            modelAndView.addObject("errorMessage", "The link is invalid or broken!");
             modelAndView.setViewName("error");
         }
         return modelAndView;
@@ -107,10 +112,10 @@ public class MemberAccountController {
             Login login = tokenMember.getLogin();
             login.setPassword(passwordEncoder.encode(resetPasswordDTO.getPassword()));
             loginRepository.save(login);
-            modelAndView.addObject("message", "Password successfully reset. You can now log in with the new credentials.");
-            modelAndView.setViewName("successResetPassword");
+            modelAndView.addObject("successMessage", "Şifreniz başarıyla yenilendi.Yeni şifrenizle giriş yapabilirsiniz.");
+            modelAndView.setViewName("login");
         } else {
-            modelAndView.addObject("message","The link is invalid or broken!");
+            modelAndView.addObject("errorMessage","The link is invalid or broken!");
             modelAndView.setViewName("error");
         }
         return modelAndView;

@@ -20,6 +20,7 @@
                         Kullanıcı adı veya şifre hatalı!
                     </div>
                 </div>
+                <div th:replace="fragments/fragments :: successMessage"></div>
                 <div class="form-group">
                     <label for="username">Kullanıcı Adı:</label>
                     <input type="text" class="form-control form-control-lg" id="username" name="username" aria-describedby="emailHelp" placeholder="kullaniciadi">
@@ -28,8 +29,10 @@
                     <label for="password">Şifre:</label>
                     <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="******">
                 </div>
-                <a href="/forgot-password">Forgot Password?</a>
                 <button type="submit" class="btn btn-block btn-info btn-lg">Giriş</button>
+
+                <a href="/forgot-password" class="float-right mt-4 text-muted">Şifremi Unuttum</a>
+
             </form>
         </div>
     </div>
