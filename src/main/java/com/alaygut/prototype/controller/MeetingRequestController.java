@@ -3,6 +3,8 @@ package com.alaygut.prototype.controller;
 import javax.validation.Valid; 
 
 import com.alaygut.prototype.domain.Member;
+import com.alaygut.prototype.dto.MeetingDetail;
+import com.alaygut.prototype.service.RoomFeatureService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import com.alaygut.prototype.service.MeetingRequestService;
 import com.alaygut.prototype.service.MeetingRoomService;
 import com.alaygut.prototype.service.MemberService;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 
@@ -27,11 +30,13 @@ public class MeetingRequestController {
 	private MeetingRequestService meetingRequestService;
 	private MeetingRoomService meetingRoomService;
 	private MemberService memberService;
+	private RoomFeatureService roomFeatureService;
 
-	public MeetingRequestController(MeetingRequestService meetingRequestService, MeetingRoomService meetingRoomService, MemberService memberService) {
+	public MeetingRequestController(MeetingRequestService meetingRequestService, MeetingRoomService meetingRoomService, MemberService memberService, RoomFeatureService roomFeatureService) {
 		this.meetingRequestService = meetingRequestService;
 		this.meetingRoomService = meetingRoomService;
-		this.memberService = memberService;;
+		this.memberService = memberService;
+		this.roomFeatureService = roomFeatureService;
 	}
 
 	@GetMapping("/add/meetingRequest")
@@ -101,9 +106,18 @@ public class MeetingRequestController {
 	}
 
 	@GetMapping("/getGridData")
-	public @ResponseBody Map<String, String> getMeetingRoomCapacity(@RequestParam("date") String date, @RequestParam("meetingRoomId") String meetingRoomId){
-		Long roomId = Long.parseLong(meetingRoomId);
-		return meetingRequestService.getGridData(date, roomId);
+	public @ResponseBody List<MeetingDetail> getMeetingRoomCapacity(@RequestParam("date") String date, @RequestParam("meetingRoomId") String meetingRoomId){
+		return meetingRequestService.getGridData(date, meetingRoomId);
+	}
+
+	@GetMapping("/loadAllFeatures")
+	public @ResponseBody Map<Long, String> loadAllFeatures(){
+		return roomFeatureService.getFeatureMap();
+	}
+
+	@GetMapping("/filterMeetingRooms")
+	public @ResponseBody Map<Long, String> filterMeetingRooms(@RequestParam("capacity") String capacity){
+		return meetingRoomService.filterMeetingRoomsByCapacityAndFeatures(capacity);
 	}
 	/*@PostMapping(value = "/list/meetingRequest", params = {"delete"})
 			public String delete(@Valid @ModelAttribute("IDTransfer")@RequestParam("delete")  IDTransfer delete, BindingResult bindingResult) {

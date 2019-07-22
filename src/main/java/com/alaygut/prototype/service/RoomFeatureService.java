@@ -7,6 +7,7 @@ import com.alaygut.prototype.dto.IDTransfer;
 
 
 import java.util.List;
+import java.util.Map;
 
 public interface RoomFeatureService {
     void addRoomFeature(AddRoomFeatureForm addMeetingRoomForm);
@@ -19,4 +20,5 @@ public interface RoomFeatureService {
     Iterable<RoomFeature> getAllById(List<Long> roomFeatureIds);
     RoomFeature getById(Long roomFeatureId);
     Iterable <RoomFeature> getAllByMeetingRoomSet(MeetingRoom meetingRoom);
+    Map<Long, String> getFeatureMap();
 }
