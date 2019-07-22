@@ -59,11 +59,11 @@ public class MeetingRequestController {
 		return new ModelAndView("listMeetingRequests", "meetingRequestDetailProvider", meetingRequestService.getListMeetingRequestsDetailProvider());
 	}
 	
-	@PostMapping("/list/meetingRequest")
+/*	@PostMapping("/list/meetingRequest")
 	public String handleMeetingRequestDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
 		meetingRequestService.deactivate(idTransfer);
 		return "redirect:/list/meetingRequest";
-	}
+	}*/
 
 	@GetMapping("/list/pendingRequest")
 	public ModelAndView listPendingMeetingRequestsPage() {
@@ -97,13 +97,27 @@ public class MeetingRequestController {
 	@GetMapping("/member/meetingRequest")
 	public ModelAndView getMemberMeetingRequestsPage(Principal principal){
 		Member member = memberService.getMember(principal.getName());
-		return new ModelAndView("listMeetingRequests", "meetingRequestDetailProvider", meetingRequestService.getMemberMeetingRequestDetailsProvider(member));
+		return new ModelAndView("memberMeetingRequests", "meetingRequestDetailProvider", meetingRequestService.getMemberMeetingRequestDetailsProvider(member));
 	}
 
 	@GetMapping("/getGridData")
 	public @ResponseBody Map<String, String> getMeetingRoomCapacity(@RequestParam("date") String date, @RequestParam("meetingRoomId") String meetingRoomId){
 		Long roomId = Long.parseLong(meetingRoomId);
 		return meetingRequestService.getGridData(date, roomId);
+	}
+	/*@PostMapping(value = "/list/meetingRequest", params = {"delete"})
+			public String delete(@Valid @ModelAttribute("IDTransfer")@RequestParam("delete")  IDTransfer delete, BindingResult bindingResult) {
+			meetingRequestService.deactivate(delete);
+			if(bindingResult.hasErrors()) {
+				System.out.println("HATA BULDUM");
+			}
+			return "redirect:/list/meetingRequest";
+			}*/
+
+	@PostMapping("/cancelMeetingRequest/{meetingRequestId}")
+	public String cancel(@PathVariable Long meetingRequestId) {
+		meetingRequestService.cancel(meetingRequestId);
+		return "redirect:/member/meetingRequest";
 	}
 
 }

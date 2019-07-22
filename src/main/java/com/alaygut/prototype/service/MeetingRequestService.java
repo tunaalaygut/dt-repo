@@ -30,4 +30,5 @@ public interface MeetingRequestService {
 	int getNumberOfPendingRequests();
 	void declineMeetingRequest(Long meetingRequestId, Long supervisorId);
 	void acceptMeetingRequest(Long meetingRequestId, Long supervisorId);
+	void cancel(Long meetingRequestId);
 }

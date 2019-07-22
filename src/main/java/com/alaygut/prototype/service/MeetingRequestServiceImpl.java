@@ -210,4 +210,10 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		request.setMeetingRequestState(MeetingState.ONAYLANDI);
 	}
 
+	@Override
+	@Transactional
+	public void cancel(Long meetingRequestId) {
+		MeetingRequest meetingRequest = this.getMeetingRequest(meetingRequestId);
+		meetingRequest.setMeetingRequestState(MeetingState.IPTAL_EDILDI);
+	}
 }

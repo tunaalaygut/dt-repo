@@ -69,10 +69,10 @@ public class MemberAccountController {
             // Create the email
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setTo(existingMember.getEmail());
-            mailMessage.setSubject("Complete Password Reset!");
+            mailMessage.setSubject("Dijital Toplantı Şifre Yenileme Talebi");
             mailMessage.setFrom("dijital.toplanti@gmail.com");
-            mailMessage.setText("To complete the password reset process, please click here: "
-                    + "http://localhost:8080/confirm-reset?token="+confirmationToken.getConfirmationToken());
+            mailMessage.setText("Dijital Toplantı hesabınızın şifresini yenilemeyi talep ettiniz.Yenileme işlemini tamamlamak için lütfen bu linke tıklayın: "
+                    + "http://localhost:8080/confirm-reset?token="+confirmationToken.getConfirmationToken()+ "\nBöyle bir işlem talep etmediyseniz bu maili dikkate almayın.");
 
             // Send the email
             emailSenderService.sendEmail(mailMessage);
