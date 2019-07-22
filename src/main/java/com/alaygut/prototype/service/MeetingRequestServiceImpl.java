@@ -1,12 +1,14 @@
 package com.alaygut.prototype.service;
 
-import java.time.LocalDate;  
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import com.alaygut.prototype.dto.MeetingDetail;
 import com.alaygut.prototype.dto.MeetingRequestDetailProvider;
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.MeetingRequest;
@@ -23,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 public class MeetingRequestServiceImpl implements MeetingRequestService {
-	
+
 	private MeetingRequestRepository meetingRequestRepository;
 	private MemberService memberService;
 	private BuildingService buildingService;
@@ -66,7 +68,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	public Iterable<MeetingRequest> getAllRequests() {
 		return meetingRequestRepository.findAll();
 	}
-	
+
 	@Override
 	public Iterable<MeetingRequest> getAllActiveRequests() {
 		return meetingRequestRepository.findAllByStateEquals(RecordState.ACTIVE);
@@ -88,27 +90,27 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	}
 
 	@Override
-	public Map<String, String> getGridData(String date, Long meetingRoomId){
-		LocalDate meetingDate = LocalDate.parse(date);
-		MeetingRoom meetingRoom = meetingRoomService.getMeetingRoom(meetingRoomId);
-		Iterable<MeetingRequest> requests = this.getAllByDateAndMeetingRoomAndMeetingRequestState(meetingDate, meetingRoom, MeetingState.ONAYLANDI);
+	public List<MeetingDetail> getGridData(String date, String meetingRoomId){
+		List<MeetingDetail> meetingDetails = new ArrayList<>();
+
+		MeetingRoom meetingRoom = meetingRoomService.getMeetingRoom(Long.parseLong(meetingRoomId));
+		Iterable<MeetingRequest> requests = this.getAllByDateAndMeetingRoomAndMeetingRequestState( LocalDate.parse(date), meetingRoom, MeetingState.ONAYLANDI);
 		Iterator<MeetingRequest> requestIterator = requests.iterator();
 		MeetingRequest current;
-		Map<String, String> startEndTimes = new HashMap<>();
 
 		while(requestIterator.hasNext()){
 			current = requestIterator.next();
-			startEndTimes.put(current.getStartTime().toString(), current.getEndTime().toString());
+			meetingDetails.add(getMeetingDetailObject(current));
 		}
 
-		return startEndTimes;
+		return meetingDetails;
 	}
 
 	@Override
 	public MeetingRequest getMeetingRequest(Long meetingRequestId) {
 		return meetingRequestRepository.findById(meetingRequestId).orElse(null);
 	}
-	
+
 	@Override
 	@Transactional(readOnly = false)
 	public void deactivate(IDTransfer idTransfer) {
@@ -116,7 +118,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		meetingRequest.setState(RecordState.NONACTIVE);
 		meetingRequestRepository.save(meetingRequest);
 	}
-	
+
 	@Override
 	public void edit(AddMeetingRequestForm addMeetingRequestForm) {
 	}
@@ -210,4 +212,26 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		request.setMeetingRequestState(MeetingState.ONAYLANDI);
 	}
 
+
+	private MeetingDetail getMeetingDetailObject(MeetingRequest meetingRequest){
+		MeetingDetail meetingDetail = new MeetingDetail();
+
+		meetingDetail.setSupervisorFullName(meetingRequest.getUpdater().getFirstName() + " " + meetingRequest.getUpdater().getLastName());
+		meetingDetail.setBeginningTime(String.valueOf(meetingRequest.getStartTime()));
+		meetingDetail.setEndTime(String.valueOf(meetingRequest.getEndTime()));
+		meetingDetail.setMember(meetingRequest.getMember().getFirstName() + " " + meetingRequest.getMember().getLastName());
+		meetingDetail.setParticipants(getParticipantString(meetingRequest));
+		meetingDetail.setMeetingType(String.valueOf(meetingRequest.getMeetingType().getMeetingTypeName()));
+
+		return meetingDetail;
+	}
+
+	private String getParticipantString(MeetingRequest meetingRequest){
+		String participants = "";
+
+		for (Participant p : participantService.getAllParticipantsInMeetingRequest(meetingRequest))
+			participants += (p.getFullName() + ", ");
+
+		return participants.replaceAll(", $", "");    //to remove the last comma from the string.
+	}
 }

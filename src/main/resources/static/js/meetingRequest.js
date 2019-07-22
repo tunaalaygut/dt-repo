@@ -5,6 +5,8 @@ $( document ).ready(function() {
     addMember($("#currentUserId").val(), $("#currentUserFullName").val(), $("#currentUserEmail").val());
     document.querySelector("#datePicker").valueAsDate = new Date();
     drawTheGrid();
+    $('[data-toggle="tooltip"]').tooltip();
+    loadRoomFeatures();
 });
 
 $("#buildingId").change(function(){
@@ -42,7 +44,6 @@ function getAndPopulateMeetingRooms(){
 
 function checkRoomCapacity(){
     let addedMemberCount = $('#example2').DataTable().rows().count();
-    console.log(addedMemberCount + " people on the datatable.");
 
     if (addedMemberCount > meetingRoomCapacity){
         $("#capacityWarning").css("display", "block");
@@ -64,7 +65,22 @@ function getRoomCapacity(){
             console.log(meetingRoomCapacity);
         });
     }
+}
 
+function loadRoomFeatures(){
+    let filterRoomFeatureSelect = $("#filterRoomFeatureSelectMenu");
+    filterRoomFeatureSelect.empty();
+
+    $.ajax({
+        url: "/loadAllFeatures"
+    }).done(function(map) {
+        $.each(map, function (roomFeatureId, roomFeatureName) {
+
+            let markup = "<option value='"+ roomFeatureId +"'>"+ roomFeatureName +"</option>";
+            markup = $($.parseHTML(markup));
+            filterRoomFeatureSelect.append(markup);
+        });
+    });
 }
 
 function addParticipant(memberId, fullName, email){
@@ -88,6 +104,30 @@ function  removeParticipant(memberId, fullName, email) {
     fullNameOption.remove();
     memberIdOption.remove();
 }
+
+//Filtre özelliği
+/*$(document).on('click', '#applyRoomFilter', function(){
+    let capacityInput = $("#filterCapacityInput").val();
+    let roomFeatureInput = $("#filterRoomFeatureSelectMenu option:selected");
+    let selectedFeatureIds = [];
+    let meetingRoomSelect = $("#meetingRoomId");
+
+    $.each(roomFeatureInput, function(){
+        selectedFeatureIds.push($(this).val());
+    });
+
+    $.ajax({
+        url: "/filterMeetingRooms",
+        data: {"capacity": capacityInput}
+    }).done(function(map){
+        meetingRoomSelect.empty();
+        $.each(map, function(meetingRoomId, meetingRoomName){
+            meetingRoomSelect.append('<option value=' + meetingRoomId + '>' + meetingRoomName + '</option>');
+        });
+
+    });
+});*/
+
 
 function transferParticipantInfo(memberId, fullName, email){
     let addedMembersDataTable = $('#example2').DataTable();
@@ -204,12 +244,22 @@ function reflectDataOnTheGrid(date, meetingRoomId){
             "date" : date,
             "meetingRoomId" : meetingRoomId
         }
-    }).done(function(map) {
+    }).done(function(meetingDetails) {
         cleanTheGrid();
-        $.each(map, function(startTime, endTime){
+
+        $.each(meetingDetails, function (index, meeting) {
+            markAsTakenInBetween(hourToInt(meeting.beginningTime), hourToInt(meeting.endTime), meeting);
+        });
+
+        $("#scheduleInfo").text("(" + $("#buildingId option[value=" + $("#buildingId").val() + "]").text() + " - " + $("#meetingRoomId option[value=" + $("#meetingRoomId").val() + "]").text() + " toplantı odasının " + $("#datePicker").val() + " tarihindeki programı gösteriliyor.)");
+
+        /*$.each(map, function(startTime, endTime){
             markAsTakenInBetween(hourToInt(startTime), hourToInt(endTime));
         });
         $("#scheduleInfo").text("(" + $("#buildingId option[value=" + $("#buildingId").val() + "]").text() + " - " + $("#meetingRoomId option[value=" + $("#meetingRoomId").val() + "]").text() + " toplantı odasının " + $("#datePicker").val() + " tarihindeki programı gösteriliyor.)");
+        */
+
+
     });
 
 }
@@ -365,7 +415,7 @@ function markAsNotSelectedInBetween(value1, value2) {
     setTimeInputs(null, null);
 }
 
-function markAsTakenInBetween(value1, value2) {
+function markAsTakenInBetween(value1, value2, meetingDetail) {
     if(value2 < value1){
         let temp = value1;
         value1 = value2;
@@ -374,7 +424,7 @@ function markAsTakenInBetween(value1, value2) {
 
     for (let i = value1; i <= value2; i+=5){
         let current = $('.timeHolder[time="'+ intToHour(i) +'"]');
-        markAsTaken(current);
+        markAsTaken(current, meetingDetail);
     }
 }
 
@@ -391,9 +441,58 @@ function markAsSelected(element){
 function markAsNotSelected(element){
     element.css("background", "#E4E4E4");
     element.attr("state", "free");
+
+    element.attr("data-toggle", "");
+    element.attr("data-placement", "");
+    element.attr("title", "");
+    element.css("cursor", "pointer");
+    element.attr("cluster-begin", "");
+    element.attr("cluster-end", "");
 }
 
-function markAsTaken(element){
+function markAsTaken(element, meetingDetail){
     element.css("background", "#F08080");
     element.attr("state", "taken");
+
+    element.attr("data-toggle", "tooltip");
+    element.attr("data-placement", "bottom");
+    element.attr("title", getMeetingDetailString(meetingDetail));
+    element.attr("cluster-begin", meetingDetail.beginningTime);
+    element.attr("cluster-end", meetingDetail.endTime);
+    element.css("cursor", "default");
+}
+
+function getMeetingDetailString(meetingDetail) {
+    let detailString  = "";
+
+    detailString += (meetingDetail.member + " tarafından " + meetingDetail.meetingType + " amacıyla ayırtıldı. Onaylayan Supervisor: " + meetingDetail.supervisorFullName + " Katılımcılar: " +
+        meetingDetail.participants );
+
+    return detailString;
+}
+
+$(document).on('mouseenter', '[state="taken"]', function(){
+    let hovered = $(this);
+    highlightCluster(hourToInt(hovered.attr("cluster-begin")), hourToInt(hovered.attr("cluster-end")));
+});
+
+$(document).on('mouseleave', '[state="taken"]', function(){
+    let hovered = $(this);
+    normalizeCluster(hourToInt(hovered.attr("cluster-begin")), hourToInt(hovered.attr("cluster-end")));
+});
+
+function highlightCluster(beginning, end){
+    fillInterval(beginning, end, "#c980f0");
+}
+
+function normalizeCluster(beginning, end){
+    fillInterval(beginning, end, "#F08080");
+}
+
+function fillInterval(beginning, end, color){
+    let element;
+    for(let i = beginning; i <= end; i+=5){
+        element = $('[time="'+ intToHour(i) +'"]');
+        element.css("background", color);
+    }
 }

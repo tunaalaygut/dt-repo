@@ -8,7 +8,10 @@ import com.alaygut.prototype.repository.RoomFeatureRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional(readOnly = true)
@@ -113,6 +116,21 @@ public class RoomFeatureServiceImpl implements RoomFeatureService {
 
     public Iterable <RoomFeature> getAllByMeetingRoomSet(MeetingRoom meetingRoom) {
         return roomFeatureRepository.findAllByMeetingRoomSet(meetingRoom);
+    }
+
+    @Override
+    public Map<Long, String> getFeatureMap() {
+        Map<Long, String> featureMap = new HashMap<>();
+
+        Iterable<RoomFeature> roomFeatures = this.getAllActiveRoomFeatures();
+        Iterator<RoomFeature> roomFeatureIterator = roomFeatures.iterator();
+
+        while(roomFeatureIterator.hasNext()) {
+            RoomFeature current = roomFeatureIterator.next();
+            featureMap.put(current.getRoomFeatureId(), current.getFeatureName());
+        }
+
+        return featureMap;
     }
 
 }
