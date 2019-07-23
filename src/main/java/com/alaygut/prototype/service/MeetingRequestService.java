@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface MeetingRequestService {
-	void addRequest(AddMeetingRequestForm addMeetingRequestForm);
+	boolean addRequest(AddMeetingRequestForm addMeetingRequestForm);
 	Iterable<MeetingRequest> getAllRequests();
 	Iterable<MeetingRequest> getAllActiveRequests();
 	Iterable<MeetingRequest> getAllPendingRequests();

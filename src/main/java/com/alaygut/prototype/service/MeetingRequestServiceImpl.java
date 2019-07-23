@@ -44,13 +44,24 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void addRequest(AddMeetingRequestForm form) {
+	public boolean addRequest(AddMeetingRequestForm form) {
 		LocalDate date = LocalDate.parse(form.getDate());
 		LocalTime startTime = LocalTime.parse(form.getBeginningTime());
 		LocalTime endTime = LocalTime.parse(form.getEndTime());
+		MeetingRoom meetingRoom = meetingRoomService.getMeetingRoom(form.getMeetingRoomId());
+
+		if (meetingRequestRepository.existsByMeetingRoomAndDateAndStartTimeAndEndTimeAndMeetingRequestStateEquals(
+				meetingRoom,
+				date,
+				startTime,
+				endTime,
+				MeetingState.ONAYLANDI
+		)) {
+			return false;
+		}
 
 		MeetingRequest meetingRequest = new MeetingRequest(
-				meetingRoomService.getMeetingRoom(form.getMeetingRoomId()),
+				meetingRoom,
 				memberService.getMember(form.getCreatorId()),
 				meetingTypeService.getMeetingType(form.getMeetingTypeId()),
 				date,
@@ -62,6 +73,8 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 
 		participantService.generateParticipants(form.getParticipantDetails(), meetingRequest);
 		meetingRequestRepository.save(meetingRequest);
+
+		return true;
 	}
 
 	@Override
