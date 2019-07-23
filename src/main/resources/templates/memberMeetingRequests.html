@@ -47,7 +47,9 @@
                     <td th:text="${mapItem.key.meetingRequestState.name()}"></td>
                     <td>
                         <form th:action="@{/cancelMeetingRequest/__${mapItem.key.meetingRequestId}__}" th:object="${idTransfer}" th:method="post" class="deactivateForm float-left mr-2">
-                            <div th:replace="fragments/fragments :: listDeleteButton"></div>
+                            <button th:fragment="listCancelButton" class="btn btn-sm btn-outline-danger" type="submit">
+                                <i class="fas fa-calendar-times"></i>
+                            </button>
                             <input th:attr="name=recordId" type="hidden" th:value="${mapItem.key.meetingRequestId}">
                         </form>
                     </td>
