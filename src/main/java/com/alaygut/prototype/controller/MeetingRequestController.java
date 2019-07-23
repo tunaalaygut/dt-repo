@@ -53,11 +53,9 @@ public class MeetingRequestController {
 			meetingRequestService.setExternalData(addMeetingRequestForm);
 			return "/addMeetingRequest";
 		}
-		else{
-			if (meetingRequestService.addRequest(addMeetingRequestForm))
-				redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı talebi başarıyla oluşturuldu.");
-			return "redirect:/add/meetingRequest";
-		}
+		if (meetingRequestService.addRequest(addMeetingRequestForm))
+			redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı talebi başarıyla oluşturuldu.");
+		return "redirect:/add/meetingRequest";
 	}
 	
 	@GetMapping("/list/meetingRequest")
@@ -126,4 +124,14 @@ public class MeetingRequestController {
 		return meetingRoomService.loadMeetingRoomProperties(meetingRoomId);
 	}
 
+	@PostMapping("/requestMeetingFromUser")
+	public String requestMeetingFromUser(@Valid @ModelAttribute("addMeetingRequestForm") AddMeetingRequestForm addMeetingRequestForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+		if(bindingResult.hasErrors()) {
+			meetingRequestService.setExternalData(addMeetingRequestForm);
+			return "/addMeetingRequest";
+		}
+		if (meetingRequestService.requestFromUser(addMeetingRequestForm))
+			redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı talebi kullanıcıya gönderildi.");
+		return "redirect:/add/meetingRequest";
+	}
 }

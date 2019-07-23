@@ -9,12 +9,21 @@ package com.alaygut.prototype.dto;
  */
 
 public class MeetingDetail {
+    Long meetingRequestId;
     String supervisorFullName;
     String beginningTime;
     String endTime;
     String member;
     String participants;
     String meetingType;
+
+    public Long getMeetingRequestId() {
+        return meetingRequestId;
+    }
+
+    public void setMeetingRequestId(Long meetingRequestId) {
+        this.meetingRequestId = meetingRequestId;
+    }
 
     public String getSupervisorFullName() {
         return supervisorFullName;

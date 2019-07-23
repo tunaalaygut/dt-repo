@@ -50,7 +50,7 @@ public class MeetingRequest extends BaseClass{
 	public MeetingRequest() {
 	}
 
-	public MeetingRequest(MeetingRoom meetingRoom, Member member, MeetingType meetingType, LocalDate date, LocalTime startTime, LocalTime endTime, String description) {
+	public MeetingRequest(MeetingRoom meetingRoom, Member member, MeetingType meetingType, LocalDate date, LocalTime startTime, LocalTime endTime, String description, MeetingState meetingState) {
 		this.meetingRoom = meetingRoom;
 		this.member = member;
 		this.meetingType = meetingType;
@@ -58,7 +58,7 @@ public class MeetingRequest extends BaseClass{
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.description = description;
-		this.meetingRequestState = MeetingState.ONAY_BEKLIYOR;
+		this.meetingRequestState = meetingState;
 	}
 
 	public Long getMeetingRequestId() {
