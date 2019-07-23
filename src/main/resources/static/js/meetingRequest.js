@@ -20,6 +20,7 @@ $("#meetingRoomId").change(function (){
 $(document).on('change', '.dateLocationInfo', function(){
     let date = $("#datePicker").val();
     let meetingRoomId = $("#meetingRoomId").val();
+    loadMeetingRoomProperties();
     reflectDataOnTheGrid(date, meetingRoomId);
 });
 
@@ -38,6 +39,7 @@ function getAndPopulateMeetingRooms(){
         });
         let date = $("#datePicker").val();
         let meetingRoomId = $("#meetingRoomId").val();
+        loadMeetingRoomProperties();
         reflectDataOnTheGrid(date, meetingRoomId);
     });
 }
@@ -95,7 +97,6 @@ function addParticipant(memberId, fullName, email){
 }
 
 function  removeParticipant(memberId, fullName, email) {
-    let addedMembers = $("#addedMembersMultipleSelect");
     let emailOption = $('option[value="'+ email +'"]');
     let fullNameOption = emailOption.prev();
     let memberIdOption = fullNameOption.prev();
@@ -127,7 +128,6 @@ function  removeParticipant(memberId, fullName, email) {
 
     });
 });*/
-
 
 function transferParticipantInfo(memberId, fullName, email){
     let addedMembersDataTable = $('#example2').DataTable();
@@ -252,16 +252,31 @@ function reflectDataOnTheGrid(date, meetingRoomId){
         });
 
         $("#scheduleInfo").text("(" + $("#buildingId option[value=" + $("#buildingId").val() + "]").text() + " - " + $("#meetingRoomId option[value=" + $("#meetingRoomId").val() + "]").text() + " toplantı odasının " + $("#datePicker").val() + " tarihindeki programı gösteriliyor.)");
+    });
+}
 
-        /*$.each(map, function(startTime, endTime){
-            markAsTakenInBetween(hourToInt(startTime), hourToInt(endTime));
+function loadMeetingRoomProperties(){
+    let meetingRoomId = $("#meetingRoomId").val();
+    let roomPropertiesList = $("#roomPropertiesList");
+    $.ajax({
+        url: "/loadMeetingRoomProperties",
+        data : {
+            "meetingRoomId" : meetingRoomId
+        }
+    }).done(function(properties) {
+        roomPropertiesList.empty();
+        let size = properties.length;
+        console.log(size);
+        $.each(properties, function(index, property){
+            let markup = "";
+            if(index === size-1)
+                markup = "<li>" + property + " kişi kapasitesi</li>";
+            else
+                markup = "<li>" + property + "</li>";
+            roomPropertiesList.append(markup);
         });
-        $("#scheduleInfo").text("(" + $("#buildingId option[value=" + $("#buildingId").val() + "]").text() + " - " + $("#meetingRoomId option[value=" + $("#meetingRoomId").val() + "]").text() + " toplantı odasının " + $("#datePicker").val() + " tarihindeki programı gösteriliyor.)");
-        */
-
 
     });
-
 }
 
 function drawTheGrid(){

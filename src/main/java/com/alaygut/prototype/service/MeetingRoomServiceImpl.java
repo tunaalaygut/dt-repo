@@ -10,6 +10,7 @@ import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.MeetingRoomRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -215,6 +216,21 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 		}
 
 		return filteredRooms;
+	}
+
+	@Override
+	public List<String> loadMeetingRoomProperties(Long meetingRoomId) {
+		List<String> properties = new ArrayList<>();
+		MeetingRoom meetingRoom = this.getMeetingRoom(meetingRoomId);
+		Iterable<RoomFeature> features = roomFeatureService.getAllByMeetingRoomSet(meetingRoom);
+		Iterator<RoomFeature> feature = features.iterator();
+
+		while(feature.hasNext())
+			properties.add(feature.next().getFeatureName());
+
+		properties.add(Integer.toString(meetingRoom.getCapacity()));
+
+		return properties;
 	}
 
 

@@ -52,7 +52,12 @@
 							</select>
 						</div>
 						<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('meetingRoomId')}, field = 'meetingRoomId')"></div>
-
+						<div class="alert alert-info" role="alert">
+							Seçilen toplantı odası aşağıda listelenen özelliklere sahip.
+							<ul id="roomPropertiesList">
+								<!--append properties here-->
+							</ul>
+						</div>
 						<!--MEETING ROOM FILTER SECTION STARTS-->
 
 						<div class="collapse" id="filterMeetingRoomCollapse">

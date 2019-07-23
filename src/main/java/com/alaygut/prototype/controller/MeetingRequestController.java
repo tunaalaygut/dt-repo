@@ -121,4 +121,9 @@ public class MeetingRequestController {
 		return "redirect:/member/meetingRequest";
 	}
 
+	@GetMapping("/loadMeetingRoomProperties")
+	public @ResponseBody List<String> loadMeetingRoomProperties(@RequestParam("meetingRoomId") Long meetingRoomId){
+		return meetingRoomService.loadMeetingRoomProperties(meetingRoomId);
+	}
+
 }
