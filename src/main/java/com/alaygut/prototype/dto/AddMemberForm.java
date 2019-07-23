@@ -20,12 +20,12 @@ public class AddMemberForm extends FormBase  {
 
 
     @Email(message = "{email.not.valid}")
-    @Size(min = 6, max = 30, message = "{email.size.not.valid}")
+    @Size(min = 6, max = 60, message = "{email.size.not.valid}")
     @UniqueEmail(message = "{email.not.unique}")
     private String email;
 
     @Email(message = "{newEmail.not.valid}")
-    @Size(min = 5, max = 30, message = "{newEmail.size.not.valid}")
+    @Size(min = 5, max = 60, message = "{newEmail.size.not.valid}")
     private String newEmail;
 
     @Size(min = 6, max = 20, message = "{newUsername.size.not.valid}")
