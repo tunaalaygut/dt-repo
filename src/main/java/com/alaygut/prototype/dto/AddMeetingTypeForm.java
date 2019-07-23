@@ -1,5 +1,6 @@
 package com.alaygut.prototype.dto;
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class AddMeetingTypeForm extends FormBase  {

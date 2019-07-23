@@ -10,7 +10,9 @@ import java.util.Map;
 
 import com.alaygut.prototype.dto.MeetingDetail;
 import com.alaygut.prototype.dto.MeetingRequestDetailProvider;
+import com.alaygut.prototype.repository.ParticipantRepository;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.MeetingRequest;
 import com.alaygut.prototype.domain.MeetingRoom;
@@ -210,19 +212,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		MeetingRequest request = this.getMeetingRequest(meetingRequestId);
 		request.setUpdater(memberService.getMember(supervisorId));
 		request.setMeetingRequestState(MeetingState.REDDEDILDI);
-
-		SimpleMailMessage mailMessage = new SimpleMailMessage();
-		mailMessage.setTo(request.getCreator().getEmail());
-		mailMessage.setSubject("Toplantı Talebiniz Hakkında Bilgilendirme");
-		mailMessage.setFrom("dijital.toplanti@gmail.com");
-		mailMessage.setText("Toplantı talebiniz reddedilmiştir.\nTalep Edilen Toplantının Bilgileri: " +
-				"\nTarih: " + request.getDate()+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
-				"\nBina: " + request.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +request.getMeetingRoom().getMeetingRoomName()+
-				"\nToplantı Türü: " + request.getMeetingType().getMeetingTypeName() +
-				"\nToplantı Açıklaması: " + request.getDescription());
-
-		// Send the email
-		emailSenderService.sendEmail(mailMessage);
+		sendRejectionEmail(request);
 	}
 
 	@Override
@@ -231,45 +221,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		MeetingRequest request = this.getMeetingRequest(meetingRequestId);
 		request.setUpdater(memberService.getMember(supervisorId));
 		request.setMeetingRequestState(MeetingState.ONAYLANDI);
-
-		SimpleMailMessage mailMessage = new SimpleMailMessage();
-		mailMessage.setTo(request.getCreator().getEmail());
-		mailMessage.setSubject("Toplantı Talebiniz Hakkında Bilgilendirme");
-		mailMessage.setFrom("dijital.toplanti@gmail.com");
-		mailMessage.setText("Toplantı talebiniz kabul edilmiştir.\nToplantı Bilgileriniz: " +
-				"\nTarih: " + request.getDate()+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
-				"\nBina: " + request.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +request.getMeetingRoom().getMeetingRoomName()+
-				"\nToplantı Türü: " + request.getMeetingType().getMeetingTypeName() +
-				"\nToplantı Açıklaması: " + request.getDescription());
-
-		// Sends the email to the user who requested the meeting
-		emailSenderService.sendEmail(mailMessage);
-
-		// Sends the email to all participants of the meeting
-		List<Participant> participants = participantService.getAllParticipantsInMeetingRequest(request);
-		InternetAddress[] Address = new InternetAddress[participants.size()];
-		SimpleMailMessage mailMessage1 = new SimpleMailMessage();
-
-		for( int i = 0; i < participants.size() ; i++ ) {
-			try {
-				Address[i] = new InternetAddress(participants.get(i).getEmail());
-			} catch (AddressException e) {
-				e.printStackTrace();
-			}
-			mailMessage1.setTo(Address[i].toString());
-		}
-
-		mailMessage1.setSubject("Toplantı Hakkında Bilgilendirme");
-		mailMessage1.setFrom("dijital.toplanti@gmail.com");
-		mailMessage1.setText( request.getCreator().getFirstName() + " " + request.getCreator().getLastName() +
-				" sizi aşağıda bilgileri belirtilen toplantıya eklemiştir.\n\nToplantının Bilgileri: " +
-				"\nTarih: " + request.getDate()+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
-				"\nBina: " + request.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +request.getMeetingRoom().getMeetingRoomName() +
-				"\nToplantı Türü: " + request.getMeetingType().getMeetingTypeName() +
-				"\nToplantı Açıklaması: " + request.getDescription());
-
-		// Send the email
-		emailSenderService.sendEmail(mailMessage1);
+		sendConfirmationEmail(request);
 	}
 
 
@@ -278,31 +230,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	public void cancel(Long meetingRequestId) {
 		MeetingRequest meetingRequest = this.getMeetingRequest(meetingRequestId);
 		meetingRequest.setMeetingRequestState(MeetingState.IPTAL_EDILDI);
-
-		List<Participant> participants = participantService.getAllParticipantsInMeetingRequest(meetingRequest);
-		InternetAddress[] Address = new InternetAddress[participants.size()];
-		SimpleMailMessage mailMessage = new SimpleMailMessage();
-
-		for( int i = 0; i < participants.size() ; i++ ) {
-			try {
-				Address[i] = new InternetAddress(participants.get(i).getEmail());
-			} catch (AddressException e) {
-				e.printStackTrace();
-			}
-			mailMessage.setTo(Address[i].toString());
-		}
-
-		mailMessage.setSubject("Toplantı İptali Hakkında Bilgilendirme");
-		mailMessage.setFrom("dijital.toplanti@gmail.com");
-		mailMessage.setText("Aşağıda özellikleri belirtilen toplantı iptal edilmiştir.\nToplantının Bilgileri: " +
-				"\nTarih: " + meetingRequest.getDate()+ "\nSaat: " +meetingRequest.getStartTime() + " - " +meetingRequest.getEndTime()+
-				"\nBina: " + meetingRequest.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +meetingRequest.getMeetingRoom().getMeetingRoomName()+
-				"\nToplantı Türü: " + meetingRequest.getMeetingType().getMeetingTypeName() +
-				"\nToplantı Açıklaması: " +meetingRequest.getDescription());
-
-		// Send the email
-		emailSenderService.sendEmail(mailMessage);
-
+		sendCancelEmail(meetingRequest);
 	}
 
 	private MeetingDetail getMeetingDetailObject(MeetingRequest meetingRequest){
@@ -325,5 +253,84 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 			participants += (p.getFullName() + ", ");
 
 		return participants.replaceAll(", $", "");    //to remove the last comma from the string.
+	}
+	@Async
+	public void sendCancelEmail(MeetingRequest meetingRequest) {
+		List<Participant> participants = participantService.getAllParticipantsInMeetingRequest(meetingRequest);
+		InternetAddress[] Address = new InternetAddress[participants.size()];
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setSubject("Toplantı İptali Hakkında Bilgilendirme");
+		mailMessage.setFrom("dijital.toplanti@gmail.com");
+		mailMessage.setText("Aşağıda özellikleri belirtilen toplantı iptal edilmiştir.\nToplantının Bilgileri: " +
+				"\nTarih: " + meetingRequest.getDate()+ "\nSaat: " +meetingRequest.getStartTime() + " - " +meetingRequest.getEndTime()+
+				"\nBina: " + meetingRequest.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +meetingRequest.getMeetingRoom().getMeetingRoomName()+
+				"\nToplantı Türü: " + meetingRequest.getMeetingType().getMeetingTypeName() +
+				"\nToplantı Açıklaması: " +meetingRequest.getDescription());
+
+		for( int i = 0; i < participants.size() ; i++ ) {
+			try {
+				Address[i] = new InternetAddress(participants.get(i).getEmail());
+			} catch (AddressException e) {
+				e.printStackTrace();
+			}
+			mailMessage.setTo(Address[i].toString());
+			emailSenderService.sendEmail(mailMessage);
+		}
+	}
+	@Async
+	public void sendConfirmationEmail(MeetingRequest request) {
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setTo(request.getCreator().getEmail());
+		mailMessage.setSubject("Toplantı Talebiniz Hakkında Bilgilendirme");
+		mailMessage.setFrom("dijital.toplanti@gmail.com");
+		mailMessage.setText("Toplantı talebiniz kabul edilmiştir.\nToplantı Bilgileriniz: " +
+				"\nTarih: " + request.getDate()+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
+				"\nBina: " + request.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +request.getMeetingRoom().getMeetingRoomName()+
+				"\nToplantı Türü: " + request.getMeetingType().getMeetingTypeName() +
+				"\nToplantı Açıklaması: " + request.getDescription());
+
+		// Sends the email to the user who requested the meeting
+		emailSenderService.sendEmail(mailMessage);
+
+		// Sends the email to all participants of the meeting
+		List<Participant> participants = participantService.getAllParticipantsInMeetingRequest(request);
+		InternetAddress[] Address = new InternetAddress[participants.size()];
+		SimpleMailMessage mailMessage1 = new SimpleMailMessage();
+		mailMessage1.setSubject("Toplantı Hakkında Bilgilendirme");
+		mailMessage1.setFrom("dijital.toplanti@gmail.com");
+		mailMessage1.setText( request.getCreator().getFirstName() + " " + request.getCreator().getLastName() +
+				" sizi aşağıda bilgileri belirtilen toplantıya eklemiştir.\n\nToplantının Bilgileri: " +
+				"\nTarih: " + request.getDate()+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
+				"\nBina: " + request.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +request.getMeetingRoom().getMeetingRoomName() +
+				"\nToplantı Türü: " + request.getMeetingType().getMeetingTypeName() +
+				"\nToplantı Açıklaması: " + request.getDescription());
+
+		for( int i = 0; i < participants.size() ; i++ ) {
+			try {
+				Address[i] = new InternetAddress(participants.get(i).getEmail());
+			} catch (AddressException e) {
+				e.printStackTrace();
+			}
+			if(!request.getCreator().getEmail().equals(Address[i].toString())) {
+				mailMessage1.setTo(Address[i].toString());
+				emailSenderService.sendEmail(mailMessage1);
+			}
+		}
+	}
+
+	@Async
+	public void sendRejectionEmail(MeetingRequest request) {
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setTo(request.getCreator().getEmail());
+		mailMessage.setSubject("Toplantı Talebiniz Hakkında Bilgilendirme");
+		mailMessage.setFrom("dijital.toplanti@gmail.com");
+		mailMessage.setText("Toplantı talebiniz reddedilmiştir.\nTalep Edilen Toplantının Bilgileri: " +
+				"\nTarih: " + request.getDate()+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
+				"\nBina: " + request.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +request.getMeetingRoom().getMeetingRoomName()+
+				"\nToplantı Türü: " + request.getMeetingType().getMeetingTypeName() +
+				"\nToplantı Açıklaması: " + request.getDescription());
+
+		// Send the email
+		emailSenderService.sendEmail(mailMessage);
 	}
 }

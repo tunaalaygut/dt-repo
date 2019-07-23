@@ -33,4 +33,7 @@ public interface MeetingRequestService {
 	void declineMeetingRequest(Long meetingRequestId, Long supervisorId);
 	void acceptMeetingRequest(Long meetingRequestId, Long supervisorId);
 	void cancel(Long meetingRequestId);
+	void sendRejectionEmail(MeetingRequest meetingRequest);
+	void sendConfirmationEmail(MeetingRequest meetingRequest);
+	void sendCancelEmail(MeetingRequest meetingRequest);
 }
