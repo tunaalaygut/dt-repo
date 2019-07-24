@@ -21,4 +21,5 @@ public interface MeetingRoomService {
 	AddMeetingRoomForm getAddMeetingRoomPage();
 	void fixAddForm(AddMeetingRoomForm addMeetingRoomForm);
 	Map<Long, String> filterMeetingRoomsByCapacityAndFeatures(String capacity);
+	List<String> loadMeetingRoomProperties(Long meetingRoomId);
 }

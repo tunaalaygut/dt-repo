@@ -9,12 +9,22 @@ package com.alaygut.prototype.dto;
  */
 
 public class MeetingDetail {
+    Long meetingRequestId;
     String supervisorFullName;
     String beginningTime;
     String endTime;
     String member;
+    String memberId;
     String participants;
     String meetingType;
+
+    public Long getMeetingRequestId() {
+        return meetingRequestId;
+    }
+
+    public void setMeetingRequestId(Long meetingRequestId) {
+        this.meetingRequestId = meetingRequestId;
+    }
 
     public String getSupervisorFullName() {
         return supervisorFullName;
@@ -46,6 +56,14 @@ public class MeetingDetail {
 
     public void setMember(String member) {
         this.member = member;
+    }
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 
     public String getParticipants() {

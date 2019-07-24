@@ -20,6 +20,7 @@ $("#meetingRoomId").change(function (){
 $(document).on('change', '.dateLocationInfo', function(){
     let date = $("#datePicker").val();
     let meetingRoomId = $("#meetingRoomId").val();
+    loadMeetingRoomProperties();
     reflectDataOnTheGrid(date, meetingRoomId);
 });
 
@@ -38,6 +39,7 @@ function getAndPopulateMeetingRooms(){
         });
         let date = $("#datePicker").val();
         let meetingRoomId = $("#meetingRoomId").val();
+        loadMeetingRoomProperties();
         reflectDataOnTheGrid(date, meetingRoomId);
     });
 }
@@ -95,7 +97,6 @@ function addParticipant(memberId, fullName, email){
 }
 
 function  removeParticipant(memberId, fullName, email) {
-    let addedMembers = $("#addedMembersMultipleSelect");
     let emailOption = $('option[value="'+ email +'"]');
     let fullNameOption = emailOption.prev();
     let memberIdOption = fullNameOption.prev();
@@ -127,7 +128,6 @@ function  removeParticipant(memberId, fullName, email) {
 
     });
 });*/
-
 
 function transferParticipantInfo(memberId, fullName, email){
     let addedMembersDataTable = $('#example2').DataTable();
@@ -252,16 +252,31 @@ function reflectDataOnTheGrid(date, meetingRoomId){
         });
 
         $("#scheduleInfo").text("(" + $("#buildingId option[value=" + $("#buildingId").val() + "]").text() + " - " + $("#meetingRoomId option[value=" + $("#meetingRoomId").val() + "]").text() + " toplantı odasının " + $("#datePicker").val() + " tarihindeki programı gösteriliyor.)");
+    });
+}
 
-        /*$.each(map, function(startTime, endTime){
-            markAsTakenInBetween(hourToInt(startTime), hourToInt(endTime));
+function loadMeetingRoomProperties(){
+    let meetingRoomId = $("#meetingRoomId").val();
+    let roomPropertiesList = $("#roomPropertiesList");
+    $.ajax({
+        url: "/loadMeetingRoomProperties",
+        data : {
+            "meetingRoomId" : meetingRoomId
+        }
+    }).done(function(properties) {
+        roomPropertiesList.empty();
+        let size = properties.length;
+        console.log(size);
+        $.each(properties, function(index, property){
+            let markup = "";
+            if(index === size-1)
+                markup = "<li>" + property + " kişi kapasitesi</li>";
+            else
+                markup = "<li>" + property + "</li>";
+            roomPropertiesList.append(markup);
         });
-        $("#scheduleInfo").text("(" + $("#buildingId option[value=" + $("#buildingId").val() + "]").text() + " - " + $("#meetingRoomId option[value=" + $("#meetingRoomId").val() + "]").text() + " toplantı odasının " + $("#datePicker").val() + " tarihindeki programı gösteriliyor.)");
-        */
-
 
     });
-
 }
 
 function drawTheGrid(){
@@ -301,7 +316,32 @@ let clicked1 = undefined, clicked2 = undefined;
 
 $(document).on('click', '.timeHolder', function () {
     if($(this).attr("state") === "taken"){	//taken cell
-        console.log("cant touch this bro.");
+        let clusterBegin = $(this).attr("cluster-begin");
+        let clusterEnd = $(this).attr("cluster-end");
+        let owner = $(this).attr("ownerid");
+        let requestForm = $("#requestMeeting");
+
+        clicked1 = undefined;
+        clicked2 = undefined;
+
+        markAsNotSelected($("[state='selected']"));
+
+        swal({
+            title: clusterBegin + " - " + clusterEnd + " saatlerini talep etmek istediğinize emin misiniz?",
+            text: "İsteğiniz direkt olarak şu anki toplantı sahibine gönderilecektir.",
+            icon: "warning",
+            buttons: true,
+            buttons: ["Vazgeç", "Evet"],
+            dangerMode: true,
+        }).then((yes) => {
+            if (yes) {
+                setTimeInputs(clusterBegin, clusterEnd);
+                //set recordId from meetingDetails
+                $("#requestMadeTo").val(owner);
+                requestForm.attr("action", "/requestMeetingFromUser");
+                requestForm.submit();
+            }
+        });
     }
     else{
         if(clicked1 === undefined){	//first click
@@ -448,6 +488,7 @@ function markAsNotSelected(element){
     element.css("cursor", "pointer");
     element.attr("cluster-begin", "");
     element.attr("cluster-end", "");
+    element.attr("ownerId", "");
 }
 
 function markAsTaken(element, meetingDetail){
@@ -459,14 +500,13 @@ function markAsTaken(element, meetingDetail){
     element.attr("title", getMeetingDetailString(meetingDetail));
     element.attr("cluster-begin", meetingDetail.beginningTime);
     element.attr("cluster-end", meetingDetail.endTime);
-    element.css("cursor", "default");
+    element.attr("ownerId", meetingDetail.memberId);
 }
 
 function getMeetingDetailString(meetingDetail) {
     let detailString  = "";
 
-    detailString += (meetingDetail.member + " tarafından " + meetingDetail.meetingType + " amacıyla ayırtıldı. Onaylayan Supervisor: " + meetingDetail.supervisorFullName + " Katılımcılar: " +
-        meetingDetail.participants );
+    detailString += (meetingDetail.member + " tarafından " + meetingDetail.meetingType + " amacıyla ayırtıldı. Bu toplantıyı talep etmek için tıklayın.");
 
     return detailString;
 }

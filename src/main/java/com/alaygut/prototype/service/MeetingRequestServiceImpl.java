@@ -7,10 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import com.alaygut.prototype.dto.MeetingDetail;
 import com.alaygut.prototype.dto.MeetingRequestDetailProvider;
-import com.alaygut.prototype.repository.ParticipantRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Async;
@@ -25,8 +23,6 @@ import com.alaygut.prototype.dto.AddMeetingRequestForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.MeetingRequestRepository;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.mail.Message;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
@@ -57,25 +53,39 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	}
 
 	@Override
-	@Transactional(readOnly = false)
-	public void addRequest(AddMeetingRequestForm form) {
+	@Transactional
+	public boolean addRequest(AddMeetingRequestForm form) {
 		LocalDate date = LocalDate.parse(form.getDate());
 		LocalTime startTime = LocalTime.parse(form.getBeginningTime());
 		LocalTime endTime = LocalTime.parse(form.getEndTime());
+		MeetingRoom meetingRoom = meetingRoomService.getMeetingRoom(form.getMeetingRoomId());
+
+		if (meetingRequestRepository.existsByMeetingRoomAndDateAndStartTimeAndEndTimeAndMeetingRequestStateEquals(
+				meetingRoom,
+				date,
+				startTime,
+				endTime,
+				MeetingState.ONAYLANDI
+		)) {
+			return false;
+		}
 
 		MeetingRequest meetingRequest = new MeetingRequest(
-				meetingRoomService.getMeetingRoom(form.getMeetingRoomId()),
+				meetingRoom,
 				memberService.getMember(form.getCreatorId()),
 				meetingTypeService.getMeetingType(form.getMeetingTypeId()),
 				date,
 				startTime,
 				endTime,
-				form.getDescription()
+				form.getDescription(),
+				MeetingState.ONAY_BEKLIYOR
 		);
 		meetingRequest.setCreator(memberService.getMember(form.getCreatorId()));
 
 		participantService.generateParticipants(form.getParticipantDetails(), meetingRequest);
 		meetingRequestRepository.save(meetingRequest);
+
+		return true;
 	}
 
 	@Override
@@ -97,6 +107,12 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	public Iterable<MeetingRequest> getAllMemberMeetingRequests(Member member) {
 		return meetingRequestRepository.findAllByMember(member);
 	}
+
+	@Override
+	public Iterable<MeetingRequest> getAllMemberToMemberMeetingRequests(Member member) {
+		return meetingRequestRepository.findAllByRequestMadeToAndMeetingRequestState(member, MeetingState.KULLANICI_ONAYI_BEKLIYOR);
+	}
+
 
 	@Override
 	public Iterable<MeetingRequest> getAllByDateAndMeetingRoomAndMeetingRequestState(LocalDate date, MeetingRoom meetingRoom, MeetingState state) {
@@ -193,6 +209,33 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		return meetingRequestDetailProvider;
 	}
 
+	@Override
+	public MeetingRequestDetailProvider getMemberToMemberMeetingRequestDetailsProvider(Member member){
+		MeetingRequestDetailProvider meetingRequestDetailProvider = new MeetingRequestDetailProvider();
+		Iterable<MeetingRequest> requests = this.getAllMemberToMemberMeetingRequests(member);
+
+		meetingRequestDetailProvider.setMeetingParticipants(this.mapParticipants(requests));
+		return meetingRequestDetailProvider;
+	}
+
+
+	@Override
+	@Transactional
+	public void acceptMemberMeetingRequest(Long meetingRequestId, Long memberId) {
+		MeetingRequest meetingRequest = this.getMeetingRequest(meetingRequestId);
+		meetingRequest.setMeetingRequestState(MeetingState.ONAYLANDI);
+
+		MeetingRequest original = meetingRequestRepository.getByDateAndStartTimeAndEndTimeAndMember(
+				meetingRequest.getDate(),
+				meetingRequest.getStartTime(),
+				meetingRequest.getEndTime(),
+				meetingRequest.getMember()
+		);
+
+		original.setMeetingRequestState(MeetingState.TRANSFER_EDILDI);
+
+	}
+
 	private Map<MeetingRequest, List<Participant>> mapParticipants(Iterable<MeetingRequest> requests){
 		Iterator<MeetingRequest> requestIterator = requests.iterator();
 		Map<MeetingRequest, List<Participant>> meetingParticipants = new HashMap<>();
@@ -220,8 +263,8 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	}
 
 	@Override
-	@Transactional(readOnly = false)
-	public void acceptMeetingRequest(Long meetingRequestId, Long supervisorId){
+	@Transactional
+	public void acceptMeetingRequest(Long meetingRequestId, Long supervisorId) {
 		MeetingRequest request = this.getMeetingRequest(meetingRequestId);
 		request.setUpdater(memberService.getMember(supervisorId));
 		request.setMeetingRequestState(MeetingState.ONAYLANDI);
@@ -237,6 +280,40 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		sendCancelEmail(meetingRequest);
 	}
 
+	@Override
+	@Transactional
+	public boolean requestFromUser(AddMeetingRequestForm form){
+		MeetingRequest meetingRequest = new MeetingRequest(
+				meetingRoomService.getMeetingRoom(form.getMeetingRoomId()),
+				memberService.getMember(form.getCreatorId()),
+				meetingTypeService.getMeetingType(form.getMeetingTypeId()),
+				LocalDate.parse(form.getDate()),
+				LocalTime.parse(form.getBeginningTime()),
+				LocalTime.parse(form.getEndTime()),
+				form.getDescription(),
+				MeetingState.KULLANICI_ONAYI_BEKLIYOR
+		);
+		meetingRequest.setCreator(memberService.getMember(form.getCreatorId()));
+		meetingRequest.setRequestMadeTo(memberService.getMember(form.getRequestMadeTo()));
+		meetingRequestRepository.save(meetingRequest);
+
+		return true;
+	}
+
+	@Override
+	public List<MeetingRequest> getMemberRequests(Member member) {
+		List<MeetingRequest> requests = new ArrayList<>();
+		Iterable<MeetingRequest> meetingRequests = meetingRequestRepository.findAllByMemberAndMeetingRequestState(member, MeetingState.KULLANICI_ONAYI_BEKLIYOR);
+		Iterator<MeetingRequest> meetingRequestIterator = meetingRequests.iterator();
+
+		while(meetingRequestIterator.hasNext()){
+			MeetingRequest current = meetingRequestIterator.next();
+			requests.add(current);
+		}
+
+		return requests;
+	}
+
 	private MeetingDetail getMeetingDetailObject(MeetingRequest meetingRequest){
 		MeetingDetail meetingDetail = new MeetingDetail();
 
@@ -244,6 +321,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		meetingDetail.setBeginningTime(String.valueOf(meetingRequest.getStartTime()));
 		meetingDetail.setEndTime(String.valueOf(meetingRequest.getEndTime()));
 		meetingDetail.setMember(meetingRequest.getMember().getFirstName() + " " + meetingRequest.getMember().getLastName());
+		meetingDetail.setMemberId(String.valueOf(meetingRequest.getMember().getMemberId()));
 		meetingDetail.setParticipants(getParticipantString(meetingRequest));
 		meetingDetail.setMeetingType(String.valueOf(meetingRequest.getMeetingType().getMeetingTypeName()));
 

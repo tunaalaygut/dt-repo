@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface MeetingRequestService {
-	void addRequest(AddMeetingRequestForm addMeetingRequestForm);
+	boolean addRequest(AddMeetingRequestForm addMeetingRequestForm);
 	Iterable<MeetingRequest> getAllRequests();
 	Iterable<MeetingRequest> getAllActiveRequests();
 	Iterable<MeetingRequest> getAllPendingRequests();
@@ -33,6 +33,11 @@ public interface MeetingRequestService {
 	void declineMeetingRequest(Long meetingRequestId, Long supervisorId);
 	void acceptMeetingRequest(Long meetingRequestId, Long supervisorId);
 	void cancel(Long meetingRequestId);
+	boolean requestFromUser(AddMeetingRequestForm form);
+	List<MeetingRequest> getMemberRequests(Member member);
+	void acceptMemberMeetingRequest(Long meetingRequestId, Long memberId);
+	MeetingRequestDetailProvider getMemberToMemberMeetingRequestDetailsProvider(Member member);
+	Iterable<MeetingRequest> getAllMemberToMemberMeetingRequests(Member member);
 	void sendRejectionEmail(MeetingRequest meetingRequest);
 	void sendConfirmationEmail(MeetingRequest meetingRequest);
 	void sendCancelEmail(MeetingRequest meetingRequest);
