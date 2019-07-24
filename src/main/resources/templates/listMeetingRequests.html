@@ -33,7 +33,7 @@
                             <td th:text="${mapItem.key.endTime}"></td>
                             <td th:text="${mapItem.key.member.firstName + ' ' + mapItem.key.member.lastName}"></td>
                             <td th:text="${mapItem.key.meetingType.meetingTypeName}"></td>
-                            <td th:text="${mapItem.key.description}"></td>
+                            <td  href="#" data-toggle="tooltip" data-placement="bottom" th:title="${mapItem.key.description}"class="text-info text-center"><i class="fas fa-info"></i></td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-info dropdown-toggle btn-block" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,7 +58,6 @@ public class MemberServiceImpl implements MemberService {
         password = generatePassword( len, ALPHA_CAPS + ALPHA + SPECIAL_CHARS + NUMERIC);
         System.out.println(password);
         Role role = roleService.getRole(form.getRoleId());
-        System.out.println(form.getPassword());
         Login login = new Login(
                 form.getUsername(),
                 passwordEncoder.encode(password)
@@ -74,16 +74,9 @@ public class MemberServiceImpl implements MemberService {
         if (form.getCreatorId() != null)
             member.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
         memberRepository.save(member);
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(member.getEmail());
-        mailMessage.setSubject("Dijital Toplantı Kayıt Bilgisi");
-        mailMessage.setFrom("dijital.toplanti@gmail.com");
-        mailMessage.setText("Dijital Toplantı ailesine hoşgeldiniz " +member.getFirstName() +" " +member.getLastName() +
-                        ".\nKullanıcı bilgileriniz: \nKullanıcı adınız: " +member.getUsername()+ " \nŞifreniz: " + password +
-                "\\n\\nAşağıdaki linkten Dijital Toplantı'ya ulaşabilirsiniz:\\n" +PROGRAM_URL);
+        form.setPassword(password);
+        sendSignUpEmail(member,form);
 
-        // Send the email
-        emailSenderService.sendEmail(mailMessage);
     }
 
     @Autowired
@@ -240,6 +233,8 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByLoginUsername(username);
     }
 
+
+
     @Override
     public AddMemberForm getEditForm(Long memberId) {
         Member member = getMember(memberId);
@@ -300,4 +295,17 @@ public class MemberServiceImpl implements MemberService {
         return result;
     }
 
+    @Override
+    public void sendSignUpEmail(Member member, AddMemberForm addMemberForm) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(member.getEmail());
+        mailMessage.setSubject("Dijital Toplantı Kayıt Bilgisi");
+        mailMessage.setFrom("dijital.toplanti@gmail.com");
+        mailMessage.setText("Dijital Toplantı ailesine hoşgeldiniz " +member.getFirstName() +" " +member.getLastName() +
+                ".\nKullanıcı bilgileriniz: \nKullanıcı adınız: " +member.getUsername()+ " \nŞifreniz: " + addMemberForm.getPassword()+
+                "\n\nAşağıdaki linkten Dijital Toplantı'ya ulaşabilirsiniz:\n" +PROGRAM_URL);
+
+        // Send the email
+        emailSenderService.sendEmail(mailMessage);
+    }
 }
