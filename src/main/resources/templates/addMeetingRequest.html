@@ -24,7 +24,38 @@
 			<div th:replace="fragments/fragments :: successMessage"></div>
 			<!--MEETING_REQUEST_FORM BEGINS-->
             <form th:action="@{/add/meetingRequest}" th:object="${addMeetingRequestForm}" th:method="post" autocomplete="off" id="requestMeeting">
-
+            
+      		<!--MEETING ROOM FILTER SECTION STARTS-->
+            <div class="row mb-3">
+	            <div class="col-sm-8 ml-auto">
+					<div class="collapse" id="filterMeetingRoomCollapse">
+						<div class="form-group">
+							<label for="filterCapacityInput">Kapasite:</label>
+							<input type="number" class="form-control" id="filterCapacityInput" placeholder="Kapasite">
+						</div>
+						<div class="form-group">
+							<label for="filterRoomFeatureSelectMenu">Özellikler: <span class="small text-muted">(CTRL ile toplu seçim yapılabilir.)</span></label>
+							<select multiple class="custom-select" id="filterRoomFeatureSelectMenu">
+								<option></option>
+							</select>
+						</div>
+						<button type="button" class="btn btn-block btn-info" id="applyRoomFilter">Filtre Uygula <span class="fas fa-filter"></span></button>
+					</div>	
+						<button
+							type="button"
+							class="btn btn-outline-info btn-block mt-2"
+							id="meetingRoomFilterDivButton"
+							data-toggle="collapse"
+							data-target="#filterMeetingRoomCollapse"
+							aria-expanded="false"
+							aria-controls="collapseExample">
+						Toplantı Odası Filtrele
+						<span id="filterArrowIcon" class="fas fa-sort-down"></span>
+						</button>
+				</div>										
+            </div>
+				<!--MEETING ROOM FILTER SECTION ENDS-->
+				
 				<!--DATE & LOCATION INFO STARTS-->
 				<div class="row">
 					<div class="col-sm-4">
@@ -63,37 +94,9 @@
 								<!--append properties here-->
 							</ul>
 						</div>
-						<!--MEETING ROOM FILTER SECTION STARTS-->
 
-						<div class="collapse" id="filterMeetingRoomCollapse">
-							<div class="form-group">
-								<label for="filterCapacityInput">Kapasite:</label>
-								<input type="number" class="form-control" id="filterCapacityInput" placeholder="Kapasite">
-							</div>
-							<div class="form-group">
-								<label for="filterRoomFeatureSelectMenu">Özellikler: <span class="small text-muted">(CTRL ile toplu seçim yapılabilir.)</span></label>
-								<select multiple class="custom-select" id="filterRoomFeatureSelectMenu">
-									<option></option>
-								</select>
-							</div>
-							<button type="button" class="btn btn-block btn-info" id="applyRoomFilter">Filtre Uygula <span class="fas fa-filter"></span></button>
-						</div>
-
-						<button
-								type="button"
-								class="btn btn-outline-info btn-block mt-2"
-								id="meetingRoomFilterDivButton"
-								data-toggle="collapse"
-								data-target="#filterMeetingRoomCollapse"
-								aria-expanded="false"
-								aria-controls="collapseExample">
-							Toplantı Odası Filtrele
-							<span id="filterArrowIcon" class="fas fa-sort-down"></span>
-						</button>
-						<!--MEETING ROOM FILTER SECTION ENDS-->
 					</div>
 				</div>
-
 				<div class="form-group mt-3">
 					<label class="d-block">Toplantı Saati:</label>
 					<small class="text-muted font-italic" id="scheduleInfo"></small>

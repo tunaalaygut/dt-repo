@@ -35,8 +35,7 @@
                     </li>                    
                 </ul>
         </div>
-        <form th:action="@{/profile/edit}" th:object="${idTransfer}" th:method="get" >
-            <input th:attr="name=recordId" type="hidden" th:value="${#authentication.principal.memberId}">
+        <form th:action="@{/profile/edit}" th:method="get" >
             <button class="btn btn-info mt-3 float-right">Kullanıcı Bilgilerini Güncelle</button>
         </form>
     </div>
