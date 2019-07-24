@@ -9,12 +9,14 @@ import javax.validation.constraints.Size;
 public class AddBuildingForm extends FormBase {
     @Size(min = 3, max = 50, message = "{buildingName.size.not.valid}")
     @UniqueBuildingName(message = "{buildingName.not.unique}")
+    @Pattern(regexp ="[a-zA-Z\\d]*", message = "{buildingName.not.valid}")
     private String buildingName;
 
     @Size(min=3, message = "{buildingAddr.size.not.valid}")
     private String buildingAddr;
 
     @Size(min = 3, max = 50, message = "{newBuildingName.size.not.valid}")
+    @Pattern(regexp ="[a-zA-Z\\d]*", message = "{newBuildingName.not.valid}")
     private String newBuildingName;
 
     private String originalName;

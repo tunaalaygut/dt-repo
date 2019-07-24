@@ -9,6 +9,7 @@ import java.util.List;
 public class AddMeetingRoomForm extends FormBase  {
 
 	@Size(min = 2, max = 30, message = "{meetingRoomName.size.not.valid}")
+	@Pattern(regexp ="[a-zA-Z\\d]*", message = "{meetingRoomName.not.valid}")
 	private String meetingRoomName;
 
 	@NotNull(message = "{buildingId.not.null}")
