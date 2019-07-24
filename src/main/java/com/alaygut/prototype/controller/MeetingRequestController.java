@@ -153,4 +153,9 @@ public class MeetingRequestController {
 		meetingRequestService.declineMemberRequest(meetingRequestId, memberService.getMember(principal.getName()));
 		return "redirect:/member/requests";
 	}
+
+	@GetMapping("/getOtherMemberRequests")
+	public @ResponseBody int otherMemberRequests(Principal principal){
+		return meetingRequestService.otherMemberRequestNumber(memberService.getMember(principal.getName()));
+	}
 }

@@ -383,6 +383,11 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		return true;
 	}
 
+	@Override
+	public int otherMemberRequestNumber(Member member) {
+		return meetingRequestRepository.countAllByMeetingRequestStateAndRequestMadeTo(MeetingState.KULLANICI_ONAYI_BEKLIYOR, member);
+	}
+
 	@Async
 	public void sendConfirmationEmail(MeetingRequest request) {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();

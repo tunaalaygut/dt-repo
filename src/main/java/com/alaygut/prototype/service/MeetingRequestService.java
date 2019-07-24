@@ -42,4 +42,5 @@ public interface MeetingRequestService {
 	void sendCancelEmail(MeetingRequest meetingRequest);
 	boolean acceptMemberRequest(Long requestId);
 	boolean declineMemberRequest(Long requestId, Member member);
+	int otherMemberRequestNumber(Member member);
 }
