@@ -9,6 +9,7 @@ import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import java.security.SecureRandom;
+
 @Service
 @Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService {
@@ -24,12 +27,18 @@ public class MemberServiceImpl implements MemberService {
     private MemberRepository memberRepository;
     private RoleService roleService;
     private LoginService loginService;
+    private EmailSenderService emailSenderService;
+    private static final String ALPHA_CAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String ALPHA = "abcdefghijklmnopqrstuvwxyz";
+    private static final String NUMERIC = "0123456789";
+    private static final String SPECIAL_CHARS = "!@#$%^&*_=+-/";
 
     private PasswordEncoder passwordEncoder;
 
-    public MemberServiceImpl(MemberRepository memberRepository, LoginService loginService) {
+    public MemberServiceImpl(MemberRepository memberRepository, LoginService loginService, EmailSenderService emailSenderService) {
         this.memberRepository = memberRepository;
         this.loginService = loginService;
+        this.emailSenderService = emailSenderService;
     }
 
     /**
@@ -40,11 +49,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional(readOnly = false)
     public void addMember(AddMemberForm form) {
+        String password;
+        int len = 10;
+        password = generatePassword( len, ALPHA_CAPS + ALPHA + SPECIAL_CHARS + NUMERIC);
+        System.out.println(password);
         Role role = roleService.getRole(form.getRoleId());
         System.out.println(form.getPassword());
         Login login = new Login(
                 form.getUsername(),
-                passwordEncoder.encode(form.getPassword())
+                passwordEncoder.encode(password)
         );
         Member member = new Member(
                 form.getFirstName(),
@@ -58,6 +71,15 @@ public class MemberServiceImpl implements MemberService {
         if (form.getCreatorId() != null)
             member.setCreator(memberRepository.findById(form.getCreatorId()).orElse(null));
         memberRepository.save(member);
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(member.getEmail());
+        mailMessage.setSubject("Dijital Toplantı Kayıt Bilgisi");
+        mailMessage.setFrom("dijital.toplanti@gmail.com");
+        mailMessage.setText("Dijital Toplantı ailesine hoşgeldiniz " +member.getFirstName() +" " +member.getLastName() +
+                        ".\nKullanıcı bilgileriniz: \nKullanıcı adınız: " +member.getUsername()+ " \nŞifreniz: " + password );
+
+        // Send the email
+        emailSenderService.sendEmail(mailMessage);
     }
 
     @Autowired
@@ -263,4 +285,15 @@ public class MemberServiceImpl implements MemberService {
     public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
     }
+
+    public static String generatePassword(int len, String dic) {
+        SecureRandom random = new SecureRandom();
+        String result = "";
+        for (int i = 0; i < len; i++) {
+            int index = random.nextInt(dic.length());
+            result += dic.charAt(index);
+        }
+        return result;
+    }
+
 }

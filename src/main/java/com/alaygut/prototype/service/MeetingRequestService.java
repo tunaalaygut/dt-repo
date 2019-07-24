@@ -38,4 +38,7 @@ public interface MeetingRequestService {
 	void acceptMemberMeetingRequest(Long meetingRequestId, Long memberId);
 	MeetingRequestDetailProvider getMemberToMemberMeetingRequestDetailsProvider(Member member);
 	Iterable<MeetingRequest> getAllMemberToMemberMeetingRequests(Member member);
+	void sendRejectionEmail(MeetingRequest meetingRequest);
+	void sendConfirmationEmail(MeetingRequest meetingRequest);
+	void sendCancelEmail(MeetingRequest meetingRequest);
 }
