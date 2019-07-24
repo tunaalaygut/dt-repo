@@ -8,6 +8,7 @@ import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +33,8 @@ public class MemberServiceImpl implements MemberService {
     private static final String ALPHA = "abcdefghijklmnopqrstuvwxyz";
     private static final String NUMERIC = "0123456789";
     private static final String SPECIAL_CHARS = "!@#$%^&*_=+-/";
+    @Value("{program.url}")
+    private String PROGRAM_URL;
 
     private PasswordEncoder passwordEncoder;
 
@@ -76,7 +79,8 @@ public class MemberServiceImpl implements MemberService {
         mailMessage.setSubject("Dijital Toplantı Kayıt Bilgisi");
         mailMessage.setFrom("dijital.toplanti@gmail.com");
         mailMessage.setText("Dijital Toplantı ailesine hoşgeldiniz " +member.getFirstName() +" " +member.getLastName() +
-                        ".\nKullanıcı bilgileriniz: \nKullanıcı adınız: " +member.getUsername()+ " \nŞifreniz: " + password );
+                        ".\nKullanıcı bilgileriniz: \nKullanıcı adınız: " +member.getUsername()+ " \nŞifreniz: " + password +
+                "\\n\\nAşağıdaki linkten Dijital Toplantı'ya ulaşabilirsiniz:\\n" +PROGRAM_URL);
 
         // Send the email
         emailSenderService.sendEmail(mailMessage);

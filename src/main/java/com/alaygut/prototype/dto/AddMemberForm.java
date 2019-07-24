@@ -48,7 +48,7 @@ public class AddMemberForm extends FormBase  {
     @Pattern(regexp ="[a-zA-Z\\d]*", message = "{username.not.valid}")
     private String username;
 
-    @Size(min =6 , max = 20, message = "{password.size.not.valid}")
+    @Size(min =6 , max = 25, message = "{password.size.not.valid}")
     private String password;
 
     private Iterable<Role> allRoles;

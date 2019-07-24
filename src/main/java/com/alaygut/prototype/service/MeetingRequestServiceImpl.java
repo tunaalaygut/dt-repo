@@ -11,6 +11,7 @@ import java.util.Map;
 import com.alaygut.prototype.dto.MeetingDetail;
 import com.alaygut.prototype.dto.MeetingRequestDetailProvider;
 import com.alaygut.prototype.repository.ParticipantRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,9 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	private MeetingTypeService meetingTypeService;
 	private ParticipantService participantService;
 	private EmailSenderService emailSenderService;
+
+	@Value("{program.url}")
+	private String PROGRAM_URL;
 
 	public MeetingRequestServiceImpl(MeetingRequestRepository meetingRequestRepository, MemberService memberService, BuildingService buildingService, MeetingRoomService meetingRoomService, MeetingTypeService meetingTypeService, ParticipantService participantService, EmailSenderService emailSenderService) {
 		this.meetingRequestRepository = meetingRequestRepository;
@@ -287,7 +291,8 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 				"\nTarih: " + request.getDate()+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
 				"\nBina: " + request.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +request.getMeetingRoom().getMeetingRoomName()+
 				"\nToplantı Türü: " + request.getMeetingType().getMeetingTypeName() +
-				"\nToplantı Açıklaması: " + request.getDescription());
+				"\nToplantı Açıklaması: " + request.getDescription() +
+				"\n\nAşağıdaki linkten Dijital Toplantı'ya ulaşabilirsiniz:\n" +PROGRAM_URL);
 
 		// Sends the email to the user who requested the meeting
 		emailSenderService.sendEmail(mailMessage);
@@ -303,7 +308,8 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 				"\nTarih: " + request.getDate()+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
 				"\nBina: " + request.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +request.getMeetingRoom().getMeetingRoomName() +
 				"\nToplantı Türü: " + request.getMeetingType().getMeetingTypeName() +
-				"\nToplantı Açıklaması: " + request.getDescription());
+				"\nToplantı Açıklaması: " + request.getDescription()+
+				"\n\nAşağıdaki linkten Dijital Toplantı'ya ulaşabilirsiniz:\n " +PROGRAM_URL );
 
 		for( int i = 0; i < participants.size() ; i++ ) {
 			try {

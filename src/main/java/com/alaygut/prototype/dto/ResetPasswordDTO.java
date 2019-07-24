@@ -6,7 +6,7 @@ public class ResetPasswordDTO {
 
     private String email;
     
-    @Size(min=3, max=10, message = "{resetPassword.size.not.valid}" )
+    @Size(min=6, max=25, message = "{resetPassword.size.not.valid}" )
     private String password;
 
     public String getEmail() {
