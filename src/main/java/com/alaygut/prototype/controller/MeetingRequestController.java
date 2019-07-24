@@ -132,11 +132,25 @@ public class MeetingRequestController {
 		}
 		if (meetingRequestService.requestFromUser(addMeetingRequestForm))
 			redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı talebi kullanıcıya gönderildi.");
+		else
+			redirectAttributes.addFlashAttribute("infoMessage", "Bu toplantı için talebiniz zaten mevcut.");
 		return "redirect:/add/meetingRequest";
 	}
 
 	@GetMapping("/member/requests")
 	public ModelAndView getMemberToMemberRequests(Principal principal){
 		return new ModelAndView("memberRequests", "meetingRequestDetailProvider", meetingRequestService.getMemberToMemberMeetingRequestDetailsProvider(memberService.getMember(principal.getName())));
+	}
+
+	@PostMapping("/acceptMemberRequest/{meetingRequestId}")
+	public String acceptMemberRequest(@PathVariable Long meetingRequestId){
+		meetingRequestService.acceptMemberRequest(meetingRequestId);
+		return "redirect:/member/requests";
+	}
+
+	@PostMapping("/declineMemberRequest/{meetingRequestId}")
+	public String declineMemberRequest(@PathVariable Long meetingRequestId, Principal principal){
+		meetingRequestService.declineMemberRequest(meetingRequestId, memberService.getMember(principal.getName()));
+		return "redirect:/member/requests";
 	}
 }

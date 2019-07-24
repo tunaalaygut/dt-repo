@@ -20,7 +20,7 @@
 			</div>
 			<!--CURRENT USER INFO ENDS HERE-->
 
-
+			<div th:replace="fragments/fragments :: infoMessage"></div>
 			<div th:replace="fragments/fragments :: successMessage"></div>
 			<!--MEETING_REQUEST_FORM BEGINS-->
             <form th:action="@{/add/meetingRequest}" th:object="${addMeetingRequestForm}" th:method="post" autocomplete="off" id="requestMeeting">
