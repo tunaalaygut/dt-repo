@@ -14,6 +14,7 @@ public class MeetingDetail {
     String beginningTime;
     String endTime;
     String member;
+    String memberId;
     String participants;
     String meetingType;
 
@@ -55,6 +56,14 @@ public class MeetingDetail {
 
     public void setMember(String member) {
         this.member = member;
+    }
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 
     public String getParticipants() {

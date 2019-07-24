@@ -47,6 +47,10 @@ public class MeetingRequest extends BaseClass{
 	@Column(name = "meetingRequestState")
 	private MeetingState meetingRequestState;
 
+	@ManyToOne
+	@JoinColumn(name = "requestMadeTo")
+	private Member requestMadeTo;
+
 	public MeetingRequest() {
 	}
 
@@ -131,5 +135,13 @@ public class MeetingRequest extends BaseClass{
 
 	public void setDate(LocalDate date) {
 		this.date = date;
+	}
+
+	public Member getRequestMadeTo() {
+		return requestMadeTo;
+	}
+
+	public void setRequestMadeTo(Member requestMadeTo) {
+		this.requestMadeTo = requestMadeTo;
 	}
 }

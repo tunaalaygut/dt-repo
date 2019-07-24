@@ -51,6 +51,7 @@ public class AddMeetingRequestForm extends FormBase  {
 
 	private ArrayList<String> times;
 
+	private Long requestMadeTo;
 
 	public Long getMeetingRoomId() {
 		return meetingRoomId;
@@ -170,5 +171,13 @@ public class AddMeetingRequestForm extends FormBase  {
 
 	public void setParticipantDetails(List<String> participantDetails) {
 		this.participantDetails = participantDetails;
+	}
+
+	public Long getRequestMadeTo() {
+		return requestMadeTo;
+	}
+
+	public void setRequestMadeTo(Long requestMadeTo) {
+		this.requestMadeTo = requestMadeTo;
 	}
 }

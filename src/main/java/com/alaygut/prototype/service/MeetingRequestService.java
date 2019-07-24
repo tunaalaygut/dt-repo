@@ -36,4 +36,6 @@ public interface MeetingRequestService {
 	boolean requestFromUser(AddMeetingRequestForm form);
 	List<MeetingRequest> getMemberRequests(Member member);
 	void acceptMemberMeetingRequest(Long meetingRequestId, Long memberId);
+	MeetingRequestDetailProvider getMemberToMemberMeetingRequestDetailsProvider(Member member);
+	Iterable<MeetingRequest> getAllMemberToMemberMeetingRequests(Member member);
 }

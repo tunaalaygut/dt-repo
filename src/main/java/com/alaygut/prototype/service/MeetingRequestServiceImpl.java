@@ -100,6 +100,12 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	}
 
 	@Override
+	public Iterable<MeetingRequest> getAllMemberToMemberMeetingRequests(Member member) {
+		return meetingRequestRepository.findAllByRequestMadeToAndMeetingRequestState(member, MeetingState.KULLANICI_ONAYI_BEKLIYOR);
+	}
+
+
+	@Override
 	public Iterable<MeetingRequest> getAllByDateAndMeetingRoomAndMeetingRequestState(LocalDate date, MeetingRoom meetingRoom, MeetingState state) {
 		return meetingRequestRepository.getAllByDateAndMeetingRoomAndMeetingRequestState(date, meetingRoom, state);
 	}
@@ -194,6 +200,15 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		return meetingRequestDetailProvider;
 	}
 
+	@Override
+	public MeetingRequestDetailProvider getMemberToMemberMeetingRequestDetailsProvider(Member member){
+		MeetingRequestDetailProvider meetingRequestDetailProvider = new MeetingRequestDetailProvider();
+		Iterable<MeetingRequest> requests = this.getAllMemberToMemberMeetingRequests(member);
+
+		meetingRequestDetailProvider.setMeetingParticipants(this.mapParticipants(requests));
+		return meetingRequestDetailProvider;
+	}
+
 
 	@Override
 	@Transactional
@@ -268,6 +283,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 				MeetingState.KULLANICI_ONAYI_BEKLIYOR
 		);
 		meetingRequest.setCreator(memberService.getMember(form.getCreatorId()));
+		meetingRequest.setRequestMadeTo(memberService.getMember(form.getRequestMadeTo()));
 		meetingRequestRepository.save(meetingRequest);
 
 		return true;
@@ -294,6 +310,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		meetingDetail.setBeginningTime(String.valueOf(meetingRequest.getStartTime()));
 		meetingDetail.setEndTime(String.valueOf(meetingRequest.getEndTime()));
 		meetingDetail.setMember(meetingRequest.getMember().getFirstName() + " " + meetingRequest.getMember().getLastName());
+		meetingDetail.setMemberId(String.valueOf(meetingRequest.getMember().getMemberId()));
 		meetingDetail.setParticipants(getParticipantString(meetingRequest));
 		meetingDetail.setMeetingType(String.valueOf(meetingRequest.getMeetingType().getMeetingTypeName()));
 

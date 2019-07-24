@@ -134,4 +134,9 @@ public class MeetingRequestController {
 			redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı talebi kullanıcıya gönderildi.");
 		return "redirect:/add/meetingRequest";
 	}
+
+	@GetMapping("/member/requests")
+	public ModelAndView getMemberToMemberRequests(Principal principal){
+		return new ModelAndView("memberRequests", "meetingRequestDetailProvider", meetingRequestService.getMemberToMemberMeetingRequestDetailsProvider(memberService.getMember(principal.getName())));
+	}
 }

@@ -318,6 +318,7 @@ $(document).on('click', '.timeHolder', function () {
     if($(this).attr("state") === "taken"){	//taken cell
         let clusterBegin = $(this).attr("cluster-begin");
         let clusterEnd = $(this).attr("cluster-end");
+        let owner = $(this).attr("ownerid");
         let requestForm = $("#requestMeeting");
 
         clicked1 = undefined;
@@ -336,6 +337,7 @@ $(document).on('click', '.timeHolder', function () {
             if (yes) {
                 setTimeInputs(clusterBegin, clusterEnd);
                 //set recordId from meetingDetails
+                $("#requestMadeTo").val(owner);
                 requestForm.attr("action", "/requestMeetingFromUser");
                 requestForm.submit();
             }
@@ -486,6 +488,7 @@ function markAsNotSelected(element){
     element.css("cursor", "pointer");
     element.attr("cluster-begin", "");
     element.attr("cluster-end", "");
+    element.attr("ownerId", "");
 }
 
 function markAsTaken(element, meetingDetail){
@@ -497,6 +500,7 @@ function markAsTaken(element, meetingDetail){
     element.attr("title", getMeetingDetailString(meetingDetail));
     element.attr("cluster-begin", meetingDetail.beginningTime);
     element.attr("cluster-end", meetingDetail.endTime);
+    element.attr("ownerId", meetingDetail.memberId);
 }
 
 function getMeetingDetailString(meetingDetail) {

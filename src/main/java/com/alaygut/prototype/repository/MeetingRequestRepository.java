@@ -20,4 +20,5 @@ public interface MeetingRequestRepository extends CrudRepository<MeetingRequest,
 	Iterable<MeetingRequest> findAllByMemberAndMeetingRequestState(Member member, MeetingState state);
 	MeetingRequest getByDateAndStartTimeAndEndTimeAndMember(LocalDate date, LocalTime startTime, LocalTime endTime, Member member);
 	MeetingRequest getAllByDateAndStartTimeAndEndTimeAndMeetingRequestStateAndMember(LocalDate date, LocalTime startTime, LocalTime endTime, MeetingState state, Member member);
+	Iterable<MeetingRequest> findAllByRequestMadeToAndMeetingRequestState(Member member, MeetingState state);
 }
