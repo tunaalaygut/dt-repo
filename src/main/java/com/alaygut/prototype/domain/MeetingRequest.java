@@ -1,6 +1,6 @@
 package com.alaygut.prototype.domain;
 
-import java.time.LocalDate; 
+import java.time.LocalDate;  
 import java.time.LocalTime;
 
 import javax.persistence.Column;
@@ -47,10 +47,14 @@ public class MeetingRequest extends BaseClass{
 	@Column(name = "meetingRequestState")
 	private MeetingState meetingRequestState;
 
+	@ManyToOne
+	@JoinColumn(name = "requestMadeTo")
+	private Member requestMadeTo;
+
 	public MeetingRequest() {
 	}
 
-	public MeetingRequest(MeetingRoom meetingRoom, Member member, MeetingType meetingType, LocalDate date, LocalTime startTime, LocalTime endTime, String description) {
+	public MeetingRequest(MeetingRoom meetingRoom, Member member, MeetingType meetingType, LocalDate date, LocalTime startTime, LocalTime endTime, String description, MeetingState meetingState) {
 		this.meetingRoom = meetingRoom;
 		this.member = member;
 		this.meetingType = meetingType;
@@ -58,7 +62,7 @@ public class MeetingRequest extends BaseClass{
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.description = description;
-		this.meetingRequestState = MeetingState.ONAY_BEKLIYOR;
+		this.meetingRequestState = meetingState;
 	}
 
 	public Long getMeetingRequestId() {
@@ -131,5 +135,13 @@ public class MeetingRequest extends BaseClass{
 
 	public void setDate(LocalDate date) {
 		this.date = date;
+	}
+
+	public Member getRequestMadeTo() {
+		return requestMadeTo;
+	}
+
+	public void setRequestMadeTo(Member requestMadeTo) {
+		this.requestMadeTo = requestMadeTo;
 	}
 }

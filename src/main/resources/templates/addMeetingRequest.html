@@ -52,7 +52,17 @@
 							</select>
 						</div>
 						<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('meetingRoomId')}, field = 'meetingRoomId')"></div>
-
+					</div>
+				</div>
+				<!--DATE & LOCATION INFO ENDS-->
+				<div class="row">
+					<div class="col-sm-8 ml-auto">
+						<div class="alert alert-info" role="alert">
+							Seçilen toplantı odası aşağıda listelenen özelliklere sahip:
+							<ul id="roomPropertiesList">
+								<!--append properties here-->
+							</ul>
+						</div>
 						<!--MEETING ROOM FILTER SECTION STARTS-->
 
 						<div class="collapse" id="filterMeetingRoomCollapse">
@@ -63,14 +73,10 @@
 							<div class="form-group">
 								<label for="filterRoomFeatureSelectMenu">Özellikler: <span class="small text-muted">(CTRL ile toplu seçim yapılabilir.)</span></label>
 								<select multiple class="custom-select" id="filterRoomFeatureSelectMenu">
-									<option>Özellik 1</option>
-									<option>Özellik 2</option>
-									<option>Özellik 3</option>
-									<option>Özellik 4</option>
-									<option>Özellik 5</option>
+									<option></option>
 								</select>
 							</div>
-							<button type="button" class="btn btn-block btn-info">Filtre Uygula <span class="fas fa-filter"></span></button>
+							<button type="button" class="btn btn-block btn-info" id="applyRoomFilter">Filtre Uygula <span class="fas fa-filter"></span></button>
 						</div>
 
 						<button
@@ -85,22 +91,19 @@
 							<span id="filterArrowIcon" class="fas fa-sort-down"></span>
 						</button>
 						<!--MEETING ROOM FILTER SECTION ENDS-->
-
-
 					</div>
 				</div>
-				<!--DATE & LOCATION INFO ENDS-->
 
 				<div class="form-group mt-3">
 					<label class="d-block">Toplantı Saati:</label>
 					<small class="text-muted font-italic" id="scheduleInfo"></small>
 					<input type="hidden" th:attr="name=beginningTime" id="startTimeInput">
 					<input type="hidden" th:attr="name=endTime" id="endTimeInput">
+					<input type="hidden" th:attr="name=requestMadeTo" id="requestMadeTo">
 
 					<!--THE GRID STARTS-->
-					<div id="theGrid" class="px-3">
-
-					</div>
+					<div id="theGrid" class="px-3"></div>
+					<!--the grid info starts-->
 					<div class="row px-3 mt-4">
 						<div class="col-sm-1 p-0 ml-auto">
 							<div class="timeHolderDisplay p-1 m-1 text-center rounded h-90 w-90" id="empty"><small class="unselectable">Boş</small></div>
@@ -112,6 +115,7 @@
 							<div class="timeHolderDisplay p-1 m-1 text-center rounded h-90 w-90" id="selected"><small class="unselectable">Seçili</small></div>
 						</div>
 					</div>
+					<!--the grid info ends-->
 					<!--THE GRID ENDS-->
 				</div>
 				<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('beginningTime')}, field = 'beginningTime')"></div>

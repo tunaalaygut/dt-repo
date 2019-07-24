@@ -54,6 +54,8 @@ $(document).ready(function () {
         }
     } );
 
+    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
     updatePendingBadge();
 
 });
@@ -66,7 +68,6 @@ function updatePendingBadge(){
     }).done(function(num) {
         if (num !== 0)
             badge.text(num);
-        console.log("sdaddsasad " + num);
     });
 }
 

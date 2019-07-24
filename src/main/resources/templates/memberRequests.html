@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-<div th:replace="fragments/fragments :: head(content = 'Toplantı Taleplerim')"></div>
+<div th:replace="fragments/fragments :: head(content = 'Onay Bekleyen Kullanıcı Toplantı Talepleri')"></div>
 <body>
 
 <div class="wrapper">
     <div th:replace="fragments/fragments :: sidebar"></div>
     <div class="content">
         <div th:replace="fragments/fragments :: navbar"></div>
-        <h2>Toplantı Talepleri</h2>
+        <h2 class="mb-4">Talepler</h2>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -21,7 +21,6 @@
                     <th scope="col">Toplantı Türü</th>
                     <th scope="col">Açıklama</th>
                     <th scope="col">Katılımcılar</th>
-                    <th scope="col">Toplantı Durumu</th>
                     <th scope="col">İşlemler</th>
                 </tr>
                 </thead>
@@ -44,13 +43,21 @@
                             </div>
                         </div>
                     </td>
-                    <td th:text="${mapItem.key.meetingRequestState.name()}"></td>
                     <td>
-                        <form th:action="@{/cancelMeetingRequest/__${mapItem.key.meetingRequestId}__}" th:object="${idTransfer}" th:method="post" class="deactivateForm float-left mr-2">
-                            <button th:fragment="listCancelButton" class="btn btn-sm btn-outline-danger" type="submit">
-                                <i class="fas fa-calendar-times"></i>
+
+                        <form th:action="@{/accept/memberMeetingRequest/__${mapItem.key.meetingRequestId}__}" th:method="post" class="acceptMeetingRequest">
+                            <button class="btn btn-success m-1 btn-block">
+                                Onayla
+                                <span class="fas fa-check"></span>
                             </button>
-                            <input th:attr="name=recordId" type="hidden" th:value="${mapItem.key.meetingRequestId}">
+                        </form>
+
+
+                        <form th:action="@{/decline/meetingRequest/__${mapItem.key.meetingRequestId}__}" th:method="post" class="declineMeetingRequest">
+                            <button class="btn btn-danger btn-block m-1">
+                                Reddet
+                                <span class="fas fa-times"></span>
+                            </button>
                         </form>
                     </td>
                 </tr>

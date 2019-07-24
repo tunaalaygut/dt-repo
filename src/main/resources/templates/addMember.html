@@ -60,20 +60,20 @@
                     <input th:field="*{username}" type="text" class="form-control" id="usernameInput" placeholder="Kullanıcı Adı">
                 </div>
                 <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('username')}, field = 'username')"></div>
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label for="passwordInput">Şifre:</label>
                     <div class="row">
                         <div class="col-sm-10 mb-2">
-                            <!--<input th:field="*{password}" type="password" class="form-control" id="passwordInput" placeholder="******">
-                             </div>-->
+                            &lt;!&ndash;<input th:field="*{password}" type="password" class="form-control" id="passwordInput" placeholder="******">
+                             </div>&ndash;&gt;
                             <input th:field="*{password}" type="text" class="form-control input-lg" id="passwordInput" placeholder="******">
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-default btn-info btn-block getNewPass"><span class="fa fa-cogs"></span> Oluştur</button>
                         </div>
                     </div>
-                </div>
-                <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('password')}, field = 'password')"></div>
+                </div>-->
+                <!--<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('password')}, field = 'password')"></div>-->
                 <div th:replace="fragments/fragments :: creatorIdInput"></div>
 
                 <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Kullanıcı Ekle</button>
@@ -84,7 +84,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-chained/1.0.1/jquery.chained.remote.min.js" integrity="sha256-s4fvhjtBM8Qdr848fG5m3T6LjoJl799Qax4fr/24r30=" crossorigin="anonymous"></script>
     <script type="text/javascript">
 
-function generatePassword() {
+<!--function generatePassword() {
     var length = 10,
         charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789*#+$&?>!<",
         retVal = "";
@@ -102,6 +102,6 @@ $(".getNewPass").click(function(){
 
 });
 
-    </script>
+    </script>-->
 </body>
 </html>

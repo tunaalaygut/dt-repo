@@ -1,6 +1,6 @@
 package com.alaygut.prototype.service;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Service; 
 import com.alaygut.prototype.domain.Building;
 import com.alaygut.prototype.domain.MeetingRoom;
 import com.alaygut.prototype.domain.RecordState;
@@ -10,9 +10,13 @@ import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.MeetingRoomRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -198,5 +202,36 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
 		if(addMeetingRoomForm.getRecordId() != null)
 			addMeetingRoomForm.setMeetingRoomFeatures(this.getAllRoomFeatures(this.getMeetingRoom(addMeetingRoomForm.getRecordId())));
 	}
+
+	@Override
+	public Map<Long, String> filterMeetingRoomsByCapacityAndFeatures(String capacity) {
+		Map<Long, String> filteredRooms = new HashMap<>();
+
+		Iterable<MeetingRoom> meetingRooms = meetingRoomRepository.findAllByCapacityGreaterThanEqual(Integer.valueOf(capacity));
+		Iterator<MeetingRoom> meetingRoomIterator = meetingRooms.iterator();
+
+		while (meetingRoomIterator.hasNext()){
+			MeetingRoom current = meetingRoomIterator.next();
+			filteredRooms.put(current.getMeetingRoomId(), current.getMeetingRoomName());
+		}
+
+		return filteredRooms;
+	}
+
+	@Override
+	public List<String> loadMeetingRoomProperties(Long meetingRoomId) {
+		List<String> properties = new ArrayList<>();
+		MeetingRoom meetingRoom = this.getMeetingRoom(meetingRoomId);
+		Iterable<RoomFeature> features = roomFeatureService.getAllByMeetingRoomSet(meetingRoom);
+		Iterator<RoomFeature> feature = features.iterator();
+
+		while(feature.hasNext())
+			properties.add(feature.next().getFeatureName());
+
+		properties.add(Integer.toString(meetingRoom.getCapacity()));
+
+		return properties;
+	}
+
 
 }

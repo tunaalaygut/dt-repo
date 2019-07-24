@@ -1,9 +1,12 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.MeetingRoom; 
+import com.alaygut.prototype.domain.MeetingRoom;  
 import com.alaygut.prototype.domain.RoomFeature;
 import com.alaygut.prototype.dto.AddMeetingRoomForm;
 import com.alaygut.prototype.dto.IDTransfer;
+
+import java.util.List;
+import java.util.Map;
 
 public interface MeetingRoomService {
 	void addRoom(AddMeetingRoomForm addMeetingRoomForm);
@@ -17,5 +20,6 @@ public interface MeetingRoomService {
 	Iterable<MeetingRoom> getAllInBuilding(Long buildingId);
 	AddMeetingRoomForm getAddMeetingRoomPage();
 	void fixAddForm(AddMeetingRoomForm addMeetingRoomForm);
-
+	Map<Long, String> filterMeetingRoomsByCapacityAndFeatures(String capacity);
+	List<String> loadMeetingRoomProperties(Long meetingRoomId);
 }

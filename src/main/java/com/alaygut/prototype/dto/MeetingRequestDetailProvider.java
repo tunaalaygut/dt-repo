@@ -16,4 +16,5 @@ public class MeetingRequestDetailProvider {
     public void setMeetingParticipants(Map<MeetingRequest, List<Participant>> meetingParticipants) {
         this.meetingParticipants = meetingParticipants;
     }
+
 }

@@ -3,6 +3,8 @@ package com.alaygut.prototype.controller;
 import javax.validation.Valid; 
 
 import com.alaygut.prototype.domain.Member;
+import com.alaygut.prototype.dto.MeetingDetail;
+import com.alaygut.prototype.service.RoomFeatureService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.alaygut.prototype.dto.AddMeetingRequestForm;
-import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.service.MeetingRequestService;
 import com.alaygut.prototype.service.MeetingRoomService;
 import com.alaygut.prototype.service.MemberService;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 
@@ -27,11 +29,13 @@ public class MeetingRequestController {
 	private MeetingRequestService meetingRequestService;
 	private MeetingRoomService meetingRoomService;
 	private MemberService memberService;
+	private RoomFeatureService roomFeatureService;
 
-	public MeetingRequestController(MeetingRequestService meetingRequestService, MeetingRoomService meetingRoomService, MemberService memberService) {
+	public MeetingRequestController(MeetingRequestService meetingRequestService, MeetingRoomService meetingRoomService, MemberService memberService, RoomFeatureService roomFeatureService) {
 		this.meetingRequestService = meetingRequestService;
 		this.meetingRoomService = meetingRoomService;
-		this.memberService = memberService;;
+		this.memberService = memberService;
+		this.roomFeatureService = roomFeatureService;
 	}
 
 	@GetMapping("/add/meetingRequest")
@@ -49,20 +53,14 @@ public class MeetingRequestController {
 			meetingRequestService.setExternalData(addMeetingRequestForm);
 			return "/addMeetingRequest";
 		}
-		meetingRequestService.addRequest(addMeetingRequestForm);
-		redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı talebi başarıyla oluşturuldu.");
+		if (meetingRequestService.addRequest(addMeetingRequestForm))
+			redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı talebi başarıyla oluşturuldu.");
 		return "redirect:/add/meetingRequest";
 	}
 	
 	@GetMapping("/list/meetingRequest")
 	public ModelAndView listMeetingRequestsPage() {
 		return new ModelAndView("listMeetingRequests", "meetingRequestDetailProvider", meetingRequestService.getListMeetingRequestsDetailProvider());
-	}
-	
-	@PostMapping("/list/meetingRequest")
-	public String handleMeetingRequestDeactivate(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer, BindingResult bindingResult) {
-		meetingRequestService.deactivate(idTransfer);
-		return "redirect:/list/meetingRequest";
 	}
 
 	@GetMapping("/list/pendingRequest")
@@ -97,13 +95,48 @@ public class MeetingRequestController {
 	@GetMapping("/member/meetingRequest")
 	public ModelAndView getMemberMeetingRequestsPage(Principal principal){
 		Member member = memberService.getMember(principal.getName());
-		return new ModelAndView("listMeetingRequests", "meetingRequestDetailProvider", meetingRequestService.getMemberMeetingRequestDetailsProvider(member));
+		return new ModelAndView("memberMeetingRequests", "meetingRequestDetailProvider", meetingRequestService.getMemberMeetingRequestDetailsProvider(member));
 	}
 
 	@GetMapping("/getGridData")
-	public @ResponseBody Map<String, String> getMeetingRoomCapacity(@RequestParam("date") String date, @RequestParam("meetingRoomId") String meetingRoomId){
-		Long roomId = Long.parseLong(meetingRoomId);
-		return meetingRequestService.getGridData(date, roomId);
+	public @ResponseBody List<MeetingDetail> getMeetingRoomCapacity(@RequestParam("date") String date, @RequestParam("meetingRoomId") String meetingRoomId){
+		return meetingRequestService.getGridData(date, meetingRoomId);
 	}
 
+	@GetMapping("/loadAllFeatures")
+	public @ResponseBody Map<Long, String> loadAllFeatures(){
+		return roomFeatureService.getFeatureMap();
+	}
+
+	@GetMapping("/filterMeetingRooms")
+	public @ResponseBody Map<Long, String> filterMeetingRooms(@RequestParam("capacity") String capacity){
+		return meetingRoomService.filterMeetingRoomsByCapacityAndFeatures(capacity);
+	}
+
+	@PostMapping("/cancelMeetingRequest/{meetingRequestId}")
+	public String cancel(@PathVariable Long meetingRequestId) {
+		meetingRequestService.cancel(meetingRequestId);
+		return "redirect:/member/meetingRequest";
+	}
+
+	@GetMapping("/loadMeetingRoomProperties")
+	public @ResponseBody List<String> loadMeetingRoomProperties(@RequestParam("meetingRoomId") Long meetingRoomId){
+		return meetingRoomService.loadMeetingRoomProperties(meetingRoomId);
+	}
+
+	@PostMapping("/requestMeetingFromUser")
+	public String requestMeetingFromUser(@Valid @ModelAttribute("addMeetingRequestForm") AddMeetingRequestForm addMeetingRequestForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+		if(bindingResult.hasErrors()) {
+			meetingRequestService.setExternalData(addMeetingRequestForm);
+			return "/addMeetingRequest";
+		}
+		if (meetingRequestService.requestFromUser(addMeetingRequestForm))
+			redirectAttributes.addFlashAttribute("successMessage", "Yeni toplantı talebi kullanıcıya gönderildi.");
+		return "redirect:/add/meetingRequest";
+	}
+
+	@GetMapping("/member/requests")
+	public ModelAndView getMemberToMemberRequests(Principal principal){
+		return new ModelAndView("memberRequests", "meetingRequestDetailProvider", meetingRequestService.getMemberToMemberMeetingRequestDetailsProvider(memberService.getMember(principal.getName())));
+	}
 }
