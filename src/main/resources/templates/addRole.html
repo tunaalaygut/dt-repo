@@ -9,7 +9,7 @@
         <div th:replace="fragments/fragments :: sidebar"></div>
         <div class="content">
 
-            <div th:replace="fragments/fragments :: navbar"></div>
+           	<div th:replace="fragments/fragments :: navbar"></div>
             <h2 class="mb-4">Rol Ekleme Formu</h2>
 
             <div th:replace="fragments/fragments :: successMessage"></div>
@@ -36,9 +36,6 @@
                 <div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('description')}, field = 'description')"></div>
 
                 <div th:replace="fragments/fragments :: creatorIdInput"></div>
-
-
-
 
 
                 <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Rol Ekle</button>
