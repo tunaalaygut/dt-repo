@@ -184,6 +184,9 @@
             <li>
                 <a th:href="@{/member/meetingRequest}" >Toplantı Taleplerim</a>
             </li>
+            <li>
+                <a th:href="@{/member/requests}">Diğer Kullanıcı Talepleri <span class="badge badge-warning text-white otherMemberRequests"></span></a>
+            </li>
         </ul>
     </div>
     <div id="accordion" sec:authorize="hasRole('ROLE_SUPERVISOR')">
@@ -191,7 +194,12 @@
             <p>İşlemler</p>
             <li>
                 <a th:href="@{/list/pendingRequest}">Toplantı Talepleri <span class="badge badge-danger" id="numOfPendingRequets"></span></a>
+            </li>
+            <li>
                 <a th:href="@{/add/meetingRequest}">Toplantı Talep Et</a>
+            </li>
+            <li>
+                <a th:href="@{/member/requests}">Diğer Kullanıcı Talepleri <span class="badge badge-warning text-white otherMemberRequests"></span></a>
             </li>
         </ul>
     </div>

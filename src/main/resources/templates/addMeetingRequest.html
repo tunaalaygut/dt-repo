@@ -191,6 +191,9 @@
 										</table>
 									</div>
 								</div>
+
+								<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('participantDetails')}, field = 'participantDetails')"></div>
+
 								<div class="alert alert-warning" id="capacityWarning" role="alert" style="display: none">
 									<!--capacity warning-->
 								</div>
