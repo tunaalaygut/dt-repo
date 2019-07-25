@@ -9,7 +9,6 @@ import com.alaygut.prototype.annotation.UniqueEmail;
 import com.alaygut.prototype.annotation.UniqueUsername;
 import com.alaygut.prototype.domain.Role;
 
-
 public class AddMemberForm extends FormBase  {
     @Size(min = 3, max = 20, message = "{firstName.size.not.valid}")
     @Pattern(regexp ="[a-zA-Z(a-zA-Z-İ,Ş,Ğ,Ç,Ö,Ü,ş,ğ,ö,ü,ç,ı)]*", message = "{firstName.not.valid}")
