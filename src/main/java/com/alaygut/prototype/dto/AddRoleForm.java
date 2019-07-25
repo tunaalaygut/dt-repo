@@ -2,11 +2,13 @@ package com.alaygut.prototype.dto;
 
 import com.alaygut.prototype.domain.Right;
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
 
 public class AddRoleForm extends FormBase  {
     @Size(min = 3, max = 30, message = "{roleName.size.not.valid}")
+    @Pattern(regexp ="[a-zA-Z(İ,Ş,Ğ,Ç,Ö,Ü,ş,ğ,ö,ü,ç,ı)\\s]*", message = "{roleName.not.valid}")
     private String roleName;
 
     private String description;

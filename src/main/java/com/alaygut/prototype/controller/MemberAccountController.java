@@ -32,7 +32,6 @@ public class MemberAccountController {
     private ConfirmationTokenRepository confirmationTokenRepository;
     private EmailSenderService emailSenderService;
     private PasswordEncoder passwordEncoder;
-
     private LoginRepository loginRepository;
 
     public MemberAccountController(MemberRepository memberRepository, ConfirmationTokenRepository confirmationTokenRepository, EmailSenderService emailSenderService, LoginRepository loginRepository) {

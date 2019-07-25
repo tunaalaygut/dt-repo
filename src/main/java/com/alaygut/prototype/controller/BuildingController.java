@@ -100,7 +100,7 @@ public class BuildingController  {
             return "redirect:/list/building";
         }
         catch (Exception e){
-            bindingResult.addError(new FieldError("addBuildingForm", "buildingName", "{buildingName.not.unique}"));
+            bindingResult.addError(new FieldError("addBuildingForm", "buildingName", "Bina ismi mevcut."));
             return "editBuilding";
         }
     }
