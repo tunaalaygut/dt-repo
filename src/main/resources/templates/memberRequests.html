@@ -3,66 +3,64 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <div th:replace="fragments/fragments :: head(content = 'Onay Bekleyen Kullanıcı Toplantı Talepleri')"></div>
 <body>
-
-<div class="wrapper">
-    <div th:replace="fragments/fragments :: sidebar"></div>
-    <div class="content">
-        <div th:replace="fragments/fragments :: navbar"></div>
-        <h2 class="mb-4">Talepler</h2>
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">Toplantı Lokasyonu</th>
-                    <th scope="col">Toplantı Tarihi</th>
-                    <th scope="col">Toplantı Başlangıç Saati</th>
-                    <th scope="col">Toplantı Bitiş Saati</th>
-                    <th scope="col">Toplantı Talebini Yapan Üye</th>
-                    <th scope="col">Toplantı Türü</th>
-                    <th scope="col">Açıklama</th>
-                    <th scope="col">Katılımcılar</th>
-                    <th scope="col">İşlemler</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="mapItem : ${meetingRequestDetailProvider.meetingParticipants}">
-                    <td th:text="${mapItem.key.meetingRoom.building.buildingName + ' - ' + mapItem.key.meetingRoom.meetingRoomName}"></td>
-                    <td th:text="${mapItem.key.date}"></td>
-                    <td th:text="${mapItem.key.startTime}"></td>
-                    <td th:text="${mapItem.key.endTime}"></td>
-                    <td th:text="${mapItem.key.member.firstName + ' ' + mapItem.key.member.lastName}"></td>
-                    <td th:text="${mapItem.key.meetingType.meetingTypeName}"></td>
-                    <td  href="#" data-toggle="tooltip" data-placement="bottom" th:title="${mapItem.key.description}"class="text-info text-center"><i class="fas fa-info"></i></td>
-                    <td>
-                        <div class="dropdown">
-                            <button class="btn btn-info dropdown-toggle btn-block" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Gör
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a disabled class="dropdown-item" th:each="participant : ${mapItem.value}" th:text="${participant.fullName}"></a>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-
-                        <form th:action="@{/accept/memberMeetingRequest/__${mapItem.key.meetingRequestId}__}" th:method="post" class="acceptMeetingRequest">
-                            <button class="btn btn-success m-1 btn-block">
-                                Onayla
-                                <span class="fas fa-check"></span>
-                            </button>
-                        </form>
-
-
-                        <form th:action="@{/decline/meetingRequest/__${mapItem.key.meetingRequestId}__}" th:method="post" class="declineMeetingRequest">
-                            <button class="btn btn-danger btn-block m-1">
-                                Reddet
-                                <span class="fas fa-times"></span>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+    <div class="wrapper">
+        <div th:replace="fragments/fragments :: sidebar"></div>
+        <div class="content">
+            <div th:replace="fragments/fragments :: navbar"></div>
+            <h2 class="mb-4">Talepler</h2>
+            <p class="my-2">Diğer kullanıcıların, sizin toplantı taleplerinize yaptığı istekleri bu ekranda görebilirsiniz.</p>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Toplantı Lokasyonu</th>
+                        <th scope="col">Toplantı Tarihi</th>
+                        <th scope="col">Toplantı Başlangıç Saati</th>
+                        <th scope="col">Toplantı Bitiş Saati</th>
+                        <th scope="col">Toplantı Talebini Yapan Üye</th>
+                        <th scope="col">Toplantı Türü</th>
+                        <th scope="col">Açıklama</th>
+                        <th scope="col">Katılımcılar</th>
+                        <th scope="col">İşlemler</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="mapItem : ${meetingRequestDetailProvider?.meetingParticipants}">
+                            <td th:text="${mapItem.key.meetingRoom.building.buildingName + ' - ' + mapItem.key.meetingRoom.meetingRoomName}"></td>
+                            <td th:text="${mapItem.key.date}"></td>
+                            <td th:text="${mapItem.key.startTime}"></td>
+                            <td th:text="${mapItem.key.endTime}"></td>
+                            <td th:text="${mapItem.key.member.firstName + ' ' + mapItem.key.member.lastName}"></td>
+                            <td th:text="${mapItem.key.meetingType.meetingTypeName}"></td>
+                            <td  href="#" data-toggle="tooltip" data-placement="bottom" th:title="${mapItem.key.description}"class="text-info text-center"><i class="fas fa-info"></i></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-info dropdown-toggle btn-block" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Gör
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a disabled class="dropdown-item" th:each="participant : ${mapItem.value}" th:text="${participant.fullName}"></a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <form th:action="@{/acceptMemberRequest/__${mapItem.key.meetingRequestId}__}" th:method="post" class="acceptMeetingRequest">
+                                    <button class="btn btn-success m-1 btn-block">
+                                        Onayla
+                                        <span class="fas fa-check"></span>
+                                    </button>
+                                </form>
+                                <form th:action="@{/declineMemberRequest/__${mapItem.key.meetingRequestId}__}" th:method="post" class="declineMeetingRequest">
+                                    <button class="btn btn-danger btn-block m-1">
+                                        Reddet
+                                        <span class="fas fa-times"></span>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <div th:replace="fragments/fragments :: scripts"></div>

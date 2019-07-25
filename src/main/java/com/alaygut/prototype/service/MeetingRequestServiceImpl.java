@@ -218,24 +218,6 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		return meetingRequestDetailProvider;
 	}
 
-
-	@Override
-	@Transactional
-	public void acceptMemberMeetingRequest(Long meetingRequestId, Long memberId) {
-		MeetingRequest meetingRequest = this.getMeetingRequest(meetingRequestId);
-		meetingRequest.setMeetingRequestState(MeetingState.ONAYLANDI);
-
-		MeetingRequest original = meetingRequestRepository.getByDateAndStartTimeAndEndTimeAndMember(
-				meetingRequest.getDate(),
-				meetingRequest.getStartTime(),
-				meetingRequest.getEndTime(),
-				meetingRequest.getMember()
-		);
-
-		original.setMeetingRequestState(MeetingState.TRANSFER_EDILDI);
-
-	}
-
 	private Map<MeetingRequest, List<Participant>> mapParticipants(Iterable<MeetingRequest> requests){
 		Iterator<MeetingRequest> requestIterator = requests.iterator();
 		Map<MeetingRequest, List<Participant>> meetingParticipants = new HashMap<>();
@@ -268,8 +250,10 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		MeetingRequest request = this.getMeetingRequest(meetingRequestId);
 		request.setUpdater(memberService.getMember(supervisorId));
 		request.setMeetingRequestState(MeetingState.ONAYLANDI);
+
 		sendConfirmationEmail(request);
 	}
+
 
 
 	@Override
@@ -283,21 +267,32 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	@Override
 	@Transactional
 	public boolean requestFromUser(AddMeetingRequestForm form){
-		MeetingRequest meetingRequest = new MeetingRequest(
-				meetingRoomService.getMeetingRoom(form.getMeetingRoomId()),
-				memberService.getMember(form.getCreatorId()),
-				meetingTypeService.getMeetingType(form.getMeetingTypeId()),
+
+		if(!meetingRequestRepository.existsByDateAndStartTimeAndEndTimeAndMemberAndMeetingRoom(
 				LocalDate.parse(form.getDate()),
 				LocalTime.parse(form.getBeginningTime()),
 				LocalTime.parse(form.getEndTime()),
-				form.getDescription(),
-				MeetingState.KULLANICI_ONAYI_BEKLIYOR
-		);
-		meetingRequest.setCreator(memberService.getMember(form.getCreatorId()));
-		meetingRequest.setRequestMadeTo(memberService.getMember(form.getRequestMadeTo()));
-		meetingRequestRepository.save(meetingRequest);
+				memberService.getMember(form.getCreatorId()),
+				meetingRoomService.getMeetingRoom(form.getMeetingRoomId())
+		)){
+			MeetingRequest meetingRequest = new MeetingRequest(
+					meetingRoomService.getMeetingRoom(form.getMeetingRoomId()),
+					memberService.getMember(form.getCreatorId()),
+					meetingTypeService.getMeetingType(form.getMeetingTypeId()),
+					LocalDate.parse(form.getDate()),
+					LocalTime.parse(form.getBeginningTime()),
+					LocalTime.parse(form.getEndTime()),
+					form.getDescription(),
+					MeetingState.KULLANICI_ONAYI_BEKLIYOR
+			);
+			meetingRequest.setCreator(memberService.getMember(form.getCreatorId()));
+			meetingRequest.setRequestMadeTo(memberService.getMember(form.getRequestMadeTo()));
+			participantService.generateParticipants(form.getParticipantDetails(), meetingRequest);
+			meetingRequestRepository.save(meetingRequest);
+			return true;
+		}
 
-		return true;
+		return false;
 	}
 
 	@Override
@@ -359,6 +354,42 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 			emailSenderService.sendEmail(mailMessage);
 		}
 	}
+
+	@Transactional
+	@Override
+	public boolean acceptMemberRequest(Long requestId) {
+		MeetingRequest newRequest = this.getMeetingRequest(requestId);
+
+		MeetingRequest original = meetingRequestRepository.getByDateAndStartTimeAndEndTimeAndMeetingRequestState(
+				newRequest.getDate(),
+				newRequest.getStartTime(),
+				newRequest.getEndTime(),
+				MeetingState.ONAYLANDI
+		) ;
+
+		original.setMeetingRequestState(MeetingState.TRANSFER_EDILDI);
+		newRequest.setMeetingRequestState(MeetingState.ONAYLANDI);
+		newRequest.setUpdater(original.getMember());
+
+		return true;
+	}
+
+	@Transactional
+	@Override
+	public boolean declineMemberRequest(Long requestId, Member member) {
+		MeetingRequest newRequest = this.getMeetingRequest(requestId);
+
+		newRequest.setMeetingRequestState(MeetingState.REDDEDILDI);
+		newRequest.setUpdater(member);
+
+		return true;
+	}
+
+	@Override
+	public int otherMemberRequestNumber(Member member) {
+		return meetingRequestRepository.countAllByMeetingRequestStateAndRequestMadeTo(MeetingState.KULLANICI_ONAYI_BEKLIYOR, member);
+	}
+
 	@Async
 	public void sendConfirmationEmail(MeetingRequest request) {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();

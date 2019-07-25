@@ -57,6 +57,7 @@ $(document).ready(function () {
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 
     updatePendingBadge();
+    updateOtherMemberRequestBadge();
 
 });
 
@@ -64,7 +65,18 @@ function updatePendingBadge(){
     let badge = $("#numOfPendingRequets");
 
     $.ajax({
-        url: "/getNumOfPendingRequets"
+        url: "/getNumOfPendingRequests"
+    }).done(function(num) {
+        if (num !== 0)
+            badge.text(num);
+    });
+}
+
+function updateOtherMemberRequestBadge(){
+    let badge = $(".otherMemberRequests");
+
+    $.ajax({
+        url: "/getOtherMemberRequests"
     }).done(function(num) {
         if (num !== 0)
             badge.text(num);
