@@ -250,8 +250,10 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		MeetingRequest request = this.getMeetingRequest(meetingRequestId);
 		request.setUpdater(memberService.getMember(supervisorId));
 		request.setMeetingRequestState(MeetingState.ONAYLANDI);
+
 		sendConfirmationEmail(request);
 	}
+
 
 
 	@Override

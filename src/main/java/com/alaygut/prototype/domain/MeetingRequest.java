@@ -1,6 +1,6 @@
 package com.alaygut.prototype.domain;
 
-import java.time.LocalDate; 
+import java.time.LocalDate;  
 import java.time.LocalTime;
 
 import javax.persistence.Column;
