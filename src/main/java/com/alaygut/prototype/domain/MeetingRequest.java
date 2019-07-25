@@ -1,6 +1,7 @@
 package com.alaygut.prototype.domain;
 
-import java.time.LocalDate;  
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;   
 import java.time.LocalTime;
 
 import javax.persistence.Column;
@@ -31,7 +32,7 @@ public class MeetingRequest extends BaseClass{
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "meetingTypeId")
 	private MeetingType meetingType;
-
+	
 	@Column(name = "date")
 	private LocalDate date;
 	

@@ -41,6 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .antMatchers("/member/**").authenticated()
                 .antMatchers("/list/pendingRequest").hasAnyRole("SUPERVISOR", "ADMIN")
                 .antMatchers("/list/**").hasRole("ADMIN")
+                //.antMatchers("profile/edit").
                 .and()
                 .formLogin()
                 .loginPage("/login")

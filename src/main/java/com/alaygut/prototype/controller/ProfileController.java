@@ -35,8 +35,8 @@ public class ProfileController {
     }
     
     @GetMapping("/profile/edit")
-    public ModelAndView editProfilePage(@Valid @ModelAttribute("IDTransfer") IDTransfer idTransfer) {
-		return new ModelAndView("editProfile", "addMemberForm", memberService.getEditForm(idTransfer.getRecordId()));
+    public ModelAndView editProfilePage(Principal principal) {
+    	return new ModelAndView("editProfile", "addMemberForm", memberService.getEditForm(memberService.getMember(principal.getName()).getMemberId()));	
     }
     
     @PostMapping("/profile/edit")
