@@ -28,6 +28,8 @@
 
                 <input th:attr="name=recordId" type="hidden" th:value="${addRightForm.recordId}">
                 <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Yetkiyi Değiştir</button>
+                
+                <a class="btn btn-primary btn-danger btn-block mt-5" th:href="@{/list/right}">Geri Dön <span class="fas fa-undo"></span></a>
             </form>
         </div>
     </div>
