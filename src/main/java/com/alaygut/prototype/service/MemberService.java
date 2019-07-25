@@ -21,4 +21,5 @@ public interface MemberService extends UserDetailsService {
     boolean usernameExists(String username);
     boolean emailExists(String email);
     Member getMember(String username);
+    void sendSignUpEmail(Member member, AddMemberForm addMemberForm);
 }

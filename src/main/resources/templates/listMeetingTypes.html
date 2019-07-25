@@ -24,7 +24,7 @@
         <tbody>
         <tr th:each="meetingType : ${listMeetingTypes}">
             <td th:text="${meetingType.meetingTypeName}"></td>
-            <td th:text="${meetingType.description}"></td>
+            <td  href="#" data-toggle="tooltip" data-placement="bottom" th:title="${meetingType.description}"class="text-info text-center"><i class="fas fa-info"></i></td>
               <td>
                  <form th:action="@{/list/meetingType}" th:object="${idTransfer}" th:method="post" class="deactivateForm float-left mr-2">
                  		<div th:replace="fragments/fragments :: listDeleteButton"></div>
