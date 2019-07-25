@@ -1,6 +1,6 @@
 package com.alaygut.prototype.controller;
 
-import javax.validation.Valid; 
+import javax.validation.Valid;  
 
 import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.dto.MeetingDetail;
