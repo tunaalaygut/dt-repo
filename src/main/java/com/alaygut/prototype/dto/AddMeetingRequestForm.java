@@ -47,6 +47,7 @@ public class AddMeetingRequestForm extends FormBase  {
 
 	private Iterable<MeetingRoom> allMeetingRooms;
 
+	@NotEmpty(message = "{participants.not.empty}")
 	private List<String> participantDetails;
 
 	private ArrayList<String> times;

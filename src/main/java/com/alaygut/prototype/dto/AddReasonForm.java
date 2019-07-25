@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 public class AddReasonForm extends FormBase{
 	
 	@Size(min = 3, max = 30, message = "{reasonName.size.not.valid}")
-	@Pattern(regexp ="[{a-zA-Z}]*", message = "{reasonName.not.valid}")
+	@Pattern(regexp ="[{a-zA-Z(İ,Ş,Ğ,Ç,Ö,Ü,ş,ğ,ö,ü,ç,ı)}\\s]*", message = "{reasonName.not.valid}")
 	private String reasonName;
 	
 	@Size(min = 0, max = 400)

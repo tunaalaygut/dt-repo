@@ -27,7 +27,7 @@
                 <tbody>
                 <tr th:each="mapItem : ${meetingRequestDetailProvider.meetingParticipants}">
                     <td th:text="${mapItem.key.meetingRoom.building.buildingName + ' - ' + mapItem.key.meetingRoom.meetingRoomName}"></td>
-                    <td th:text="${mapItem.key.date}"></td>
+                    <td th:text="${#temporals.format(mapItem.key.date,'dd.MM.yyyy')}"></td>
                     <td th:text="${mapItem.key.startTime}"></td>
                     <td th:text="${mapItem.key.endTime}"></td>
                     <td th:text="${mapItem.key.member.firstName + ' ' + mapItem.key.member.lastName}"></td>
