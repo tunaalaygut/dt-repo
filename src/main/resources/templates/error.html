@@ -14,18 +14,59 @@
         left:0;
         z-index: -100;
     }
+
+    .pillBlue {
+        background-color: rgba(0, 118, 221, 0.8);
+        border: none;
+        color: white;
+        padding: 15px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+    .pillRed {
+        background-color: rgba(221, 0, 18, 0.8);
+        border: none;
+        color: white;
+        padding: 15px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 50%;
+    }
 </style>
 <body>
 <div class="wrapper">
-    <div th:replace="fragments/fragments :: sidebar"></div>
     <div class="content">
 
-        <h1 class="my-5 text-center text-white" style="color: #0F0;">Matrix'te bir glitch oldu.</h1>
+        <h1 class="my-5 text-center" style="color: #00ff00;">Matrix'te bir glitch oldu.</h1>
+
+        <div class="text-white text-center text-justify font-italic" style="opacity: 0.8;">
+            <q>
+                You take the blue pill—the story ends, you wake up in your bed and believe whatever you want to believe. You take the red pill—you stay in Wonderland, and I show you how deep the rabbit hole goes. Remember: all I'm offering is the truth.
+            </q>
+        </div>
 
         <canvas id="canvas">Canvas is not supported in your browser.</canvas>
-        <canvas id="canvas2">Canvas is not supported in your browser.</canvas>
-
-        <p class="text-muted text-center text-justify"></p>
+        <canvas id="canvas2">Canvas is not supported in y   our browser.</canvas>
+        <div class="text-center my-5 py-5">
+            <a th:href="@{/}" class="m-5">
+                <button class="pillBlue">
+                    Wake up in your bed.
+                </button>
+                <a th:href="@{/}" class="m-5">
+                    <button class="pillRed">
+                        Stay in Wonderland.
+                    </button>
+                </a>
+            </a>
+        </div>
     </div>
 </div>
 <div th:replace="fragments/fragments :: scripts"></div>
