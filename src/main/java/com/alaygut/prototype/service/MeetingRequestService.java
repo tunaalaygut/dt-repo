@@ -35,10 +35,12 @@ public interface MeetingRequestService {
 	void cancel(Long meetingRequestId);
 	boolean requestFromUser(AddMeetingRequestForm form);
 	List<MeetingRequest> getMemberRequests(Member member);
-	void acceptMemberMeetingRequest(Long meetingRequestId, Long memberId);
 	MeetingRequestDetailProvider getMemberToMemberMeetingRequestDetailsProvider(Member member);
 	Iterable<MeetingRequest> getAllMemberToMemberMeetingRequests(Member member);
 	void sendRejectionEmail(MeetingRequest meetingRequest);
 	void sendConfirmationEmail(MeetingRequest meetingRequest);
 	void sendCancelEmail(MeetingRequest meetingRequest);
+	boolean acceptMemberRequest(Long requestId);
+	boolean declineMemberRequest(Long requestId, Member member);
+	int otherMemberRequestNumber(Member member);
 }
