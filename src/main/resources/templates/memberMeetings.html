@@ -25,8 +25,8 @@
                     <tbody>
                         <tr th:each="meetingDetail : ${meetingsDetails}">
                             <td th:text="${meetingDetail.building.buildingName + ' - ' + meetingDetail.meetingRoom.meetingRoomName}"></td>
-                            <td th:text="${meetingDetail.date}"></td>
-                            <td th:text="${meetingDetail.startTime + ' ' + meetingDetail.endTime}"></td>
+                            <td th:text="${#temporals.format(meetingDetail.date,'dd.MM.yyyy')}"></td>
+                            <td th:text="${meetingDetail.startTime + ' - ' + meetingDetail.endTime}"></td>
                             <td th:text="${meetingDetail.member.firstName + ' ' + meetingDetail.member.lastName}"></td>
                             <td th:text="${meetingDetail.meetingType.meetingTypeName}"></td>
                             <td  href="#" data-toggle="tooltip" data-placement="bottom" th:title="${meetingDetail.description}"class="text-info text-center"><i class="fas fa-info"></i></td>
