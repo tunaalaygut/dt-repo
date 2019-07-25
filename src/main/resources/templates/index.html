@@ -10,8 +10,6 @@
         <div class="content">
             <div th:replace="fragments/fragments :: navbar"></div>
             <h2>Dijital Toplantı'ya Hoşgeldiniz</h2>
-            <a th:href="@{add/meetingRequest}" class="btn btn-info text-white btn-block" sec:authorize="hasRole('ROLE_STANDARD')">Toplantı Talebi Oluştur</a>
-
         </div>
     </div>
     <div th:replace="fragments/fragments :: scripts"></div>
