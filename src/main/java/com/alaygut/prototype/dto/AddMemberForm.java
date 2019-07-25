@@ -12,7 +12,7 @@ import com.alaygut.prototype.domain.Role;
 
 public class AddMemberForm extends FormBase  {
     @Size(min = 3, max = 20, message = "{firstName.size.not.valid}")
-    @Pattern(regexp ="[a-zA-Z(İ,Ş,Ğ,Ç,Ö,Ü,ş,ğ,ö,ü,ç,ı)]*", message = "{firstName.not.valid}")
+    @Pattern(regexp ="[a-zA-Z(a-zA-Z-İ,Ş,Ğ,Ç,Ö,Ü,ş,ğ,ö,ü,ç,ı)]*", message = "{firstName.not.valid}")
     private String firstName;
 
     @Pattern(regexp ="[a-zA-Z(İ,Ş,Ğ,Ç,Ö,Ü,ş,ğ,ö,ü,ç,ı)]*", message = "{lastName.not.valid}")
