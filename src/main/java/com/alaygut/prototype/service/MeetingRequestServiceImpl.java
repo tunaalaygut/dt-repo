@@ -248,10 +248,54 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	@Transactional
 	public void acceptMeetingRequest(Long meetingRequestId, Long supervisorId) {
 		MeetingRequest request = this.getMeetingRequest(meetingRequestId);
-		request.setUpdater(memberService.getMember(supervisorId));
+		Member supervisor = memberService.getMember(supervisorId);
+
+		LocalDate date = request.getDate();
+		MeetingRoom meetingRoom = request.getMeetingRoom();
+
+		Iterable<MeetingRequest> pendingRequests = this.getAllByDateAndMeetingRoomAndMeetingRequestState(date, meetingRoom, MeetingState.ONAY_BEKLIYOR);
+		Iterator<MeetingRequest> requestIterator = pendingRequests.iterator();
+
+		while (requestIterator.hasNext()) {
+			MeetingRequest current = requestIterator.next();
+			if(!current.equals(request)){ //do not compare with itself
+				if (hasIntersect(request, current)){
+					current.setMeetingRequestState(MeetingState.REDDEDILDI);
+					current.setUpdater(supervisor);
+					//send declined mail
+				}
+
+			}
+		}
+
+		request.setUpdater(supervisor);
 		request.setMeetingRequestState(MeetingState.ONAYLANDI);
 
 		sendConfirmationEmail(request);
+	}
+
+	//returns true if two meeting requests has an intersection on an hourly basis. (Date assumed to be the same)
+	private boolean hasIntersect(MeetingRequest meetingA, MeetingRequest meetingB){
+		if(
+				meetingA.getStartTime().equals(meetingB.getStartTime()) ||
+				meetingA.getStartTime().equals(meetingB.getEndTime()) ||
+				meetingA.getEndTime().equals(meetingB.getStartTime()) ||
+				meetingA.getEndTime().equals(meetingB.getEndTime())
+		)	//immediate intersection
+			return true;
+
+		if (
+				timeInInterval(meetingA.getStartTime(), meetingA.getEndTime(), meetingB.getStartTime()) ||
+				timeInInterval(meetingA.getStartTime(), meetingA.getEndTime(), meetingB.getEndTime())
+		)	// meeting starts or ends inside the interval
+			return true;
+
+		return false;
+	}
+
+
+	private boolean timeInInterval(LocalTime start, LocalTime end, LocalTime time){
+		return ( time.isAfter(start) && time.isBefore(end) );
 	}
 
 
