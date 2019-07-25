@@ -26,6 +26,7 @@
 
             <input th:attr="name=recordId" type="hidden" th:value="${addRoomFeatureForm.recordId}">
             <button type="submit" class="btn btn-primary btn-info btn-block mt-5">Özelliği Değiştir</button>
+            <a class="btn btn-primary btn-danger btn-block mt-5" th:href="@{/list/roomFeature}">Geri Dön <span class="fas fa-undo"></span></a>
         </form>
     </div>
 </div>
