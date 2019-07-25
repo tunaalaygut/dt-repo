@@ -2,6 +2,7 @@ package com.alaygut.prototype.service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -383,7 +384,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		mailMessage.setSubject("Toplantı İptali Hakkında Bilgilendirme");
 		mailMessage.setFrom("dijital.toplanti@gmail.com");
 		mailMessage.setText("Aşağıda özellikleri belirtilen toplantı iptal edilmiştir.\nToplantının Bilgileri: " +
-				"\nTarih: " + meetingRequest.getDate()+ "\nSaat: " +meetingRequest.getStartTime() + " - " +meetingRequest.getEndTime()+
+				"\nTarih: " + meetingRequest.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))+ "\nSaat: " +meetingRequest.getStartTime() + " - " +meetingRequest.getEndTime()+
 				"\nBina: " + meetingRequest.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +meetingRequest.getMeetingRoom().getMeetingRoomName()+
 				"\nToplantı Türü: " + meetingRequest.getMeetingType().getMeetingTypeName() +
 				"\nToplantı Açıklaması: " +meetingRequest.getDescription());
@@ -441,7 +442,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		mailMessage.setSubject("Toplantı Talebiniz Hakkında Bilgilendirme");
 		mailMessage.setFrom("dijital.toplanti@gmail.com");
 		mailMessage.setText("Toplantı talebiniz kabul edilmiştir.\nToplantı Bilgileriniz: " +
-				"\nTarih: " + request.getDate()+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
+				"\nTarih: " + request.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
 				"\nBina: " + request.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +request.getMeetingRoom().getMeetingRoomName()+
 				"\nToplantı Türü: " + request.getMeetingType().getMeetingTypeName() +
 				"\nToplantı Açıklaması: " + request.getDescription() +
@@ -458,7 +459,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		mailMessage1.setFrom("dijital.toplanti@gmail.com");
 		mailMessage1.setText( request.getCreator().getFirstName() + " " + request.getCreator().getLastName() +
 				" sizi aşağıda bilgileri belirtilen toplantıya eklemiştir.\n\nToplantının Bilgileri: " +
-				"\nTarih: " + request.getDate()+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
+				"\nTarih: " + request.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
 				"\nBina: " + request.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +request.getMeetingRoom().getMeetingRoomName() +
 				"\nToplantı Türü: " + request.getMeetingType().getMeetingTypeName() +
 				"\nToplantı Açıklaması: " + request.getDescription()+
@@ -484,7 +485,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		mailMessage.setSubject("Toplantı Talebiniz Hakkında Bilgilendirme");
 		mailMessage.setFrom("dijital.toplanti@gmail.com");
 		mailMessage.setText("Toplantı talebiniz reddedilmiştir.\nTalep Edilen Toplantının Bilgileri: " +
-				"\nTarih: " + request.getDate()+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
+				"\nTarih: " + request.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
 				"\nBina: " + request.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +request.getMeetingRoom().getMeetingRoomName()+
 				"\nToplantı Türü: " + request.getMeetingType().getMeetingTypeName() +
 				"\nToplantı Açıklaması: " + request.getDescription());
