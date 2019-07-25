@@ -1,10 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<div th:replace="fragments/fragments :: head(content = 'Toplantılarım')"></div>
 <body>
-
+    <div class="wrapper">
+        <div th:replace="fragments/fragments :: sidebar"></div>
+        <div class="content">
+            <div th:replace="fragments/fragments :: navbar"></div>
+            <h2 class="mb-4">Toplantılarım</h2>
+            <p class="my-2">Katılımcısı olduğunuz tüm toplantıları burada görebilirsiniz.</p>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Lokasyon</th>
+                            <th scope="col">Tarih</th>
+                            <th scope="col">Saat</th>
+                            <th scope="col">Oluşturan Kullanıcı</th>
+                            <th scope="col">Tür</th>
+                            <th scope="col">Açıklama</th>
+                            <th scope="col">Katılımcılar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="meetingDetail : ${meetingsDetails}">
+                            <td th:text="${meetingDetail.building.buildingName + ' - ' + meetingDetail.meetingRoom.meetingRoomName}"></td>
+                            <td th:text="${meetingDetail.date}"></td>
+                            <td th:text="${meetingDetail.startTime + ' ' + meetingDetail.endTime}"></td>
+                            <td th:text="${meetingDetail.member.firstName + ' ' + meetingDetail.member.lastName}"></td>
+                            <td th:text="${meetingDetail.meetingType.meetingTypeName}"></td>
+                            <td  href="#" data-toggle="tooltip" data-placement="bottom" th:title="${meetingDetail.description}"class="text-info text-center"><i class="fas fa-info"></i></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-info dropdown-toggle btn-block" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Gör
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a disabled class="dropdown-item" th:each="participant : ${meetingDetail.participants}" th:text="${participant.fullName}"></a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments/fragments :: scripts"></div>
 </body>
 </html>

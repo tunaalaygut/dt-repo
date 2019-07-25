@@ -58,7 +58,6 @@ $(document).ready(function () {
 
     updatePendingBadge();
     updateOtherMemberRequestBadge();
-
 });
 
 function updatePendingBadge(){

@@ -2,6 +2,7 @@ package com.alaygut.prototype.domain;
   
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +19,7 @@ public class Participant extends BaseClass {
 	@Column(name = "participationId", nullable = false, updatable = false)
 	private Long participationId;
 	
-	@ManyToOne(optional = true)
+	@ManyToOne
 	@JoinColumn(name = "memberId")
 	private Member member;
 	
@@ -28,7 +29,7 @@ public class Participant extends BaseClass {
 	@Column(name = "email", nullable = false) 
 	private String email;
 
-	@ManyToOne(optional = true)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "meetingRequestId")
 	private MeetingRequest meetingRequest;
 	
@@ -71,5 +72,13 @@ public class Participant extends BaseClass {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public MeetingRequest getMeetingRequest() {
+		return meetingRequest;
+	}
+
+	public void setMeetingRequest(MeetingRequest meetingRequest) {
+		this.meetingRequest = meetingRequest;
 	}
 }

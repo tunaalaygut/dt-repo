@@ -8,6 +8,7 @@ import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.domain.RecordState;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 
 public interface MeetingRequestRepository extends CrudRepository<MeetingRequest, Long> {

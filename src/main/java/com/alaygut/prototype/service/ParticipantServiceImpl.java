@@ -63,4 +63,9 @@ public class ParticipantServiceImpl implements ParticipantService {
 	public List<Participant> getAllParticipantsInMeetingRequest(MeetingRequest meetingRequest) {
 		return participantRepository.getAllByMeetingRequest(meetingRequest);
 	}
+
+	@Override
+	public List<Participant> getAllByMember(Member member) {
+		return participantRepository.getAllByMember(member);
+	}
 }
