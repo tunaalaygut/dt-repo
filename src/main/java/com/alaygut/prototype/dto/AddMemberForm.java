@@ -11,7 +11,7 @@ import com.alaygut.prototype.domain.Role;
 
 public class AddMemberForm extends FormBase  {
     @Size(min = 3, max = 20, message = "{firstName.size.not.valid}")
-    @Pattern(regexp ="[a-zA-Z(a-zA-Z-İ,Ş,Ğ,Ç,Ö,Ü,ş,ğ,ö,ü,ç,ı)]*", message = "{firstName.not.valid}")
+    @Pattern(regexp ="[a-zA-Z(İ,Ş,Ğ,Ç,Ö,Ü,ş,ğ,ö,ü,ç,ı)]*", message = "{firstName.not.valid}")
     private String firstName;
 
     @Pattern(regexp ="[a-zA-Z(İ,Ş,Ğ,Ç,Ö,Ü,ş,ğ,ö,ü,ç,ı)]*", message = "{lastName.not.valid}")
@@ -28,7 +28,7 @@ public class AddMemberForm extends FormBase  {
     private String newEmail;
 
     @Size(min = 6, max = 20, message = "{newUsername.size.not.valid}")
-    @Pattern(regexp ="[a-zA-Z(İ,Ş,Ğ,Ç,Ö,Ü,ş,ğ,ö,ü,ç,ı)\\d]*", message = "{newUsername.not.valid}")
+    @Pattern(regexp ="[a-zA-Z(İ,Ş,Ğ,Ç,Ö,Ü,ş,ğ,ö,ü,ç,ı,_,.)\\d]*", message = "{newUsername.not.valid}")
     private String newUsername;
 
     private String originalEmail;
@@ -44,7 +44,7 @@ public class AddMemberForm extends FormBase  {
 
     @Size(min = 6, max = 20, message = "{username.size.not.valid}")
     @UniqueUsername(message = "{username.not.unique}")
-    @Pattern(regexp ="[a-zA-Z(İ,Ş,Ğ,Ç,Ö,Ü,ş,ğ,ö,ü,ç,ı)\\d]*", message = "{username.not.valid}")
+    @Pattern(regexp ="[a-zA-Z(İ,Ş,Ğ,Ç,Ö,Ü,ş,ğ,ö,ü,ç,ı,_,.)\\d]*", message = "{username.not.valid}")
     private String username;
 
     @Size(min =6 , max = 25, message = "{password.size.not.valid}")

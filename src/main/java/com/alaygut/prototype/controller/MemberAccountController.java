@@ -9,10 +9,8 @@ import com.alaygut.prototype.repository.LoginRepository;
 import com.alaygut.prototype.repository.MemberRepository;
 import com.alaygut.prototype.service.EmailSenderService;
 import com.alaygut.prototype.service.MemberService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -61,7 +59,7 @@ public class MemberAccountController {
     public ModelAndView displayResetPassword(Member member) {
         return new ModelAndView("forgotPassword", "member", member);
     }
-    
+
     @GetMapping("/change-password")
     public ModelAndView displayChangePassword(Principal principal) {
         return new ModelAndView("changePassword", "member", memberService.getMember(principal.getName()));
@@ -83,8 +81,8 @@ public class MemberAccountController {
             mailMessage.setTo(existingMember.getEmail());
             mailMessage.setSubject("Dijital Toplantı Şifre Yenileme Talebi");
             mailMessage.setFrom("dijital.toplanti@gmail.com");
-            mailMessage.setText("Dijital Toplantı hesabınızın şifresini yenilemeyi talep ettiniz.Yenileme işlemini tamamlamak için lütfen bu linke tıklayın: "
-                    + "http://localhost:8080/confirm-reset?token="+confirmationToken.getConfirmationToken()+ "\nBöyle bir işlem talep etmediyseniz bu maili dikkate almayın.");
+            mailMessage.setText("Dijital Toplantı hesabınızın şifresini yenilemeyi talep ettiniz. Yenileme işlemini tamamlamak için lütfen bu linke tıklayın: "
+                    + "http://localhost:8080/confirm-reset?token=" + confirmationToken.getConfirmationToken() + "\nBöyle bir işlem talep etmediyseniz bu maili dikkate almayın.");
 
             // Send the email
             emailSenderService.sendEmail(mailMessage);
@@ -99,7 +97,7 @@ public class MemberAccountController {
         return modelAndView;
     }
 
- // Receive the address and send an email
+    // Receive the address and send an email
     @PostMapping("/change-password")
     public ModelAndView changeUserPassword(ModelAndView modelAndView, Member member, RedirectAttributes redirectAttributes) {
         Member existingMember = memberRepository.findByEmail(member.getEmail());
@@ -115,8 +113,8 @@ public class MemberAccountController {
             mailMessage.setTo(existingMember.getEmail());
             mailMessage.setSubject("Dijital Toplantı Şifre Yenileme Talebi");
             mailMessage.setFrom("dijital.toplanti@gmail.com");
-            mailMessage.setText("Dijital Toplantı hesabınızın şifresini yenilemeyi talep ettiniz.Yenileme işlemini tamamlamak için lütfen bu linke tıklayın: "
-                    + "http://localhost:8080/confirm-reset?token="+confirmationToken.getConfirmationToken()+ "\nBöyle bir işlem talep etmediyseniz bu maili dikkate almayın.");
+            mailMessage.setText("Dijital Toplantı hesabınızın şifresini yenilemeyi talep ettiniz. Yenileme işlemini tamamlamak için lütfen bu linke tıklayın: "
+                    + "http://localhost:8080/confirm-reset?token=" + confirmationToken.getConfirmationToken() + "\nBöyle bir işlem talep etmediyseniz bu maili dikkate almayın.");
 
             // Send the email
             emailSenderService.sendEmail(mailMessage);
@@ -130,9 +128,9 @@ public class MemberAccountController {
         }
         return modelAndView;
     }
-    
-    @RequestMapping(value="/confirm-reset", method= {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token")String confirmationToken, BindingResult bindingResult) {
+
+    @RequestMapping(value = "/confirm-reset", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token") String confirmationToken, BindingResult bindingResult) {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
         if (token != null) {
@@ -149,8 +147,8 @@ public class MemberAccountController {
     
     @PostMapping("/reset-password")
     public String resetUserPassword(@Valid @ModelAttribute("resetPasswordDTO") ResetPasswordDTO resetPasswordDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if(bindingResult.hasErrors()){
-            
+        if (bindingResult.hasErrors()) {
+
             return "resetPassword";
         }
 
