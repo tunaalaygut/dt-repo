@@ -1,6 +1,6 @@
 package com.alaygut.prototype.controller;
 
-import com.alaygut.prototype.domain.ConfirmationToken;  
+import com.alaygut.prototype.domain.ConfirmationToken;   
 import com.alaygut.prototype.domain.Login;
 import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.dto.ResetPasswordDTO;
@@ -12,7 +12,6 @@ import com.alaygut.prototype.service.MemberService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -105,8 +104,10 @@ public class MemberAccountController {
         Member existingMember = memberRepository.findByEmail(member.getEmail());
 
         if (existingMember != null) {
+        	
             // Create token
             ConfirmationToken confirmationToken = new ConfirmationToken(existingMember);
+            //Make sure User has 
             // Save it
             confirmationTokenRepository.save(confirmationToken);
 
@@ -126,7 +127,7 @@ public class MemberAccountController {
 
         } else {
             modelAndView.addObject("passwordErrorMessage", "E-mail adresi bulunamadı.");
-            modelAndView.setViewName("forgotPassword");
+            modelAndView.setViewName("changePassword");
         }
         return modelAndView;
     }
@@ -140,6 +141,7 @@ public class MemberAccountController {
             resetPasswordDTO.setEmail(token.getMember().getEmail());
             modelAndView.addObject("resetPasswordDTO", resetPasswordDTO);
             modelAndView.setViewName("resetPassword");
+            confirmationTokenRepository.delete(token);
         } else
             modelAndView.setViewName("login");
 
@@ -159,7 +161,7 @@ public class MemberAccountController {
         login.setPassword(passwordEncoder.encode(resetPasswordDTO.getPassword()));
         loginRepository.save(login);
         redirectAttributes.addFlashAttribute("successMessage", "Şifreniz başarıyla yenilendi. Yeni şifrenizle giriş yapabilirsiniz.");
-        return "redirect:login";
+        return "redirect:/login";
     }
 
 
