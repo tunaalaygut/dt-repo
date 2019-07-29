@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import java.util.Properties;
 
 @Configuration
-@EnableAsync
 public class ExtraConfig {
     @Bean
     public JavaMailSenderImpl mailSender() {
