@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +28,7 @@ public class MemberServiceImpl implements MemberService {
     private MemberRepository memberRepository;
     private RoleService roleService;
     private LoginService loginService;
+
     private EmailSenderService emailSenderService;
     private static final String ALPHA_CAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String ALPHA = "abcdefghijklmnopqrstuvwxyz";
@@ -39,9 +39,13 @@ public class MemberServiceImpl implements MemberService {
 
     private PasswordEncoder passwordEncoder;
 
-    public MemberServiceImpl(MemberRepository memberRepository, LoginService loginService, EmailSenderService emailSenderService) {
+    public MemberServiceImpl(MemberRepository memberRepository, LoginService loginService) {
         this.memberRepository = memberRepository;
         this.loginService = loginService;
+    }
+
+    @Autowired
+    public void setEmailSenderService(EmailSenderService emailSenderService) {
         this.emailSenderService = emailSenderService;
     }
 

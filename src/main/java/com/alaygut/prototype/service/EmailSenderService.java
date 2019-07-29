@@ -1,22 +1,11 @@
 package com.alaygut.prototype.service;
- 
+
+import com.alaygut.prototype.domain.MeetingRequest;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 
-@Service("emailSenderService")
-public class EmailSenderService {
-
-    private JavaMailSender javaMailSender;
-
-    public EmailSenderService(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
-    }
-
-    @Async
-    public void sendEmail(SimpleMailMessage email) {
-        javaMailSender.send(email);
-    }
-
+public interface EmailSenderService {
+    void sendEmail(SimpleMailMessage email);
+    void sendRejectionEmail(MeetingRequest meetingRequest);
+    void sendConfirmationEmail(MeetingRequest meetingRequest);
+    void sendCancelEmail(MeetingRequest meetingRequest);
 }
