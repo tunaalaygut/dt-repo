@@ -2,7 +2,6 @@ package com.alaygut.prototype.service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,9 +10,6 @@ import java.util.Map;
 import com.alaygut.prototype.dto.MeetingDetail;
 import com.alaygut.prototype.dto.MeetingRequestDetailProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import com.alaygut.prototype.domain.MeetingRequest;
 import com.alaygut.prototype.domain.MeetingRoom;
@@ -25,8 +21,6 @@ import com.alaygut.prototype.dto.AddMeetingRequestForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.repository.MeetingRequestRepository;
 import org.springframework.transaction.annotation.Transactional;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 
 @Service
 @Transactional(readOnly = true)
@@ -251,10 +245,54 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	@Transactional
 	public void acceptMeetingRequest(Long meetingRequestId, Long supervisorId) {
 		MeetingRequest request = this.getMeetingRequest(meetingRequestId);
-		request.setUpdater(memberService.getMember(supervisorId));
+		Member supervisor = memberService.getMember(supervisorId);
+
+		LocalDate date = request.getDate();
+		MeetingRoom meetingRoom = request.getMeetingRoom();
+
+		Iterable<MeetingRequest> pendingRequests = this.getAllByDateAndMeetingRoomAndMeetingRequestState(date, meetingRoom, MeetingState.ONAY_BEKLIYOR);
+		Iterator<MeetingRequest> requestIterator = pendingRequests.iterator();
+
+		while (requestIterator.hasNext()) {
+			MeetingRequest current = requestIterator.next();
+			if(!current.equals(request)){ //do not compare with itself
+				if (hasIntersect(request, current)){
+					current.setMeetingRequestState(MeetingState.REDDEDILDI);
+					current.setUpdater(supervisor);
+					//send declined mail
+				}
+
+			}
+		}
+
+		request.setUpdater(supervisor);
 		request.setMeetingRequestState(MeetingState.ONAYLANDI);
 
 		emailSenderService.sendConfirmationEmail(request);
+	}
+
+	//returns true if two meeting requests has an intersection on an hourly basis. (Date assumed to be the same)
+	private boolean hasIntersect(MeetingRequest meetingA, MeetingRequest meetingB){
+		if(
+				meetingA.getStartTime().equals(meetingB.getStartTime()) ||
+				meetingA.getStartTime().equals(meetingB.getEndTime()) ||
+				meetingA.getEndTime().equals(meetingB.getStartTime()) ||
+				meetingA.getEndTime().equals(meetingB.getEndTime())
+		)	//immediate intersection
+			return true;
+
+		if (
+				timeInInterval(meetingA.getStartTime(), meetingA.getEndTime(), meetingB.getStartTime()) ||
+				timeInInterval(meetingA.getStartTime(), meetingA.getEndTime(), meetingB.getEndTime())
+		)	// meeting starts or ends inside the interval
+			return true;
+
+		return false;
+	}
+
+
+	private boolean timeInInterval(LocalTime start, LocalTime end, LocalTime time){
+		return ( time.isAfter(start) && time.isBefore(end) );
 	}
 
 
@@ -263,8 +301,11 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	@Transactional
 	public void cancel(Long meetingRequestId) {
 		MeetingRequest meetingRequest = this.getMeetingRequest(meetingRequestId);
+		boolean sendMail = (meetingRequest.getMeetingRequestState().equals(MeetingState.ONAYLANDI));
+
 		meetingRequest.setMeetingRequestState(MeetingState.IPTAL_EDILDI);
-		emailSenderService.sendCancelEmail(meetingRequest);
+		if(sendMail)
+			emailSenderService.sendCancelEmail(meetingRequest);
 	}
 
 	@Override
@@ -369,7 +410,5 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	public int otherMemberRequestNumber(Member member) {
 		return meetingRequestRepository.countAllByMeetingRequestStateAndRequestMadeTo(MeetingState.KULLANICI_ONAYI_BEKLIYOR, member);
 	}
-
-
 
 }
