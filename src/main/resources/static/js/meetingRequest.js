@@ -179,14 +179,6 @@ function addMember(memberId, memberName, email){
     checkRoomCapacity();
 }
 
-$(document).on('change', '#datePicker', function(){
-    let datePicker = $('#datePicker');
-    
-    if (datePicker.val()){
-
-    }
-});
-
 $(document).on('click','#addGuest', function(){
     let guestFullNameInput = $("#guestFullNameInput");
     let guestEmailInput = $("#guestEmailInput");

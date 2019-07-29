@@ -305,8 +305,11 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 	@Transactional
 	public void cancel(Long meetingRequestId) {
 		MeetingRequest meetingRequest = this.getMeetingRequest(meetingRequestId);
+		boolean sendMail = (meetingRequest.getMeetingRequestState().equals(MeetingState.ONAYLANDI));
+
 		meetingRequest.setMeetingRequestState(MeetingState.IPTAL_EDILDI);
-		sendCancelEmail(meetingRequest);
+		if(sendMail)
+			sendCancelEmail(meetingRequest);
 	}
 
 	@Override
@@ -376,7 +379,8 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 
 		return participants.replaceAll(", $", "");    //to remove the last comma from the string.
 	}
-	@Async
+
+
 	public void sendCancelEmail(MeetingRequest meetingRequest) {
 		List<Participant> participants = participantService.getAllParticipantsInMeetingRequest(meetingRequest);
 		InternetAddress[] Address = new InternetAddress[participants.size()];
@@ -435,7 +439,6 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		return meetingRequestRepository.countAllByMeetingRequestStateAndRequestMadeTo(MeetingState.KULLANICI_ONAYI_BEKLIYOR, member);
 	}
 
-	@Async
 	public void sendConfirmationEmail(MeetingRequest request) {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(request.getCreator().getEmail());
@@ -478,7 +481,6 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 		}
 	}
 
-	@Async
 	public void sendRejectionEmail(MeetingRequest request) {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(request.getCreator().getEmail());
