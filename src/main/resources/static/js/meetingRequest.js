@@ -532,3 +532,5 @@ function fillInterval(beginning, end, color){
         element.css("background", color);
     }
 }
+
+datePicker.min = new Date().toISOString().split("T")[0]; //datepicker'i bugun ve gelecek olarak kisitlama

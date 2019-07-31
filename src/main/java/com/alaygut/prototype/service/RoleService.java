@@ -16,4 +16,5 @@ public interface RoleService {
     Iterable<Right> getAllRights(Long roleId);
     void fixForm(AddRoleForm form);
     AddRoleForm getAddRoleForm();
+    Role getRole (String roleName);
 }
