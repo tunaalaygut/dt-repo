@@ -1,4 +1,3 @@
-
 $( document ).ready(function() {
     getAndPopulateMeetingRooms();
     meetingRoomCapacity = getRoomCapacity();
@@ -112,11 +111,9 @@ function  removeParticipant(memberId, fullName, email) {
     let roomFeatureInput = $("#filterRoomFeatureSelectMenu option:selected");
     let selectedFeatureIds = [];
     let meetingRoomSelect = $("#meetingRoomId");
-
     $.each(roomFeatureInput, function(){
         selectedFeatureIds.push($(this).val());
     });
-
     $.ajax({
         url: "/filterMeetingRooms",
         data: {"capacity": capacityInput}
@@ -125,7 +122,6 @@ function  removeParticipant(memberId, fullName, email) {
         $.each(map, function(meetingRoomId, meetingRoomName){
             meetingRoomSelect.append('<option value=' + meetingRoomId + '>' + meetingRoomName + '</option>');
         });
-
     });
 });*/
 
@@ -197,12 +193,12 @@ $(document).on('click','#addGuest', function(){
 });
 
 $(document).on('click', '#meetingRoomFilterDivButton', function(){
-   let icon = $("#meetingRoomFilterDivButton svg");
+    let icon = $("#meetingRoomFilterDivButton svg");
 
-   if(icon.hasClass("fa-sort-down"))
-       icon.removeClass("fa-sort-down").addClass("fa-sort-up");
-   else
-       icon.removeClass("fa-sort-up").addClass("fa-sort-down");
+    if(icon.hasClass("fa-sort-down"))
+        icon.removeClass("fa-sort-down").addClass("fa-sort-up");
+    else
+        icon.removeClass("fa-sort-up").addClass("fa-sort-down");
 });
 
 $(document).on('click','.deleteParticipant', function(){

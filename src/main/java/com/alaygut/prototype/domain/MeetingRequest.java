@@ -22,7 +22,7 @@ public class MeetingRequest extends BaseClass{
 	private Long meetingRequestId;
 	
 	@ManyToOne(optional = true)
-	@JoinColumn(name = "meetinRoomId")
+	@JoinColumn(name = "meetingRoomId")
 	private MeetingRoom meetingRoom;
 	
 	@ManyToOne(optional = true)
