@@ -34,6 +34,9 @@ public class Member extends BaseClass implements UserDetails {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "participantType")
+    private ParticipantType participantType;
+
     @ManyToOne(optional = true)
     @JoinColumn(name = "roleId")
     private Role role;
@@ -46,13 +49,14 @@ public class Member extends BaseClass implements UserDetails {
         //Default constructor
     }
 
-    public Member(String firstName, String lastName, String email, String phone, Role role, Login login) {
+    public Member(String firstName, String lastName, String email, String phone, Role role, Login login, ParticipantType participantType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.role = role;
         this.login = login;
+        this.participantType = participantType;
     }
 
     public Long getMemberId() {
@@ -115,6 +119,13 @@ public class Member extends BaseClass implements UserDetails {
         return role.getRoleName();
     }
 
+    public ParticipantType getParticipantType() {
+        return participantType;
+    }
+
+    public void setParticipantType(ParticipantType participantType) {
+        this.participantType = participantType;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

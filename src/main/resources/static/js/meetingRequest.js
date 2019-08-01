@@ -1,7 +1,7 @@
 $( document ).ready(function() {
     getAndPopulateMeetingRooms();
     meetingRoomCapacity = getRoomCapacity();
-    addMember($("#currentUserId").val(), $("#currentUserFullName").val(), $("#currentUserEmail").val());
+    addMember($("#currentUserId").val(), $("#currentUserFullName").val(), $("#currentUserEmail").val(), $("#currentUserParticipantType").val());
     document.querySelector("#datePicker").valueAsDate = new Date();
     drawTheGrid();
     $('[data-toggle="tooltip"]').tooltip();
@@ -84,25 +84,28 @@ function loadRoomFeatures(){
     });
 }
 
-function addParticipant(memberId, fullName, email){
+function addParticipant(memberId, fullName, email, participantType){
     let addedMembers = $("#addedMembersMultipleSelect");
     let markup =
         '<option value="'+ memberId +'" selected></option>' +
         '<option value="'+ fullName +'" selected></option>' +
-        '<option value="'+ email +'" selected></option>';
+        '<option value="'+ email +'" selected></option>' +
+        '<option value="'+ participantType +'" selected></option>';
     markup = $($.parseHTML(markup));
 
     addedMembers.append(markup);
 }
 
-function  removeParticipant(memberId, fullName, email) {
+function  removeParticipant(memberId, fullName, email, participantType) {
     let emailOption = $('option[value="'+ email +'"]');
     let fullNameOption = emailOption.prev();
     let memberIdOption = fullNameOption.prev();
+    let participantOption = memberIdOption.prev();
 
     emailOption.remove();
     fullNameOption.remove();
     memberIdOption.remove();
+    participantOption.remove();
 }
 
 //Filtre özelliği
@@ -125,7 +128,7 @@ function  removeParticipant(memberId, fullName, email) {
     });
 });*/
 
-function transferParticipantInfo(memberId, fullName, email){
+function transferParticipantInfo(memberId, fullName, email, participantType){
     let addedMembersDataTable = $('#example2').DataTable();
     let allMembersTable = $('#example').DataTable();
     let newMarkup;
@@ -135,8 +138,9 @@ function transferParticipantInfo(memberId, fullName, email){
             '<tr>' +
             '<td>' + fullName + '</td>' +
             '<td>' + email + '</td>' +
+            '<td>' + participantType + '</td>' +
             '<td class="text-center">' +
-            '<button type="button" value0="'+ memberId +'" value1="'+ fullName +'" value2="'+ email +'" class="btn btn-sm btn-danger deleteParticipant">' +
+            '<button type="button" value0="'+ memberId +'" value1="'+ fullName +'" value2="'+ email +'" value3="'+ participantType +'" class="btn btn-sm btn-danger deleteParticipant">' +
             '<span class="fas fa-minus"></span>' +
             '</button>' +
             '</td>' +
@@ -156,7 +160,7 @@ function transferParticipantInfo(memberId, fullName, email){
             '</td>' +
             '</tr>'));
 
-    addParticipant(memberId, fullName, email);
+    addParticipant(memberId, fullName, email, participantType);
     addedMembersDataTable.row.add(newMarkup).draw();			//update added members table
 }
 
@@ -166,12 +170,13 @@ $(document).on('click','.addMember', function() {
     let clickedMemberId = $(this).attr("value0");
     let memberName = $(this).attr("value1");
     let email = $(this).attr("value2");
+    let participantType = $(this).attr("value3");
 
-    addMember(clickedMemberId, memberName, email);
+    addMember(clickedMemberId, memberName, email, participantType);
 });
 
-function addMember(memberId, memberName, email){
-    transferParticipantInfo(memberId, memberName, email);
+function addMember(memberId, memberName, email, participantType){
+    transferParticipantInfo(memberId, memberName, email, participantType);
     checkRoomCapacity();
 }
 
@@ -209,6 +214,7 @@ $(document).on('click','.deleteParticipant', function(){
     let memberId = $(this).attr('value0');
     let fullName = $(this).attr('value1');
     let email = $(this).attr('value2');
+    let participantType = $(this).attr('value3')
 
     console.log(memberId + " " + fullName + " " + email);
 
@@ -218,7 +224,7 @@ $(document).on('click','.deleteParticipant', function(){
             '<td>' + fullName + '</td>' +
             '<td>' + email + '</td>' +
             '<td class="text-center">' +
-            '<button type="button" value0="' + memberId + '" value1="' + fullName + '" value2="' + email + '" class="btn btn-sm btn-info addMember">' +
+            '<button type="button" value0="' + memberId + '" value1="' + fullName + '" value2="' + email + '" value3="'+ participantType +'" class="btn btn-sm btn-info addMember">' +
             '<span class="fas fa-plus"></span>' +
             '</button>' +
             '</td>' +
@@ -229,7 +235,7 @@ $(document).on('click','.deleteParticipant', function(){
 
 
     addedMembersDataTable.rows(clickedRow).remove().draw();
-    removeParticipant(memberId, fullName, email);
+    removeParticipant(memberId, fullName, email, participantType);
     checkRoomCapacity();
 });
 

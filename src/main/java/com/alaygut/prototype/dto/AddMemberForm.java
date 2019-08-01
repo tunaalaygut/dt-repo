@@ -7,6 +7,7 @@ import javax.validation.constraints.Size;
 
 import com.alaygut.prototype.annotation.UniqueEmail;
 import com.alaygut.prototype.annotation.UniqueUsername;
+import com.alaygut.prototype.domain.ParticipantType;
 import com.alaygut.prototype.domain.Role;
 
 public class AddMemberForm extends FormBase  {
@@ -49,6 +50,8 @@ public class AddMemberForm extends FormBase  {
 
     @Size(min =6 , max = 25, message = "{password.size.not.valid}")
     private String password;
+
+    private ParticipantType participantType;
 
     private Iterable<Role> allRoles;
 
@@ -152,4 +155,11 @@ public class AddMemberForm extends FormBase  {
         this.originalUsername = originalUsername;
     }
 
+    public ParticipantType getParticipantType() {
+        return participantType;
+    }
+
+    public void setParticipantType(ParticipantType participantType) {
+        this.participantType = participantType;
+    }
 }

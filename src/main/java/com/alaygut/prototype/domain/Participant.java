@@ -29,17 +29,21 @@ public class Participant extends BaseClass {
 	@Column(name = "email", nullable = false) 
 	private String email;
 
+	@Column(name = "participantType", nullable = false)
+	private ParticipantType participantType;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "meetingRequestId")
 	private MeetingRequest meetingRequest;
 	
-	public Participant() {} //default constructor
+	public Participant() {this.setParticipantType(ParticipantType.ZORUNLU);} //default constructor
 
-	public Participant(Member member, String fullName, String email, MeetingRequest meetingRequest) {
+	public Participant(Member member, String fullName, String email, MeetingRequest meetingRequest, ParticipantType participantType) {
 		this.member = member;
 		this.fullName = fullName;
 		this.email = email;
 		this.meetingRequest = meetingRequest;
+		this.setParticipantType(ParticipantType.ZORUNLU);
 	}
 
 	public Long getParticipationId() {
@@ -80,5 +84,13 @@ public class Participant extends BaseClass {
 
 	public void setMeetingRequest(MeetingRequest meetingRequest) {
 		this.meetingRequest = meetingRequest;
+	}
+
+	public ParticipantType getParticipantType() {
+		return participantType;
+	}
+
+	public void setParticipantType(ParticipantType participantType) {
+		this.participantType = participantType;
 	}
 }
