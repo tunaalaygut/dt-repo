@@ -3,6 +3,7 @@ package com.alaygut.prototype.service;
 import com.alaygut.prototype.domain.MeetingRequest;
 import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.domain.Participant;
+import com.alaygut.prototype.domain.ParticipantType;
 import com.alaygut.prototype.repository.ParticipantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,16 +46,20 @@ public class ParticipantServiceImpl implements ParticipantService {
 		for (int i = 0; i < participantDetails.size(); i+=4){
 			String fullName, email;
 			Member member;
+			ParticipantType participantType;
 
-			if (participantDetails.get(i).equals(""))
+			if (participantDetails.get(i).equals("")) {
 				member = null;
+				participantType = ParticipantType.MISAFIR;
+			}
 			else									//member
 				member = memberService.getMember(Long.parseLong(participantDetails.get(i)));	//reference to the member
 
 			fullName = participantDetails.get(i+1);
 			email = participantDetails.get(i+2);
+			participantType = ParticipantType.ZORUNLU;
 
-			Participant participant = new Participant(member, fullName, email, meetingRequest);
+			Participant participant = new Participant(member, fullName, email, meetingRequest, participantType);
 			participantRepository.save(participant);
 		}
 	}

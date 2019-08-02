@@ -92,7 +92,7 @@ function addParticipant(memberId, fullName, email, participantType){
         '<option value="'+ fullName +'" selected></option>' +
         '<option value="'+ email +'" selected></option>' +
         '<option value="'+ participantType +'" selected></option>';
-    markup = $($.parseHTML(markup));1
+    markup = $($.parseHTML(markup));
 
     addedMembers.append(markup);
 }
@@ -152,17 +152,19 @@ function transferParticipantInfo(memberId, fullName, email, participantType){
         let memberButton = $('button[value0='+ memberId +']');
         allMembersTable.rows(memberButton.parent().parent()).remove().draw();
     }
-    else
+    else {
         newMarkup = $($.parseHTML(
             '<tr>' +
             '<td>' + fullName + '<small class="text-muted"> (Misafir)</small></td>' +
             '<td>' + email + '</td>' +
+            '<td' + participantType + '</td>' +
             '<td class="text-center">' +
-            '<button type="button" value0="" value1="'+ fullName +'" value2="'+ email +'" value3="'+ "" +'" class="btn btn-sm btn-danger deleteParticipant">' +
+            '<button type="button" value0="" value1="' + fullName + '" value2="' + email + '" value3="' + participantType + '" class="btn btn-sm btn-danger deleteParticipant">' +
             '<span class="fas fa-minus"></span>' +
             '</button>' +
             '</td>' +
             '</tr>'));
+    }
 
     addParticipant(memberId, fullName, email, participantType);
     addedMembersDataTable.row.add(newMarkup).draw();			//update added members table
@@ -196,7 +198,7 @@ $(document).on('click','#addGuest', function(){
         guestFullNameInput.val('');
         guestEmailInput.val('');
 
-        transferParticipantInfo("", guestFullName, guestEmail);
+        transferParticipantInfo("", guestFullName, guestEmail, "");
     }
     checkRoomCapacity();
 });

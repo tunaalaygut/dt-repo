@@ -1,13 +1,6 @@
 package com.alaygut.prototype.domain;
   
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import com.alaygut.prototype.domain.Member;
 
@@ -29,17 +22,21 @@ public class Participant extends BaseClass {
 	@Column(name = "email", nullable = false) 
 	private String email;
 
+	@Column(name="participantType")
+	private ParticipantType participantType;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "meetingRequestId")
 	private MeetingRequest meetingRequest;
 	
 	public Participant() {} //default constructor
 
-	public Participant(Member member, String fullName, String email, MeetingRequest meetingRequest) {
+	public Participant(Member member, String fullName, String email, MeetingRequest meetingRequest, ParticipantType participantType) {
 		this.member = member;
 		this.fullName = fullName;
 		this.email = email;
 		this.meetingRequest = meetingRequest;
+		this.participantType = participantType;
 	}
 
 	public Long getParticipationId() {
@@ -81,4 +78,8 @@ public class Participant extends BaseClass {
 	public void setMeetingRequest(MeetingRequest meetingRequest) {
 		this.meetingRequest = meetingRequest;
 	}
+
+	public ParticipantType getParticipantType() { return participantType; }
+
+	public void setParticipantType(ParticipantType participantType) { this.participantType = participantType; }
 }

@@ -34,7 +34,7 @@ public class Member extends BaseClass implements UserDetails {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "participantType", nullable = false)
+    @Column(name = "participantType")
     private ParticipantType participantType;
 
     @ManyToOne(optional = true)

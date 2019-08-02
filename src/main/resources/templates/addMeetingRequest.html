@@ -146,7 +146,11 @@
 										<tr th:each="member : *{allMembers}">
 											<td th:text="${member.firstName + ' ' + member.lastName}"></td>
 											<td th:text="${member.email}"></td>
-											<td th:text="${member.participantType}"></td>
+											<td >
+												<select>
+													<option th:each="participantType : ${T(com.alaygut.prototype.domain.ParticipantType).values()}" th:text="${participantType}" th:value = "${participantType}" id="selectedParticipantType"></option>
+												</select>
+											</td>
 											<td class="text-center">
 												<button type="button" th:attr="value0=${member.memberId}, value1=${member.firstName + ' ' + member.lastName}, value2=${member.email}, value3=${member.participantType}" class="btn btn-info btn-sm addMember">
 													<span class="fas fa-plus"></span>
