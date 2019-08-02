@@ -1,11 +1,8 @@
 package com.alaygut.prototype.service;
 
-import com.alaygut.prototype.domain.Login;  
-import com.alaygut.prototype.domain.Role;
+import com.alaygut.prototype.domain.*;
 import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.dto.IDTransfer;
-import com.alaygut.prototype.domain.Member;
-import com.alaygut.prototype.domain.RecordState;
 import com.alaygut.prototype.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,13 +64,15 @@ public class MemberServiceImpl implements MemberService {
                 form.getUsername(),
                 passwordEncoder.encode(password)
         );
+        ParticipantType participantType = ParticipantType.ZORUNLU;
         Member member = new Member(
                 form.getFirstName(),
                 form.getLastName(),
                 form.getEmail(),
                 form.getPhone(),
                 role,
-                login
+                login,
+                participantType
         );
         loginService.addLogin(login);
         if (form.getCreatorId() != null)

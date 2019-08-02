@@ -42,7 +42,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	@Override
 	public void generateParticipants(List<String> participantDetails, MeetingRequest meetingRequest) {
-		for (int i = 0; i < participantDetails.size(); i+=3){
+		for (int i = 0; i < participantDetails.size(); i+=4){
 			String fullName, email;
 			Member member;
 
