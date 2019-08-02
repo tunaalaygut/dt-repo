@@ -1,31 +1,36 @@
 package com.alaygut.prototype.service;
  
 import com.alaygut.prototype.domain.MeetingRequest;
+import com.alaygut.prototype.domain.Member;
 import com.alaygut.prototype.domain.Participant;
+import com.alaygut.prototype.domain.Role;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import javax.mail.Part;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
 @Service
 public class EmailSenderServiceImpl implements EmailSenderService {
 
     private JavaMailSender javaMailSender;
     private ParticipantService participantService;
+    private MemberService memberService;
+    private RoleService roleService;
 
 
     @Value("{program.url}")
     private String PROGRAM_URL;
 
-    public EmailSenderServiceImpl(JavaMailSender javaMailSender, ParticipantService participantService) {
+    public EmailSenderServiceImpl(JavaMailSender javaMailSender, ParticipantService participantService, MemberService memberService, RoleService roleService) {
         this.javaMailSender = javaMailSender;
         this.participantService = participantService;
+        this.memberService = memberService;
+        this.roleService = roleService;
     }
 
     public void sendEmail(SimpleMailMessage email) {
@@ -133,5 +138,35 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         sendEmail(mailMessage);
     }
 
+    @Override
+    @Async
+    public void sendNotificationEmail(MeetingRequest request) {
+        Role role = roleService.getRole("SUPERVISOR");
+        List<Member> members = memberService.getAllByRole(role);
+        InternetAddress[] Address = new InternetAddress[members.size()];
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setSubject("Yeni Bir Toplantı Talebi Yapıldı");
+        mailMessage.setFrom("dijital.toplanti@gmail.com");
+        mailMessage.setText(request.getCreator().getFirstName() + " " + request.getCreator().getLastName() + " tarafından yeni bir toplantı talebi yapıldı.\nTalep Edilen Toplantının Bilgileri: " +
+                "\nTarih: " + request.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))+ "\nSaat: " +request.getStartTime() + " - " +request.getEndTime()+
+                "\nBina: " + request.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " +request.getMeetingRoom().getMeetingRoomName()+
+                "\nToplantı Türü: " + request.getMeetingType().getMeetingTypeName() +
+                "\nToplantı Açıklaması: " + request.getDescription());
+
+        // Send the email
+        /*sendEmail(mailMessage);*/
+
+        for( int i = 0; i < members.size() ; i++ ) {
+            try {
+                Address[i] = new InternetAddress(members.get(i).getEmail());
+            } catch (AddressException e) {
+                e.printStackTrace();
+            }
+            if(!request.getCreator().getEmail().equals(Address[i].toString())) {
+                mailMessage.setTo(Address[i].toString());
+                sendEmail(mailMessage);
+            }
+        }
+    }
 
 }

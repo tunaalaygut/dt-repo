@@ -8,4 +8,5 @@ public interface EmailSenderService {
     void sendRejectionEmail(MeetingRequest meetingRequest);
     void sendConfirmationEmail(MeetingRequest meetingRequest);
     void sendCancelEmail(MeetingRequest meetingRequest);
+    void sendNotificationEmail(MeetingRequest meetingRequest);
 }

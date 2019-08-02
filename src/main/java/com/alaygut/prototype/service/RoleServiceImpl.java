@@ -152,4 +152,9 @@ public class RoleServiceImpl implements RoleService{
         addRoleForm.setAllRights(rightService.getAllActiveRights());
         return addRoleForm;
     }
+
+    @Override
+    public Role getRole(String roleName) {
+        return roleRepository.findByRoleName(roleName);
+    }
 }

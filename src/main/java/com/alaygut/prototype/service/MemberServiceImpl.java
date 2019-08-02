@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import java.security.SecureRandom;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -101,7 +102,13 @@ public class MemberServiceImpl implements MemberService {
     public Iterable<Member> getAllActiveMembers() {
     	return memberRepository.findByStateEquals(RecordState.ACTIVE);
     }
-    
+
+
+    @Override
+    public List<Member> getAllByRole(Role role) {
+        return memberRepository.getAllByRole(role);
+    }
+
     /**
      * Spesifik bir üye döndürür
      * @param memberId üyenin unique id'si    

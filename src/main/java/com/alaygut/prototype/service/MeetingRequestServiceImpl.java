@@ -81,6 +81,7 @@ public class MeetingRequestServiceImpl implements MeetingRequestService {
 
 		participantService.generateParticipants(form.getParticipantDetails(), meetingRequest);
 		meetingRequestRepository.save(meetingRequest);
+		emailSenderService.sendNotificationEmail(meetingRequest);
 
 		return true;
 	}
