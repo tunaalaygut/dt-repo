@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <div th:replace="fragments/fragments :: head(content = 'Toplantı Talep Formu')"></div>
 
@@ -8,26 +8,26 @@
 
 <div class="wrapper">
 	<div th:replace="fragments/fragments :: sidebar"></div>
-		<div class="content">
-            <div th:replace="fragments/fragments :: navbar"></div>
-            <h2 class="mb-4">Toplantı Talep Formu</h2>
+	<div class="content">
+		<div th:replace="fragments/fragments :: navbar"></div>
+		<h2 class="mb-4">Toplantı Talep Formu</h2>
 
-			<!--CURRENT USER INFO STARTS HERE-->
-			<div>
-				<input id="currentUserId" th:value="${#authentication.principal.memberId}" type="hidden"/>
-				<input id="currentUserFullName" th:value="${#authentication.principal.firstName} + ' ' + ${#authentication.principal.lastName}" type="hidden"/>
-				<input id="currentUserEmail" th:value="${#authentication.principal.email}" type="hidden"/>
-			</div>
-			<!--CURRENT USER INFO ENDS HERE-->
+		<!--CURRENT USER INFO STARTS HERE-->
+		<div>
+			<input id="currentUserId" th:value="${#authentication.principal.memberId}" type="hidden"/>
+			<input id="currentUserFullName" th:value="${#authentication.principal.firstName} + ' ' + ${#authentication.principal.lastName}" type="hidden"/>
+			<input id="currentUserEmail" th:value="${#authentication.principal.email}" type="hidden"/>
+		</div>
+		<!--CURRENT USER INFO ENDS HERE-->
 
-			<div th:replace="fragments/fragments :: infoMessage"></div>
-			<div th:replace="fragments/fragments :: successMessage"></div>
-			<!--MEETING_REQUEST_FORM BEGINS-->
-            <form th:action="@{/add/meetingRequest}" th:object="${addMeetingRequestForm}" th:method="post" autocomplete="off" id="requestMeeting">
-            
-      	<!--MEETING ROOM FILTER SECTION STARTS-->
-            <div class="row mb-3">
-	            <div class="col-sm-8 ml-auto">
+		<div th:replace="fragments/fragments :: infoMessage"></div>
+		<div th:replace="fragments/fragments :: successMessage"></div>
+		<!--MEETING_REQUEST_FORM BEGINS-->
+		<form th:action="@{/add/meetingRequest}" th:object="${addMeetingRequestForm}" th:method="post" autocomplete="off" id="requestMeeting">
+
+			<!--MEETING ROOM FILTER SECTION STARTS-->
+			<div class="row mb-3">
+				<div class="col-sm-8 ml-auto">
 					<div class="collapse" id="filterMeetingRoomCollapse">
 						<div class="form-group">
 							<label for="filterCapacityInput">Kapasite:</label>
@@ -40,8 +40,8 @@
 							</select>
 						</div>
 						<button type="button" class="btn btn-block btn-info" id="applyRoomFilter">Filtre Uygula <span class="fas fa-filter"></span></button>
-					</div>	
-						<button
+					</div>
+					<button
 							type="button"
 							class="btn btn-outline-info btn-block mt-2"
 							id="meetingRoomFilterDivButton"
@@ -51,187 +51,187 @@
 							aria-controls="collapseExample">
 						Toplantı Odası Filtrele
 						<span id="filterArrowIcon" class="fas fa-sort-down"></span>
-						</button>
-				</div>										
-            </div>
-				<!--MEETING ROOM FILTER SECTION ENDS-->
-				
-				<!--DATE & LOCATION INFO STARTS-->
-				<div class="row">
-					<div class="col-sm-4">
-						<div class="form-group">
-							<label>Toplantı Tarihi:</label>
-							<input type="date" th:field="*{date}" class="form-control dateLocationInfo" placeholder="Toplantı Tarihi" id="datePicker"/>
-						</div>
-						<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('date')}, field = 'date')"></div>
+					</button>
+				</div>
+			</div>
+			<!--MEETING ROOM FILTER SECTION ENDS-->
+
+			<!--DATE & LOCATION INFO STARTS-->
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label>Toplantı Tarihi:</label>
+						<input type="date" th:field="*{date}" class="form-control dateLocationInfo" placeholder="Toplantı Tarihi" id="datePicker"/>
 					</div>
-					<div class="col-sm-4">
-						<div class="form-group">
-							<label for="buildingId">Bina:</label>
-							<select th:field="*{buildingId}" class="custom-select" id="buildingId">
-								<option th:each="building : *{allBuildings}" th:value="${building.buildingId}" th:text="${building.buildingName}">
-								</option>
-							</select>
-						</div>
-						<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('buildingId')}, field = 'buildingId')"></div>
+					<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('date')}, field = 'date')"></div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label for="buildingId">Bina:</label>
+						<select th:field="*{buildingId}" class="custom-select" id="buildingId">
+							<option th:each="building : *{allBuildings}" th:value="${building.buildingId}" th:text="${building.buildingName}">
+							</option>
+						</select>
 					</div>
-					<div class="col-sm-4">
-						<div class="form-group">
-							<label for="meetingRoomId">Toplantı Odası:</label>
-							<select th:field="*{meetingRoomId}" class="custom-select dateLocationInfo" id="meetingRoomId">
-								<option value=""></option>
-							</select>
-						</div>
-						<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('meetingRoomId')}, field = 'meetingRoomId')"></div>
+					<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('buildingId')}, field = 'buildingId')"></div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label for="meetingRoomId">Toplantı Odası:</label>
+						<select th:field="*{meetingRoomId}" class="custom-select dateLocationInfo" id="meetingRoomId">
+							<option value=""></option>
+						</select>
+					</div>
+					<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('meetingRoomId')}, field = 'meetingRoomId')"></div>
+				</div>
+			</div>
+			<!--DATE & LOCATION INFO ENDS-->
+			<div class="row">
+				<div class="col-sm-8 ml-auto">
+					<div class="alert alert-info" role="alert">
+						Seçilen toplantı odası aşağıda listelenen özelliklere sahip:
+						<ul id="roomPropertiesList">
+							<!--append properties here-->
+						</ul>
+					</div>
+
+				</div>
+			</div>
+			<div class="form-group mt-3">
+				<label class="d-block">Toplantı Saati:</label>
+				<small class="text-muted font-italic" id="scheduleInfo"></small>
+				<input type="hidden" th:attr="name=beginningTime" id="startTimeInput">
+				<input type="hidden" th:attr="name=endTime" id="endTimeInput">
+				<input type="hidden" th:attr="name=requestMadeTo" id="requestMadeTo">
+
+				<!--THE GRID STARTS-->
+				<div id="theGrid" class="px-3"></div>
+				<!--the grid info starts-->
+				<div class="row px-3 mt-4">
+					<div class="col-sm-1 p-0 ml-auto">
+						<div class="timeHolderDisplay p-1 m-1 text-center rounded h-90 w-90" id="empty"><small class="unselectable">Boş</small></div>
+					</div>
+					<div class="col-sm-1 p-0 ml-0">
+						<div class="timeHolderDisplay p-1 m-1 text-center rounded h-90 w-90" id="taken"><small class="unselectable">Dolu</small></div>
+					</div>
+					<div class="col-sm-1 p-0 ml-0">
+						<div class="timeHolderDisplay p-1 m-1 text-center rounded h-90 w-90" id="selected"><small class="unselectable">Seçili</small></div>
 					</div>
 				</div>
-				<!--DATE & LOCATION INFO ENDS-->
-				<div class="row">
-					<div class="col-sm-8 ml-auto">
-						<div class="alert alert-info" role="alert">
-							Seçilen toplantı odası aşağıda listelenen özelliklere sahip:
-							<ul id="roomPropertiesList">
-								<!--append properties here-->
-							</ul>
-						</div>
+				<!--the grid info ends-->
+				<!--THE GRID ENDS-->
+			</div>
+			<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('beginningTime')}, field = 'beginningTime')"></div>
+			<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('endTime')}, field = 'endTime')"></div>
 
-					</div>
-				</div>
-				<div class="form-group mt-3">
-					<label class="d-block">Toplantı Saati:</label>
-					<small class="text-muted font-italic" id="scheduleInfo"></small>
-					<input type="hidden" th:attr="name=beginningTime" id="startTimeInput">
-					<!-- <input type="hidden" th:attr="name=endTime" id="endTimeInput"> -->
-					<input type="hidden" th:attr="name=requestMadeTo" id="requestMadeTo">
-
-					<!--THE GRID STARTS-->
-					<div id="theGrid" class="px-3"></div>
-					<!--the grid info starts-->
-					<div class="row px-3 mt-4">
-						<div class="col-sm-1 p-0 ml-auto">
-							<div class="timeHolderDisplay p-1 m-1 text-center rounded h-90 w-90" id="empty"><small class="unselectable">Boş</small></div>
-						</div>
-						<div class="col-sm-1 p-0 ml-0">
-							<div class="timeHolderDisplay p-1 m-1 text-center rounded h-90 w-90" id="taken"><small class="unselectable">Dolu</small></div>
-						</div>
-						<div class="col-sm-1 p-0 ml-0">
-							<div class="timeHolderDisplay p-1 m-1 text-center rounded h-90 w-90" id="selected"><small class="unselectable">Seçili</small></div>
-						</div>
-					</div>
-					<!--the grid info ends-->
-					<!--THE GRID ENDS-->
-				</div>
-				<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('beginningTime')}, field = 'beginningTime')"></div>
-				<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('endTime')}, field = 'endTime')"></div>
-
-				<!--PARTICIPANTS START HERE-->
-				<div class="row my-5">
-					<div class="col-sm-6">
-						<div class="row">
-							<div class="col">
-                                <div class="form-group">
-                                    <label>Katılımcı Ekle:</label>
-                                    <div class="table-responsive">
-                                        <table class="table" id="example">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col">İsim</th>
-                                                <th scope="col">E-mail</th>
-                                                <th scope="col">Ekle</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr th:each="member : *{allMembers}">
-                                                <td th:text="${member.firstName + ' ' + member.lastName}"></td>
-                                                <td th:text="${member.email}"></td>
-                                                <td class="text-center">
-                                                    <button type="button" th:attr="value0=${member.memberId}, value1=${member.firstName + ' ' + member.lastName}, value2=${member.email}" class="btn btn-info btn-sm addMember">
-                                                        <span class="fas fa-plus"></span>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col mt-5">
-								<div class="form-group">
-									<label for="guestFullNameInput">Misafir Adı Soyadı:</label>
-									<input type="text" class="form-control" id="guestFullNameInput" aria-describedby="emailHelp" placeholder="Ad Soyad">
+			<!--PARTICIPANTS START HERE-->
+			<div class="row my-5">
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col">
+							<div class="form-group">
+								<label>Katılımcı Ekle:</label>
+								<div class="table-responsive">
+									<table class="table" id="example">
+										<thead>
+										<tr>
+											<th scope="col">İsim</th>
+											<th scope="col">E-mail</th>
+											<th scope="col">Ekle</th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr th:each="member : *{allMembers}">
+											<td th:text="${member.firstName + ' ' + member.lastName}"></td>
+											<td th:text="${member.email}"></td>
+											<td class="text-center">
+												<button type="button" th:attr="value0=${member.memberId}, value1=${member.firstName + ' ' + member.lastName}, value2=${member.email}" class="btn btn-info btn-sm addMember">
+													<span class="fas fa-plus"></span>
+												</button>
+											</td>
+										</tr>
+										</tbody>
+									</table>
 								</div>
-								<div class="form-group">
-									<label for="guestEmailInput">E-mail:</label>
-									<input type="email" class="form-control" id="guestEmailInput" placeholder="E-mail">
-								</div>
-								<button type="button" class="btn btn-info btn-block" id="addGuest">Misafir Katılımcı Ekle</button>
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-6">
-						<div class="row">
-							<div class="col">
-
-								<div class="form-group">
-									<label>Eklenen Katımlıcılar:</label>
-									<div class="table-responsive">
-										<table class="table" id="example2">
-											<thead>
-											<tr>
-												<th scope="col">İsim</th>
-												<th scope="col">E-mail</th>
-												<th scope="col">Ekle</th>
-											</tr>
-											</thead>
-											<tbody id="addedMembersBody">
-												<!--HTML WILL BE INSERTED BY JAVASCRIPT-->
-											</tbody>
-										</table>
-									</div>
-								</div>
-
-								<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('participantDetails')}, field = 'participantDetails')"></div>
-
-								<div class="alert alert-warning" id="capacityWarning" role="alert" style="display: none">
-									<!--capacity warning-->
-								</div>
-
+					<div class="row">
+						<div class="col mt-5">
+							<div class="form-group">
+								<label for="guestFullNameInput">Misafir Adı Soyadı:</label>
+								<input type="text" class="form-control" id="guestFullNameInput" aria-describedby="emailHelp" placeholder="Ad Soyad">
 							</div>
+							<div class="form-group">
+								<label for="guestEmailInput">E-mail:</label>
+								<input type="email" class="form-control" id="guestEmailInput" placeholder="E-mail">
+							</div>
+							<button type="button" class="btn btn-info btn-block" id="addGuest">Misafir Katılımcı Ekle</button>
 						</div>
 					</div>
 				</div>
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col">
 
-				<!--HIDDEN PARTICIPANT INPUT-->
-				<select multiple th:attr="name=participantDetails" id="addedMembersMultipleSelect" style="display: none;">
-					<!-- <option value="memberId" selected></option> -->
-					<!-- append this option here -->
+							<div class="form-group">
+								<label>Eklenen Katımlıcılar:</label>
+								<div class="table-responsive">
+									<table class="table" id="example2">
+										<thead>
+										<tr>
+											<th scope="col">İsim</th>
+											<th scope="col">E-mail</th>
+											<th scope="col">Ekle</th>
+										</tr>
+										</thead>
+										<tbody id="addedMembersBody">
+										<!--HTML WILL BE INSERTED BY JAVASCRIPT-->
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+							<div th:replace="fragments/fragments :: errorMessage(condition = ${#fields.hasErrors('participantDetails')}, field = 'participantDetails')"></div>
+
+							<div class="alert alert-warning" id="capacityWarning" role="alert" style="display: none">
+								<!--capacity warning-->
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--HIDDEN PARTICIPANT INPUT-->
+			<select multiple th:attr="name=participantDetails" id="addedMembersMultipleSelect" style="display: none;">
+				<!-- <option value="memberId" selected></option> -->
+				<!-- append this option here -->
+			</select>
+			<!--HIDDEN PARTICIPANT INPUT ENDS HERE-->
+
+			<!--DESCRIPTION STARTS HERE-->
+			<div class="form-group">
+				<label for="meetingTypeSelectMenu">Toplantı Türü:</label>
+				<select class="custom-select" id="meetingTypeSelectMenu" th:field="*{meetingTypeId}">
+					<option th:each="type : ${addMeetingRequestForm.allMeetingTypes}" th:text="${type?.meetingTypeName}" th:value = "${type?.meetingTypeId}"></option>
 				</select>
-				<!--HIDDEN PARTICIPANT INPUT ENDS HERE-->
+			</div>
 
-				<!--DESCRIPTION STARTS HERE-->
-				<div class="form-group">
-					<label for="meetingTypeSelectMenu">Toplantı Türü:</label>
-					<select class="custom-select" id="meetingTypeSelectMenu" th:field="*{meetingTypeId}">
-						<option th:each="type : ${addMeetingRequestForm.allMeetingTypes}" th:text="${type?.meetingTypeName}" th:value = "${type?.meetingTypeId}"></option>
-					</select>
-			  	</div>
+			<div class="form-group">
+				<label for="descriptionInput">Açıklama:</label>
+				<textarea th:field="*{description}" type="text" class="form-control" id="descriptionInput" placeholder="Açıklama" rows="3" style="resize: none;"></textarea>
+			</div>
+			<!--DESCRIPTION ENDS HERE-->
 
-				<div class="form-group">
-					<label for="descriptionInput">Açıklama:</label>
-					 <textarea th:field="*{description}" type="text" class="form-control" id="descriptionInput" placeholder="Açıklama" rows="3" style="resize: none;"></textarea>
-				</div>
-				<!--DESCRIPTION ENDS HERE-->
+			<div th:replace="fragments/fragments :: creatorIdInput"></div>
 
-				<div th:replace="fragments/fragments :: creatorIdInput"></div>
-
-        		<button type="submit" class="btn btn-primary btn-info btn-block mt-5">Toplantı İsteği Oluştur</button>
-    		</form>
-		</div>
-    </div>
-   	<div th:replace="fragments/fragments :: scripts"></div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-chained/1.0.1/jquery.chained.remote.min.js" integrity="sha256-s4fvhjtBM8Qdr848fG5m3T6LjoJl799Qax4fr/24r30=" crossorigin="anonymous"></script>
-	<script th:src="@{/js/meetingRequest.js}" src="../static/js/meetingRequest.js"></script>
+			<button type="submit" class="btn btn-primary btn-info btn-block mt-5">Toplantı İsteği Oluştur</button>
+		</form>
+	</div>
+</div>
+<div th:replace="fragments/fragments :: scripts"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-chained/1.0.1/jquery.chained.remote.min.js" integrity="sha256-s4fvhjtBM8Qdr848fG5m3T6LjoJl799Qax4fr/24r30=" crossorigin="anonymous"></script>
+<script th:src="@{/js/meetingRequest.js}" src="../static/js/meetingRequest.js"></script>
 </body>
 </html>
