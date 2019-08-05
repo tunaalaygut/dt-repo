@@ -2,7 +2,7 @@
 $( document ).ready(function() {
     getAndPopulateMeetingRooms();
     meetingRoomCapacity = getRoomCapacity();
-    addMember($("#currentUserId").val(), $("#currentUserFullName").val(), $("#currentUserEmail").val(), $("#currentUserParticipantType"));
+    addMember($("#currentUserId").val(), $("#currentUserFullName").val(), $("#currentUserEmail").val(), $("#currentUserParticipantType").val());
     document.querySelector("#datePicker").valueAsDate = new Date();
     drawTheGrid();
     $('[data-toggle="tooltip"]').tooltip();
@@ -157,9 +157,9 @@ function transferParticipantInfo(memberId, fullName, email, participantType){
             '<tr>' +
             '<td>' + fullName + '<small class="text-muted"> (Misafir)</small></td>' +
             '<td>' + email + '</td>' +
-            '<td' + participantType + '</td>' +
+            '<td>' + 'participantType' + '</td>' +
             '<td class="text-center">' +
-            '<button type="button" value0="" value1="' + fullName + '" value2="' + email + '" value3="' + participantType + '" class="btn btn-sm btn-danger deleteParticipant">' +
+            '<button type="button" value0="" value1="' + fullName + '" value2="' + email + '" value3="" class="btn btn-sm btn-danger deleteParticipant">' +
             '<span class="fas fa-minus"></span>' +
             '</button>' +
             '</td>' +
