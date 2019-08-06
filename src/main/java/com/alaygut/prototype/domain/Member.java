@@ -6,14 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class Member extends BaseClass implements UserDetails {
@@ -34,7 +27,8 @@ public class Member extends BaseClass implements UserDetails {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "participantType")
+    @Column(name = "participantType", nullable = false)
+    @Enumerated
     private ParticipantType participantType;
 
     @ManyToOne(optional = true)

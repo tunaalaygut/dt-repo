@@ -22,7 +22,8 @@ public class Participant extends BaseClass {
 	@Column(name = "email", nullable = false) 
 	private String email;
 
-	@Column(name="participantType")
+	@Column(name = "participantType", nullable = false)
+	@Enumerated
 	private ParticipantType participantType;
 
 	@ManyToOne(fetch = FetchType.EAGER)

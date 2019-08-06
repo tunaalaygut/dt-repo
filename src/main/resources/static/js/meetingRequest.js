@@ -41,7 +41,10 @@ function getAndPopulateMeetingRooms(){
         let meetingRoomId = $("#meetingRoomId").val();
         loadMeetingRoomProperties();
         reflectDataOnTheGrid(date, meetingRoomId);
-    });
+    }).fail(function (deneme) {
+        debugger;
+        console.log();
+    })
 }
 
 function checkRoomCapacity(){
@@ -237,10 +240,10 @@ $(document).on('click','.deleteParticipant', function(){
             '</td>' +
             '</tr>'));
 
-        addedMembersDataTable.rows(clickedRow).remove().draw();
         allMembersTable.row.add(newMarkup).draw();
     }
 
+    addedMembersDataTable.rows(clickedRow).remove().draw();
     removeParticipant(memberId, fullName, email, participantType);
     checkRoomCapacity();
 });

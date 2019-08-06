@@ -52,12 +52,12 @@ public class ParticipantServiceImpl implements ParticipantService {
 				member = null;
 				participantType = ParticipantType.MISAFIR;
 			}
-			else									//member
-				member = memberService.getMember(Long.parseLong(participantDetails.get(i)));	//reference to the member
-
+			else {                                    //member
+				member = memberService.getMember(Long.parseLong(participantDetails.get(i)));    //reference to the member
+				participantType = ParticipantType.ZORUNLU;
+			}
 			fullName = participantDetails.get(i+1);
 			email = participantDetails.get(i+2);
-			participantType = ParticipantType.ZORUNLU;
 
 			Participant participant = new Participant(member, fullName, email, meetingRequest, participantType);
 			participantRepository.save(participant);
