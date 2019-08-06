@@ -102,9 +102,9 @@ function addParticipant(memberId, fullName, email, participantType){
 
 function  removeParticipant(memberId, fullName, email, participantType) {
     let participantOption = $('option[value="'+ participantType +'"]');
-    let emailOption = participantOption.prev();
-    let fullNameOption = emailOption.prev();
-    let memberIdOption = fullNameOption.prev();
+    let emailOption = $('option[value="'+ email +'"]');
+    let fullNameOption = $('option[value="'+ fullName +'"]');
+    let memberIdOption = $('option[value="'+ memberId +'"]');
 
     participantOption.remove();
     emailOption.remove();
@@ -160,7 +160,7 @@ function transferParticipantInfo(memberId, fullName, email, participantType){
             '<tr>' +
             '<td>' + fullName + '<small class="text-muted"> (Misafir)</small></td>' +
             '<td>' + email + '</td>' +
-            '<td>' + 'participantType' + '</td>' +
+            '<td>' + 'MISAFIR' + '</td>' +
             '<td class="text-center">' +
             '<button type="button" value0="" value1="' + fullName + '" value2="' + email + '" value3="" class="btn btn-sm btn-danger deleteParticipant">' +
             '<span class="fas fa-minus"></span>' +
@@ -241,6 +241,19 @@ $(document).on('click','.deleteParticipant', function(){
             '</tr>'));
 
         allMembersTable.row.add(newMarkup).draw();
+    }
+    else {
+        let newMarkup = $($.parseHTML(
+            '<tr>' +
+            '<td>' + fullName + '</td>' +
+            '<td>' + email + '</td>' +
+            '<td>' + 'MISAFIR' + '</td>' +
+            '<td class="text-center">' +
+            '<button type="button" value0="' + memberId + '" value1="' + fullName + '" value2="' + email + '" value3="' + participantType +'"  class="btn btn-sm btn-info addMember">' +
+            '<span class="fas fa-plus"></span>' +
+            '</button>' +
+            '</td>' +
+            '</tr>'));
     }
 
     addedMembersDataTable.rows(clickedRow).remove().draw();
