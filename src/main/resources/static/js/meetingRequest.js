@@ -101,10 +101,12 @@ function addParticipant(memberId, fullName, email, participantType){
 }
 
 function  removeParticipant(memberId, fullName, email, participantType) {
-    let participantOption = $('option[value="'+ participantType +'"]');
-    let emailOption = $('option[value="'+ email +'"]');
     let fullNameOption = $('option[value="'+ fullName +'"]');
-    let memberIdOption = $('option[value="'+ memberId +'"]');
+    let memberIdOption =  fullNameOption.prev();//$('option[value="'+ memberId +'"]');
+    let emailOption = fullNameOption.next()//$('option[value="'+ email +'"]');
+    let participantOption = emailOption.next();//$('option[value="'+ participantType +'"]');
+
+
 
     participantOption.remove();
     emailOption.remove();
