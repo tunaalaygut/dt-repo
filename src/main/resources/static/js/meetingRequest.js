@@ -9,6 +9,12 @@ $( document ).ready(function() {
     loadRoomFeatures();
 });
 
+var participantEnum = {
+    ZORUNLU: 0,
+    ISTEGE_BAGLI: 1,
+    MISAFIR: 2
+};
+
 $("#buildingId").change(function(){
     getAndPopulateMeetingRooms();
 });
@@ -564,3 +570,9 @@ function fillInterval(beginning, end, color){
 }
 
 datePicker.min = new Date().toISOString().split("T")[0]; //datepicker'i bugun ve gelecek olarak kisitlama
+
+$( ".participation" )
+    .change(function () {
+        let str = $(this).val();
+        $(this).parent().next().children().attr("value3", str);
+    })
