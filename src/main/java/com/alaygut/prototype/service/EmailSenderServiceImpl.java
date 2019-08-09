@@ -98,13 +98,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         SimpleMailMessage mailMessage1 = new SimpleMailMessage();
         mailMessage1.setSubject("Toplantı Hakkında Bilgilendirme");
         mailMessage1.setFrom("dijital.toplanti@gmail.com");
-        mailMessage1.setText(request.getCreator().getFirstName() + " " + request.getCreator().getLastName() +
-                " sizi aşağıda bilgileri belirtilen toplantıya eklemiştir.\n\nToplantının Bilgileri: " +
-                "\nTarih: " + request.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "\nSaat: " + request.getStartTime() + " - " + request.getEndTime() +
-                "\nBina: " + request.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " + request.getMeetingRoom().getMeetingRoomName() +
-                "\nToplantı Türü: " + request.getMeetingType().getMeetingTypeName() +
-                "\nToplantı Açıklaması: " + request.getDescription() +
-                "\n\nAşağıdaki linkten Dijital Toplantı'ya ulaşabilirsiniz:\n " + PROGRAM_URL);
+
 
 
         for( int i = 0; i < participants.size() ; i++ ) {
@@ -115,6 +109,13 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             }
             if(!request.getCreator().getEmail().equals(Address[i].toString())) {
                 mailMessage1.setTo(Address[i].toString());
+                mailMessage1.setText(request.getCreator().getFirstName() + " " + request.getCreator().getLastName() +
+                        " sizi aşağıda bilgileri belirtilen toplantıya " + participants.get(i).getParticipantType() + " katılımcı olarak eklemiştir.\n\nToplantının Bilgileri: " +
+                        "\nTarih: " + request.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "\nSaat: " + request.getStartTime() + " - " + request.getEndTime() +
+                        "\nBina: " + request.getMeetingRoom().getBuilding().getBuildingName() + "\nOda: " + request.getMeetingRoom().getMeetingRoomName() +
+                        "\nToplantı Türü: " + request.getMeetingType().getMeetingTypeName() +
+                        "\nToplantı Açıklaması: " + request.getDescription() +
+                        "\n\nAşağıdaki linkten Dijital Toplantı'ya ulaşabilirsiniz:\n " + PROGRAM_URL);
                 sendEmail(mailMessage1);
             }
         }

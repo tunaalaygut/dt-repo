@@ -1,6 +1,7 @@
 
 $( document ).ready(function() {
     getAndPopulateMeetingRooms();
+    getParticipantTypes();
     meetingRoomCapacity = getRoomCapacity();
     addMember($("#currentUserId").val(), $("#currentUserFullName").val(), $("#currentUserEmail").val(), $("#currentUserParticipantType").val());
     document.querySelector("#datePicker").valueAsDate = new Date();
@@ -8,12 +9,6 @@ $( document ).ready(function() {
     $('[data-toggle="tooltip"]').tooltip();
     loadRoomFeatures();
 });
-
-var participantEnum = {
-    ZORUNLU: 0,
-    ISTEGE_BAGLI: 1,
-    MISAFIR: 2
-};
 
 $("#buildingId").change(function(){
     getAndPopulateMeetingRooms();
@@ -23,12 +18,20 @@ $("#meetingRoomId").change(function (){
     meetingRoomCapacity = getRoomCapacity();
 });
 
+$("#participant").change(function () {
+    getParticipantTypes();
+})
+
 $(document).on('change', '.dateLocationInfo', function(){
     let date = $("#datePicker").val();
     let meetingRoomId = $("#meetingRoomId").val();
     loadMeetingRoomProperties();
     reflectDataOnTheGrid(date, meetingRoomId);
 });
+
+function getParticipantTypes() {
+    let participantType = $("#participant").val();
+}
 
 function getAndPopulateMeetingRooms(){
     let buildingId = $("#buildingId").val();
@@ -109,7 +112,7 @@ function addParticipant(memberId, fullName, email, participantType){
 function  removeParticipant(memberId, fullName, email, participantType) {
     let fullNameOption = $('option[value="'+ fullName +'"]');
     let memberIdOption =  fullNameOption.prev();//$('option[value="'+ memberId +'"]');
-    let emailOption = fullNameOption.next()//$('option[value="'+ email +'"]');
+    let emailOption = fullNameOption.next();//$('option[value="'+ email +'"]');
     let participantOption = emailOption.next();//$('option[value="'+ participantType +'"]');
 
 
@@ -240,28 +243,21 @@ $(document).on('click','.deleteParticipant', function(){
             '<tr>' +
             '<td>' + fullName + '</td>' +
             '<td>' + email + '</td>' +
-            '<td>' + participantType + '</td>' +
+            '<td>' +
+            '<select onchange="changeParticipantType(this.value)">' +
+            '<option value="0">'+ "ZORUNLU"  +'</option>' +
+            '<option value="1">'+ "ISTEGE_BAGLI" +'</option>' +
+            '<option value="2">'+ "MISAFIR" +'</option>' +
+            '</select>' +
+            '</td>' +
             '<td class="text-center">' +
-            '<button type="button" value0="' + memberId + '" value1="' + fullName + '" value2="' + email + '" value3="' + participantType +'"  class="btn btn-sm btn-info addMember">' +
+            '<button type="button" value0="' + memberId + '" value1="' + fullName + '" value2="' + email + '" value3="'+ participantType +'"  class="btn btn-sm btn-info addMember">' +
             '<span class="fas fa-plus"></span>' +
             '</button>' +
             '</td>' +
             '</tr>'));
 
         allMembersTable.row.add(newMarkup).draw();
-    }
-    else {
-        let newMarkup = $($.parseHTML(
-            '<tr>' +
-            '<td>' + fullName + '</td>' +
-            '<td>' + email + '</td>' +
-            '<td>' + 'MISAFIR' + '</td>' +
-            '<td class="text-center">' +
-            '<button type="button" value0="' + memberId + '" value1="' + fullName + '" value2="' + email + '" value3="' + participantType +'"  class="btn btn-sm btn-info addMember">' +
-            '<span class="fas fa-plus"></span>' +
-            '</button>' +
-            '</td>' +
-            '</tr>'));
     }
 
     addedMembersDataTable.rows(clickedRow).remove().draw();
@@ -576,3 +572,11 @@ $( ".participation" )
         let str = $(this).val();
         $(this).parent().next().children().attr("value3", str);
     })
+
+
+function changeParticipantType(val) {
+    let str = val;
+    $("btn btn-sm btn-info addMember").click(function() {
+        $(this).attr("value3", str);
+    });
+}
