@@ -58,7 +58,14 @@ public class ParticipantServiceImpl implements ParticipantService {
 				member = memberService.getMember(Long.parseLong(participantDetails.get(i)));    //reference to the member
 				fullName = member.getFirstName() + " " + member.getLastName();
 				email = member.getEmail();
-				participantType = member.getParticipantType();
+				if(participantDetails.get(i+3) == "ISTEGE_BAGLI") {
+					participantType = ParticipantType.ISTEGE_BAGLI;
+				}
+				else if (participantDetails.get(i+3) == "MISAFIR") {
+					participantType = ParticipantType.MISAFIR;
+				}
+				else
+					participantType = ParticipantType.ZORUNLU;
 			}
 			Participant participant = new Participant(member, fullName, email, meetingRequest, participantType);
 			participantRepository.save(participant);
