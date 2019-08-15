@@ -1,10 +1,13 @@
 package com.alaygut.prototype.service;
  
+import com.alaygut.prototype.domain.Role;
 import com.alaygut.prototype.dto.AddMemberForm;
 import com.alaygut.prototype.dto.IDTransfer;
 import com.alaygut.prototype.domain.Member;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.BindingResult;
+
+import java.util.List;
 
 public interface MemberService extends UserDetailsService {
     void addMember(AddMemberForm addMemberForm);
@@ -22,4 +25,5 @@ public interface MemberService extends UserDetailsService {
     boolean emailExists(String email);
     Member getMember(String username);
     void sendSignUpEmail(Member member, AddMemberForm addMemberForm);
+    List<Member> getAllByRole(Role role);
 }
